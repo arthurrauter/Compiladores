@@ -1,17 +1,32 @@
 %{
 #include <stdio.h>
-#include <tokens.h>
-#include <main.c>
+#include "tokens.h"
+#include "main.c"
 int running=1;
-int lineNumber=0;
+int lineNumber=1;
 %}
 
-%x COMMENTS
+%x COMM
+%x STRING
+%x CHAR
+
 
 CHAR        [A-Za-z_]
 DIGIT       [0-9]
 
 %%
+
+<CHAR>\'		BEGIN(INITIAL);
+<CHAR>.			{return LIT_CHAR;}
+
+<STRING>\"		BEGIN(INITIAL);
+<STRING>[^"]* 		{return LIT_STRING;}
+
+
+<COMM>"*/"              BEGIN(INITIAL);
+<COMM>\n		{lineNumber++;}
+<COMM>.
+
 int 	{return KW_INT;}
 float 	{return KW_FLOAT;}
 bool 	{return KW_BOOL;}
@@ -25,29 +40,27 @@ print	{return KW_PRINT;}
 return	{return KW_RETURN;}
 read	{return KW_READ;}
 
-<=	{return OPERATOR_LE;}
->=	{return OPERATOR_GE;}
-==	{return OPERATOR_EQ;}
-!=	{return OPERATOR_NE;}
-&&	{return OPERATOR_AND;}
-||	{return OPERATOR_OR;}
-
+"<="	{return OPERATOR_LE;}
+">="	{return OPERATOR_GE;}
+"=="	{return OPERATOR_EQ;}
+"!="	{return OPERATOR_NE;}
+"&&"	{return OPERATOR_AND;}
+"||"	{return OPERATOR_OR;}
+false			{return LIT_FALSE;}
+true 			{return LIT_TRUE;}
 {CHAR}({CHAR}|{DIGIT})*	{return TK_IDENTIFIER;}
 {DIGIT}+ 		{return LIT_INTEGER;}
 {DIGIT}+"."{DIGIT}+	{return LIT_FLOAT;}
-false			{return LIT_FALSE;}
-true 			{return LIT_TRUE;}
-"'"."'"			{return LIT_CHAR;}
-""".+"""		{return LIT_STRING;}
-[,;:()[]{}+-*/<>=!&$]	{return yytext[0];}
-
+\"			BEGIN(STRING);
+\'			BEGIN(CHAR);
+["*""]""[""+"]		{return yytext[0];}
+[,;:(){}"/"<>=!&$-]	{return yytext[0];}
 "//".*			{}
 "/*"                    BEGIN(COMM);
 \n                  	{++lineNumber;}
 [ \t]                   {  }
-.			{return TOKEN_ERROR;}
-<COMM>"*/"              BEGIN(INITIAL);
-<COMM>.
+.			{}
+
 
 
 %%
