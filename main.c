@@ -29,7 +29,7 @@ int main (int argc, char **argv)
     case LIT_INTEGER: fprintf(stderr,"inteiro valor %d at line %d\n",atoi(yytext),getLineNumber());  break;
     case KW_INT : fprintf(stderr,"INT at line %d\n",getLineNumber());  break;
     case KW_FLOAT : fprintf(stderr,"FLOAT at line %d\n",getLineNumber());  break;
-    
+    case LIT_FALSE : fprintf(stderr,"FALSE LITERAL HERE\n", getLineNumber());break;
     case LIT_CHAR : fprintf(stderr,"char %s at line %d\n", yytext, getLineNumber());  break;
     case LIT_STRING : fprintf(stderr,"string %s at line %d\n", yytext, getLineNumber());  break;
     case LIT_FLOAT : fprintf(stderr,"lit float %s at line %d\n", yytext, getLineNumber());  break;

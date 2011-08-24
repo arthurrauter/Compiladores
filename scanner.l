@@ -53,7 +53,7 @@ read	{return KW_READ;}
 false			{return LIT_FALSE;}
 true 			{return LIT_TRUE;}
 {CHAR}({CHAR}|{DIGIT})*	{insertHash (hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
-{DIGIT}+ 		{insertHash (hashTable, yytext, LIT_INTEGER); return LIT_INTEGER;return LIT_INTEGER;}
+{DIGIT}+ 		{insertHash (hashTable, yytext, LIT_INTEGER); return LIT_INTEGER;}
 {DIGIT}+"."{DIGIT}+	{return LIT_FLOAT;}
 \"			BEGIN(STRING);
 \'			BEGIN(CHAR);

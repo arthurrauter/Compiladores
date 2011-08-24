@@ -1,4 +1,4 @@
-int gatinha
+int gotinha
 
 "acordaaaa!!\n"
 
@@ -17,6 +17,6 @@ false
 
 69 69 69 69 69
 
-int gatinho_Acorda
+int gotinha_Acorda
 
-"quero meu gatinho"
+"quero meu gotinha"

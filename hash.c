@@ -50,7 +50,7 @@ void printHash(node** hashTable)
 		if(hashTable[i]!=NULL)//exists
 		{
 			printf ("%d: ", i);
-			printList (hastTable[i]);		
+			printList (hashTable[i]);		
 			printf ("\n");
 		}
 }
