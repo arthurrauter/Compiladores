@@ -528,7 +528,7 @@ char *yytext;
 #include <stdio.h>
 #include "tokens.h"
 #include "main.c"
-#include "hash.h"
+#include "hash.c"
 int running;
 int lineNumber;
 node* hashTable[HASH_SIZE];
@@ -820,7 +820,7 @@ BEGIN(INITIAL);
 case 2:
 YY_RULE_SETUP
 #line 23 "scanner.l"
-{insertHash (hashTable, yytext, LIT_CHAR);return LIT_CHAR;}
+{insertHash(hashTable, yytext, LIT_CHAR);return LIT_CHAR;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -831,7 +831,7 @@ case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
 #line 26 "scanner.l"
-{insertHash (hashTable, yytext, LIT_STRING);return LIT_STRING;}
+{insertHash(hashTable, yytext, LIT_STRING);return LIT_STRING;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
@@ -952,12 +952,12 @@ YY_RULE_SETUP
 case 28:
 YY_RULE_SETUP
 #line 54 "scanner.l"
-{insertHash (hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
+{insertHash(hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 55 "scanner.l"
-{insertHash (hashTable, yytext, LIT_INTEGER); return LIT_INTEGER;}
+{insertHash(hashTable, yytext, LIT_INTEGER); return LIT_INTEGER;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
@@ -2021,9 +2021,9 @@ void yyfree (void * ptr )
 
 
 
-void initMe (void)
+void initMe(void)
 {
-     initHash (hashTable);
+     initHash(hashTable);
      lineNumber = 1;
      running = 1;
 }

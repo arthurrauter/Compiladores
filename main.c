@@ -4,7 +4,7 @@ extern int running;
 int main (int argc, char **argv)
   {
   int token = 0;
- 
+ 	printf("sjakjdskla");
   if (argc < 2)
     {
     fprintf(stderr,"Please, call: ./a.out filename\n");

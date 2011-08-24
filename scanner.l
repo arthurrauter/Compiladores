@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "tokens.h"
 #include "main.c"
-#include "hash.h"
+#include "hash.c"
 int running;
 int lineNumber;
 node* hashTable[HASH_SIZE];
@@ -20,10 +20,10 @@ DIGIT       [0-9]
 %%
 
 <CHAR>\'		BEGIN(INITIAL);
-<CHAR>.			{insertHash (hashTable, yytext, LIT_CHAR);return LIT_CHAR;}
+<CHAR>.			{insertHash(hashTable, yytext, LIT_CHAR);return LIT_CHAR;}
 
 <STRING>\"		BEGIN(INITIAL);
-<STRING>[^"]* 		{insertHash (hashTable, yytext, LIT_STRING);return LIT_STRING;}
+<STRING>[^"]* 		{insertHash(hashTable, yytext, LIT_STRING);return LIT_STRING;}
 
 
 <COMM>"*/"              BEGIN(INITIAL);
@@ -51,8 +51,8 @@ read	{return KW_READ;}
 "||"	{return OPERATOR_OR;}
 false			{return LIT_FALSE;}
 true 			{return LIT_TRUE;}
-{CHAR}({CHAR}|{DIGIT})*	{insertHash (hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
-{DIGIT}+ 		{insertHash (hashTable, yytext, LIT_INTEGER); return LIT_INTEGER;}
+{CHAR}({CHAR}|{DIGIT})*	{insertHash(hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
+{DIGIT}+ 		{insertHash(hashTable, yytext, LIT_INTEGER); return LIT_INTEGER;}
 {DIGIT}+"."{DIGIT}+	{return LIT_FLOAT;}
 \"			BEGIN(STRING);
 \'			BEGIN(CHAR);
@@ -69,9 +69,9 @@ true 			{return LIT_TRUE;}
 %%
 
 
-void initMe (void)
+void initMe(void)
 {
-     initHash (hashTable);
+     initHash(hashTable);
      lineNumber = 1;
      running = 1;
 }
