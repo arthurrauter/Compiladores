@@ -3,7 +3,6 @@
 #include "tokens.h"
 #include "main.c"
 #include "hash.h"
-#include "hash.c"
 int running;
 int lineNumber;
 node* hashTable[HASH_SIZE];
