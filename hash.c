@@ -7,7 +7,7 @@ void initHash()
 		hashTable[i]=NULL;
 }
 
- int hashInsert(char* text)
+ int insertHash(node** hashTable, char* text, int type)
 {	
 	node* hashNode;
 	int adress=1, i;
@@ -16,6 +16,7 @@ void initHash()
 	
 	hashNode=(node*)malloc(sizeof(node));
 	strcpy(hashNode->text,text);
+	hashNode->type=type;
 	if(hashTable[adress]!=NULL)//exists the node
 	{
 	hashNode->next=hashTable[adress]->next;
@@ -41,6 +42,32 @@ node* getNode (char* text)
 	else
 		return hashTable[adress];
 }
+
+void printHash(node** hashTable)
+{
+	int i;
+	for(i=0; i<HASH_SIZE; i++)
+		if(hashTable[i]!=NULL)//exists
+		{
+			printf ("%d: ", i);
+			printList (hastTable[i]);		
+			printf ("\n");
+		}
+}
+
+void printList(node* hashNode)
+{
+	printf ("{");
+	if (hashNode == NULL) printf (" ");
+	while (hashNode)
+	{	
+		printf ("(%d, %s)", hashNode->type, hashNode->text);
+		hashNode = hashNode->next;
+		if (hashNode != NULL) printf (", ");	
+	} 	
+	printf ("}");
+}
+		
 
 int howManyOf(char *text)
 {
