@@ -7,10 +7,13 @@ typedef struct _node{
 #define HASH_SIZE 997
 
 
-void initHash();
+void initHash(node** hashTable);
 
-int insertHash(char* text);
+int insertHash(node** hashTable, char* text, int type);
 
-node* getNode (char* text);
+node* getNode (node** hashTable ,char* text);
 
+void printHash(node** hashTable);
+
+void printList(node* hashTable)
 

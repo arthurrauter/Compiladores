@@ -1,6 +1,6 @@
 #include "hash.h"
 
-void initHash()
+void initHash(node** hashTable)
 {
 	int i;
 	for(i=0; i<HASH_SIZE; i++)
@@ -32,7 +32,7 @@ void initHash()
 	
 }
 		
-node* getNode (char* text)
+node* getNode (node** hashTable ,char* text)
 {
 	int adress=1, i;
 	for(i=0;strlen(text);i++)
@@ -69,15 +69,4 @@ void printList(node* hashNode)
 }
 		
 
-int howManyOf(char *text)
-{
-	int length=0;
-	node* hashNode = getNode(text);
-	while( hashNode!=NULL)
-	{
-		length++;
-		hashNode=hashNode->next;
-	}
-	return length;
-}
 
