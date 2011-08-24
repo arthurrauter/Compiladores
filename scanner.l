@@ -23,7 +23,7 @@ DIGIT       [0-9]
 <CHAR>.			{insertHash (hashTable, yytext, LIT_CHAR);return LIT_CHAR;}
 
 <STRING>\"		BEGIN(INITIAL);
-<STRING>[^"]* 		{insertHash (&hash_table, yytext, LIT_STRING);return LIT_STRING;}
+<STRING>[^"]* 		{insertHash (hashTable, yytext, LIT_STRING);return LIT_STRING;}
 
 
 <COMM>"*/"              BEGIN(INITIAL);
@@ -68,10 +68,11 @@ true 			{return LIT_TRUE;}
 
 %%
 
+
 void initMe (void)
 {
-     initHash (hash_table);
-     lineNum = 1;
+     initHash (hashTable);
+     lineNumber = 1;
      running = 1;
 }
 

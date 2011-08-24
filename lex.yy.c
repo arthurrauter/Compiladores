@@ -831,7 +831,7 @@ case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
 #line 26 "scanner.l"
-{insertHash (&hash_table, yytext, LIT_STRING);return LIT_STRING;}
+{insertHash (hashTable, yytext, LIT_STRING);return LIT_STRING;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
@@ -2020,10 +2020,11 @@ void yyfree (void * ptr )
 
 
 
+
 void initMe (void)
 {
-     initHash (hash_table);
-     lineNum = 1;
+     initHash (hashTable);
+     lineNumber = 1;
      running = 1;
 }
 
