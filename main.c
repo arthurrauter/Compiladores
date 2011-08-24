@@ -1,27 +1,36 @@
 #include "tokens.h"
+
 #include <stdio.h>
+
+void initMe(void);
+
 extern int running;
 int main (int argc, char **argv)
   {
   int token = 0;
- 	printf("sjakjdskla");
+	initMe();
+
   if (argc < 2)
     {
     fprintf(stderr,"Please, call: ./a.out filename\n");
-    exit(1);
+    return;
     }
-    
+   
   yyin = fopen(argv[1],"r");
   if (yyin ==0)
     {
     fprintf(stderr,"Cannot open file \"%s\"\n",argv[1]);
-    exit (2);
+    return;
     }
- 
+
   while(running)
     {
+
     token = yylex();
-    if (! running) 
+ printf("running");   
+getc(stdin);
+   
+	if (! running) 
       break;
     switch (token)
       {

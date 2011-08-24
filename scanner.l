@@ -1,9 +1,10 @@
 %{
 #include <stdio.h>
 #include "tokens.h"
+
 #include "main.c"
-#include "hash.c"
-int running;
+#include "hash.h"
+int running=1;
 int lineNumber;
 node* hashTable[HASH_SIZE];
 
@@ -51,7 +52,7 @@ read	{return KW_READ;}
 "||"	{return OPERATOR_OR;}
 false			{return LIT_FALSE;}
 true 			{return LIT_TRUE;}
-{CHAR}({CHAR}|{DIGIT})*	{insertHash(hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
+{CHAR}({CHAR}|{DIGIT})*	{printf("tk identifier");getc(stdin);insertHash(hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
 {DIGIT}+ 		{insertHash(hashTable, yytext, LIT_INTEGER); return LIT_INTEGER;}
 {DIGIT}+"."{DIGIT}+	{return LIT_FLOAT;}
 \"			BEGIN(STRING);
@@ -74,6 +75,7 @@ void initMe(void)
      initHash(hashTable);
      lineNumber = 1;
      running = 1;
+
 }
 
 int getLineNumber(void){
@@ -87,3 +89,4 @@ int yywrap ()
   running = 0;
   return 1;
   }
+
