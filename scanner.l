@@ -86,6 +86,7 @@ int getLineNumber(void){
 
 int yywrap ()
   {
+  printf("\n\n HASHTABLE DUMP:\n");
   printHash(hashTable);
   running = 0;
   return 1;

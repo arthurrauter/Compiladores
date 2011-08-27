@@ -42,8 +42,8 @@ int main (int argc, char **argv)
   case LIT_STRING : fprintf(stderr,"LIT_STRING: %s " /*[%d] "*/, yytext, getLineNumber());  break;
   case LIT_FLOAT : fprintf(stderr,"LIT_FLOAT: %s " /*[%d] "*/, yytext, getLineNumber());  break;
   case 59: fprintf(stderr,"SEMICOLON [%d]\n", getLineNumber()); break;
-  case 43: fprintf(stderr,"PLUS " /*[%d] "*/, getLineNumber()); break;
-  case 61: fprintf(stderr,"EQUALS " /*[%d] "*/, getLineNumber()); break;
+  case 43: fprintf(stderr,"+PLUS+ " /*[%d] "*/, getLineNumber()); break;
+  case 61: fprintf(stderr,"=EQUALS= " /*[%d] "*/, getLineNumber()); break;
   case LIT_TRUE : fprintf(stderr,"LIT_TRUE " /*[%d] "*/, getLineNumber()); break;
   case KW_CHAR : fprintf(stderr,"KW_CHAR " /*[%d] "*/,getLineNumber()); break;
 	default: fprintf(stderr,"???: %d " /*[%d] "*/,token, getLineNumber());
