@@ -2,7 +2,7 @@
 #define HEADER_HASH
 
 typedef struct _node{
-  char text[30];
+  char* text;
   int type;
   struct _node *next;
 }node;

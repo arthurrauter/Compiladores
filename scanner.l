@@ -52,7 +52,7 @@ read	{return KW_READ;}
 "||"	{return OPERATOR_OR;}
 false			{return LIT_FALSE;}
 true 			{return LIT_TRUE;}
-{CHAR}({CHAR}|{DIGIT})*	{printf("tk identifier");getc(stdin);insertHash(hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
+{CHAR}({CHAR}|{DIGIT})*	{insertHash(hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
 {DIGIT}+ 		{insertHash(hashTable, yytext, LIT_INTEGER); return LIT_INTEGER;}
 {DIGIT}+"."{DIGIT}+	{return LIT_FLOAT;}
 \"			BEGIN(STRING);
@@ -86,6 +86,7 @@ int getLineNumber(void){
 
 int yywrap ()
   {
+  printHash(hashTable);
   running = 0;
   return 1;
   }

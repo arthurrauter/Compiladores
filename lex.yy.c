@@ -953,7 +953,7 @@ YY_RULE_SETUP
 case 28:
 YY_RULE_SETUP
 #line 55 "scanner.l"
-{printf("tk identifier");getc(stdin);insertHash(hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
+{insertHash(hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
@@ -2038,6 +2038,7 @@ int getLineNumber(void){
 
 int yywrap ()
   {
+  printHash(hashTable);
   running = 0;
   return 1;
   }

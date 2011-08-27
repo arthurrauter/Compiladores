@@ -1,0 +1,17 @@
+int x;
+char y;
+float z;
+bool oh_rly;
+
+x = 42;
+y = 'a';
+z = 2.53;
+oh_rly = true;
+
+x = 42 + 0;
+
+char[20] String;
+String = "Oh, hai! Can I haz cheezburger?";
+//i hate lol cats! NOT!
+
+

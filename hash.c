@@ -20,13 +20,9 @@ void initHash(node** hashTable)
 	
 	
 	hashNode=(node*)malloc(sizeof(node));
-  hashNode->text = (char*) malloc(strlen(text) +1);
+  	hashNode->text = (char*) malloc(strlen(text) +1);
 	strcpy(hashNode->text,text);
-  printf("insertHash");
-	getc(stdin);
-	printf("insertHash");
-	getc(stdin);
-	hashNode->type=type;
+ 	hashNode->type=type;
 	if(hashTable[adress]!=NULL)//exists the node
 	{
 	hashNode->next=hashTable[adress]->next;
