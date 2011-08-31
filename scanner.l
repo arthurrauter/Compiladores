@@ -57,12 +57,12 @@ true 			{return LIT_TRUE;}
 {DIGIT}+"."{DIGIT}+	{return LIT_FLOAT;}
 \"			BEGIN(STRING);
 \'			BEGIN(CHAR);
-["*""]""[""+"]		{return yytext[0];}
-[,;:(){}"/"<>=!&$-]	{return yytext[0];}
+[\*\]\[\+]		{return yytext[0];}
+[,;:(){}\/<>=!&$-]	{return yytext[0];}
 "//".*			{}
 "/*"                    BEGIN(COMM);
 \n                  	{++lineNumber;}
-[ \t]                   {  }
+[ \t\v\f]               {  }
 .			{}
 
 

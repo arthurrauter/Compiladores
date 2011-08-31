@@ -17,21 +17,16 @@ void initHash(node** hashTable)
 	int adress=1, i;
 	for(i=0;i<strlen(text);i++)
 		adress = (adress*text[i])%HASH_SIZE + 1;
-	
-	
-	hashNode=(node*)malloc(sizeof(node));
-  	hashNode->text = (char*) malloc(strlen(text) +1);
-	strcpy(hashNode->text,text);
- 	hashNode->type=type;
 	if(hashTable[adress]!=NULL)//exists the node
-	{
-	hashNode->next=hashTable[adress]->next;
-	hashTable[adress]->next=hashNode;
-	}
+		return adress;
 	else//doesn't exists the node
-	{
-	hashNode->next=NULL;
-	hashTable[adress]=hashNode;
+	{	
+		hashNode=(node*)malloc(sizeof(node));
+	  	hashNode->text = (char*) malloc(strlen(text) +1);
+		strcpy(hashNode->text,text);
+	 	hashNode->type=type;
+		hashNode->next=NULL;
+		hashTable[adress]=hashNode;
 	}
 	
 	return adress;
