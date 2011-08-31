@@ -8,6 +8,8 @@ int running=1;
 int lineNumber;
 node* hashTable[HASH_SIZE];
 
+#define KW_BYTE       259 
+
 %}
 
 %x COMM
@@ -35,6 +37,7 @@ int 	{return KW_INT;}
 float 	{return KW_FLOAT;}
 bool 	{return KW_BOOL;}
 char 	{return KW_CHAR;}
+byte {return KW_BYTE;}
 if 	{return KW_IF;}
 then 	{return KW_THEN;}
 else 	{return KW_ELSE;}
