@@ -1,4 +1,9 @@
 %{
+//UFRGS, Compiladores 2011/1. Prof. Marcelo Johann
+//Alessandra Leonnhardt - 181895
+//Arthur C. Rauter -  180575
+
+
 #include <stdio.h>
 #include "tokens.h"
 
