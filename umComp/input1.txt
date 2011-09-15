@@ -1,0 +1,45 @@
+int
+byte
+if
+then
+else
+while
+print
+return
+read
+
+
+, ; : ( ) [ ] { } + - * / < > = !
+
+<=
+>=
+==
+!=
+&&
+||
+
+a a b1 A A_2
+
+1 2	234 	
+
+123,234;var:fun(5)
+
+'a' "a" 
+"Mensagem" 
+"Mensagem composta" 
+"Mais uma longa mensagem!\n"
+
+// 100
+
+ifa
+bytenovo
+
+/*
+
+fora * 
+*/
+
+123identificador
+;
+
+

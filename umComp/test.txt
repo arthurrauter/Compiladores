@@ -1,0 +1,22 @@
+int gotinha
+
+"acordaaaa!!\n"
+
+int '6' '9'
+
+float 967.456;
++
+
+< 56 >
+
+false
+/
+
+
+* 6578
+
+69 69 69 69 69
+
+int gotinha_Acorda
+
+"quero meu gotinha"

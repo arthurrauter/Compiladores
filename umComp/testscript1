@@ -1,0 +1,7 @@
+mv main.c main.aluno.c
+cp ../main.c .
+make clean
+make
+./etapa1 ../input1.txt ../output1.txt >> report.txt
+mv main.aluno.c main.c
+

@@ -1,0 +1,42 @@
+int x;
+char y;
+float z;
+bool oh_rly;
+
+x = 42;
+y = 'a';
+z = 2.53;
+oh_rly = true;
+
+x = 42 + 0;
+
+char[200] String;
+String = "Oh, hai! Can I haz cheezburger?";
+//i hate lol cats! NOT!
+
+String = "OMG, FIRE!";
+
+/*
+Here we start a very big and pointless comment,
+in order to test if this big and pointless comment works indeed.
+So lets make it a fell line longer, but in creative way.
+I really like gary moore songs, they are pretty deep and the
+guitar licks are awesome and sentimental.
+*/
+
+x = 12;
+if(oh_rly)
+	String = "Ya, rly!";
+else
+	{
+	String = " D: ";
+	oh_rly = true;
+	}
+	
+if (oh_rly) 
+{
+	String = "well i guess this covers pretty much everything.";
+	//What else should i try doing, i havent done yet?
+}
+
+
