@@ -12,6 +12,11 @@ int yyerror (char *str)
 
 %}
 
+%union
+{
+    struct _node *hashNode;
+}
+
 %token KW_INT
 %token KW_INT 
 %token KW_FLOAT 
@@ -33,14 +38,14 @@ int yyerror (char *str)
 %token OPERATOR_AND   
 %token OPERATOR_OR
 
-%token TK_IDENTIFIER   
-%token LIT_INTEGER   
-%token LIT_FLOAT   
-%token LIT_FALSE   
-%token LIT_TRUE   
-%token LIT_CHAR  
-%token LIT_STRING 
-%token TOKEN_ERROR
+%token <hashNode> TK_IDENTIFIER   
+%token <hashNode> LIT_INTEGER   
+%token <hashNode> LIT_FLOAT   
+%token <hashNode> LIT_FALSE   
+%token <hashNode> LIT_TRUE   
+%token <hashNode> LIT_CHAR  
+%token <hashNode> LIT_STRING 
+%token <hashNode> TOKEN_ERROR
 
 %%
 programa: declaracao | funcao | programa | ;
