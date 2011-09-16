@@ -18,7 +18,6 @@ int yyerror (char *str)
 }
 
 %token KW_INT
-%token KW_INT 
 %token KW_FLOAT 
 %token KW_BOOL  
 %token KW_CHAR  
@@ -82,8 +81,8 @@ aritmetica: expressao operador_aritmetico expressao;
 operador_aritmetico: '+'|'-'|'*'|'/'|'%';
 
 logica: expressao operador_logico expressao;
-operador_logico: OPERADOR_AND| OPERADOR_OR|
- OPERADOR_LE| OPERADOR_GE| OPERADOR_EQ| OPERADOR_NE;
+operador_logico: OPERATOR_AND| OPERATOR_OR|
+ OPERATOR_LE| OPERATOR_GE| OPERATOR_EQ| OPERATOR_NE;
 
 fluxo: KW_IF '('expressao')' KW_THEN bloco | 
 KW_IF '('expressao')' KW_THEN bloco KW_ELSE bloco |
