@@ -20,6 +20,9 @@ int yyerror (char *str)
     struct _node *hashNode;
 }
 
+
+
+
 %token KW_INT
 %token KW_FLOAT 
 %token KW_BOOL  
@@ -49,7 +52,14 @@ int yyerror (char *str)
 %token<hashNode> LIT_STRING 
 %token<hashNode> TOKEN_ERROR
 
+%left OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_NE   
+%left OPERATOR_AND OPERATOR_OR
+%left '+' '-'
+%left '*' '/'
+
 %%
+
+
 programa: declaracao | funcao | programa | ;
 
 declaracao: tipo TK_IDENTIFIER ';'| tipo TK_IDENTIFIER '['LIT_INTEGER']' ';' ;
@@ -65,17 +75,15 @@ bloco: '{'bloco_comandos'}';
 
 bloco_comandos: comando';' bloco_comandos | ;
 
-comando: KW_READ TK_IDENTIFIER;//atribuicao | fluxo | KW_READ TK_IDENTIFIER | KW_PRINT imprimir | KW_RETURN expressao| ;
-
-/*
-imprimir: LIT_STRING|expressao;
-
-atribuicao: TK_IDENTIFIER '=' expressao | TK_INDENTIFIER '['expressao']' '=' expressao;
+comando: atribuicao | fluxo | KW_READ TK_IDENTIFIER | KW_PRINT expressao | KW_RETURN expressao| ;
 
 
 
-expressao: '(' expressao ')'| TK_IDENTIFIER| vetor|
- LIT_CHAR | LIT_STRING | LIT_INTEGER | LIT_FLOAT |
+atribuicao: TK_IDENTIFIER '=' expressao | TK_IDENTIFIER '['expressao']' '=' expressao;
+
+
+
+expressao: '(' expressao ')'| TK_IDENTIFIER| TK_IDENTIFIER '['expressao']'| LIT_CHAR | LIT_STRING | LIT_INTEGER | LIT_FLOAT |
   LIT_FALSE | LIT_TRUE | logica | aritmetica ;
 
 aritmetica: expressao operador_aritmetico expressao;
@@ -88,7 +96,7 @@ operador_logico: OPERATOR_AND| OPERATOR_OR|
 fluxo: KW_IF '('expressao')' KW_THEN bloco | 
 KW_IF '('expressao')' KW_THEN bloco KW_ELSE bloco |
 KW_WHILE '('expressao')' bloco;
-*/
+
 
 
 
