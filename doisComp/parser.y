@@ -1,5 +1,8 @@
 %{
 //c code
+//UFRGS, Compiladores 2011/1. Prof. Marcelo Johann
+//Alessandra Leonnhardt - 181895
+//Arthur C. Rauter -  180575
 #include <stdio.h>
 #include "hash.h"
 
@@ -37,36 +40,34 @@ int yyerror (char *str)
 %token OPERATOR_AND   
 %token OPERATOR_OR
 
-%token <hashNode> TK_IDENTIFIER   
-%token <hashNode> LIT_INTEGER   
-%token <hashNode> LIT_FLOAT   
-%token <hashNode> LIT_FALSE   
-%token <hashNode> LIT_TRUE   
-%token <hashNode> LIT_CHAR  
-%token <hashNode> LIT_STRING 
-%token <hashNode> TOKEN_ERROR
+%token<hashNode> TK_IDENTIFIER   
+%token<hashNode> LIT_INTEGER   
+%token<hashNode> LIT_FLOAT   
+%token<hashNode> LIT_FALSE   
+%token<hashNode> LIT_TRUE   
+%token<hashNode> LIT_CHAR  
+%token<hashNode> LIT_STRING 
+%token<hashNode> TOKEN_ERROR
 
 %%
 programa: declaracao | funcao | programa | ;
 
-//declaracao: tipo_var TK_IDENTIFIER ';'| tipo_var  TK_INDENTIFIER '['LIT_INTEGER']' ';' ;
-//tipo_var: KW_CHAR|KW_INT;
+declaracao: tipo TK_IDENTIFIER ';'| tipo TK_IDENTIFIER '['LIT_INTEGER']' ';' ;
+tipo: KW_INT | KW_FLOAT | KW_CHAR | KW_BOOL;
 
-declaracao: tipo TK_IDENTIFIER ';'| tipo  TK_INDENTIFIER '['LIT_INTEGER']' ';' ;
-tipo: KW_INT|KW_FLOAT|KW_CHAR|KW_BOOL;
 
-funcao: tipo TK_INDENTIFIER '(' lista_parametros ')' bloco;
-lista_parametros:mais_parametros| ;
-mais_parametros:parametro|parametro','mais_parametros;
-parametro: tipo TK_INDENTIFIER;
+funcao: tipo TK_IDENTIFIER '(' lista_parametros ')' bloco;
+lista_parametros : parametro | parametro',' lista_parametros | ;
+parametro: tipo TK_IDENTIFIER;
+
 
 bloco: '{'bloco_comandos'}';
 
 bloco_comandos: comando';' bloco_comandos | ;
 
-comando: atribuicao | fluxo | KW_READ TK_IDENTIFIER | 
-KW_PRINT imprimir | KW_RETURN expressao| ;
+comando: KW_READ TK_IDENTIFIER;//atribuicao | fluxo | KW_READ TK_IDENTIFIER | KW_PRINT imprimir | KW_RETURN expressao| ;
 
+/*
 imprimir: LIT_STRING|expressao;
 
 atribuicao: TK_IDENTIFIER '=' expressao | TK_INDENTIFIER '['expressao']' '=' expressao;
@@ -87,7 +88,7 @@ operador_logico: OPERATOR_AND| OPERATOR_OR|
 fluxo: KW_IF '('expressao')' KW_THEN bloco | 
 KW_IF '('expressao')' KW_THEN bloco KW_ELSE bloco |
 KW_WHILE '('expressao')' bloco;
-
+*/
 
 
 

@@ -532,7 +532,7 @@ char *yytext;
 
 #include <stdio.h>
 #include "tokens.h"
-
+#include "y.tab.h"
 #include "main.c"
 #include "hash.h"
 int running=1;
