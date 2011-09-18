@@ -11,14 +11,14 @@ void initHash(node** hashTable)
 
 }
 
- int insertHash(node** hashTable, char* text, int type)
+node* insertHash(node** hashTable, char* text, int type)
 {	
 	node* hashNode;
 	int adress=1, i;
 	for(i=0;i<strlen(text);i++)
 		adress = (adress*text[i])%HASH_SIZE + 1;
 	if(hashTable[adress]!=NULL)//exists the node
-		return adress;
+		return hashTable[adress];
 	else//doesn't exists the node
 	{	
 		hashNode=(node*)malloc(sizeof(node));
@@ -29,7 +29,7 @@ void initHash(node** hashTable)
 		hashTable[adress]=hashNode;
 	}
 	
-	return adress;
+	return hashNode;
 	
 }
 		

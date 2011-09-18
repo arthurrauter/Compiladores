@@ -4,7 +4,10 @@
 //Alessandra Leonnhardt - 181895
 //Arthur C. Rauter -  180575
 #include <stdio.h>
+#include<stdlib.h>
 #include "hash.h"
+extern int getLineNumber();
+extern int yylex (void);
 
 int yyerror (char *str)
     {
@@ -17,7 +20,7 @@ int yyerror (char *str)
 
 %union
 {
-    struct _node *hashNode;
+   node *hashNode;
 }
 
 
@@ -60,7 +63,7 @@ int yyerror (char *str)
 %%
 
 
-programa: declaracao | funcao | programa | ;
+programa: declaracao | funcao | ;
 
 declaracao: tipo TK_IDENTIFIER ';'| tipo TK_IDENTIFIER '['LIT_INTEGER']' ';' ;
 tipo: KW_INT | KW_FLOAT | KW_CHAR | KW_BOOL;

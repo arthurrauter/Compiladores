@@ -11,7 +11,7 @@ typedef struct _node{
 
 void initHash(node** hashTable);
 
-int insertHash(node** hashTable, char* text, int type);
+node* insertHash(node** hashTable, char* text, int type);
 
 node* getNode (node** hashTable ,char* text);
 
