@@ -29,10 +29,10 @@ DIGIT       [0-9]
 %%
 
 <CHAR>\'		BEGIN(INITIAL);
-<CHAR>.			{yylval.hashNode=insertHash(hashTable, yytext, LIT_CHAR);return LIT_CHAR;}
+<CHAR>.			{yylval.hashNode=insertHash(hashTable, yytext, SYMBOL_LIT_CHAR);return LIT_CHAR;}
 
 <STRING>\"		BEGIN(INITIAL);
-<STRING>[^"]* 		{yylval.hashNode=insertHash(hashTable, yytext, LIT_STRING);return LIT_STRING;}
+<STRING>[^"]* 		{yylval.hashNode=insertHash(hashTable, yytext, LIT_STRING);return SYMBOL_LIT_STRING;}
 
 
 <COMM>"*/"              BEGIN(INITIAL);
@@ -61,8 +61,8 @@ read	{return KW_READ;}
 "||"	{return OPERATOR_OR;}
 false			{return LIT_FALSE;}
 true 			{return LIT_TRUE;}
-{CHAR}({CHAR}|{DIGIT})*	{yylval.hashNode=insertHash(hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
-{DIGIT}+ 		{yylval.hashNode=insertHash(hashTable, yytext, LIT_INTEGER); return LIT_INTEGER;}
+{CHAR}({CHAR}|{DIGIT})*	{yylval.hashNode=insertHash(hashTable, yytext, SYMBOL_IDENTIFIER);return TK_IDENTIFIER;}
+{DIGIT}+ 		{yylval.hashNode=insertHash(hashTable, yytext, SIMBOL_LIT_INTEGER); return LIT_INTEGER;}
 {DIGIT}+"."{DIGIT}+	{return LIT_FLOAT;}
 \"			BEGIN(STRING);
 \'			BEGIN(CHAR);
