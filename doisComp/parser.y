@@ -63,7 +63,9 @@ int yyerror (char *str)
 %%
 
 
-programa: declaracao funcao programa|  ;
+programa: statement_block;
+statement_block: statement statement_block|;
+statement:declaracao |funcao;
 
 declaracao: tipo TK_IDENTIFIER ';'| tipo TK_IDENTIFIER '['LIT_INTEGER']' ';' ;
 tipo: KW_INT | KW_FLOAT | KW_CHAR | KW_BOOL;
@@ -76,7 +78,7 @@ parametro: tipo TK_IDENTIFIER;
 
 bloco: '{'bloco_comandos'}';
 
-bloco_comandos: comando';' bloco_comandos | ;
+bloco_comandos: comando';' bloco_comandos | comando ;
 
 comando: atribuicao | fluxo | KW_READ TK_IDENTIFIER | KW_PRINT expressao | KW_RETURN expressao| ;
 
