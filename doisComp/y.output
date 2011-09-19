@@ -1,0 +1,1248 @@
+Terminais não utilizados na gramática
+
+   KW_DO
+   TOKEN_ERROR
+
+
+Estado 82 conflitos: 11 de deslocamento/redução
+Estado 83 conflitos: 11 de deslocamento/redução
+
+
+Gramática
+
+    0 $accept: programa $end
+
+    1 programa: statement_block
+
+    2 statement_block: statement statement_block
+    3                | /* vazio */
+
+    4 statement: declaracao
+    5          | funcao
+
+    6 declaracao: tipo TK_IDENTIFIER ';'
+    7           | tipo TK_IDENTIFIER '[' LIT_INTEGER ']' ';'
+
+    8 tipo: KW_INT
+    9     | KW_FLOAT
+   10     | KW_CHAR
+   11     | KW_BOOL
+
+   12 funcao: tipo TK_IDENTIFIER '(' lista_parametros ')' bloco
+
+   13 lista_parametros: parametro
+   14                 | parametro ',' lista_parametros
+   15                 | /* vazio */
+
+   16 parametro: tipo TK_IDENTIFIER
+
+   17 bloco: '{' bloco_comandos '}'
+
+   18 bloco_comandos: comando ';' bloco_comandos
+   19               | comando
+
+   20 comando: atribuicao
+   21        | fluxo
+   22        | KW_READ TK_IDENTIFIER
+   23        | KW_PRINT expressao
+   24        | KW_RETURN expressao
+   25        | /* vazio */
+
+   26 atribuicao: TK_IDENTIFIER '=' expressao
+   27           | TK_IDENTIFIER '[' expressao ']' '=' expressao
+
+   28 expressao: '(' expressao ')'
+   29          | TK_IDENTIFIER
+   30          | TK_IDENTIFIER '[' expressao ']'
+   31          | LIT_CHAR
+   32          | LIT_STRING
+   33          | LIT_INTEGER
+   34          | LIT_FLOAT
+   35          | LIT_FALSE
+   36          | LIT_TRUE
+   37          | logica
+   38          | aritmetica
+
+   39 aritmetica: expressao operador_aritmetico expressao
+
+   40 operador_aritmetico: '+'
+   41                    | '-'
+   42                    | '*'
+   43                    | '/'
+   44                    | '%'
+
+   45 logica: expressao operador_logico expressao
+
+   46 operador_logico: OPERATOR_AND
+   47                | OPERATOR_OR
+   48                | OPERATOR_LE
+   49                | OPERATOR_GE
+   50                | OPERATOR_EQ
+   51                | OPERATOR_NE
+
+   52 fluxo: KW_IF '(' expressao ')' KW_THEN bloco
+   53      | KW_IF '(' expressao ')' KW_THEN bloco KW_ELSE bloco
+   54      | KW_WHILE '(' expressao ')' bloco
+
+
+Terminais, com as regras onde eles aparecem
+
+$end (0) 0
+'%' (37) 44
+'(' (40) 12 28 52 53 54
+')' (41) 12 28 52 53 54
+'*' (42) 42
+'+' (43) 40
+',' (44) 14
+'-' (45) 41
+'/' (47) 43
+';' (59) 6 7 18
+'=' (61) 26 27
+'[' (91) 7 27 30
+']' (93) 7 27 30
+'{' (123) 17
+'}' (125) 17
+error (256)
+KW_INT (258) 8
+KW_FLOAT (259) 9
+KW_BOOL (260) 11
+KW_CHAR (261) 10
+KW_IF (262) 52 53
+KW_THEN (263) 52 53
+KW_ELSE (264) 53
+KW_WHILE (265) 54
+KW_DO (266)
+KW_PRINT (267) 23
+KW_RETURN (268) 24
+KW_READ (269) 22
+OPERATOR_LE (270) 48
+OPERATOR_GE (271) 49
+OPERATOR_EQ (272) 50
+OPERATOR_NE (273) 51
+OPERATOR_AND (274) 46
+OPERATOR_OR (275) 47
+TK_IDENTIFIER (276) 6 7 12 16 22 26 27 29 30
+LIT_INTEGER (277) 7 33
+LIT_FLOAT (278) 34
+LIT_FALSE (279) 35
+LIT_TRUE (280) 36
+LIT_CHAR (281) 31
+LIT_STRING (282) 32
+TOKEN_ERROR (283)
+
+
+Não-terminais com as regras onde eles aparecem
+
+$accept (43)
+    à esquerda: 0
+programa (44)
+    à esquerda: 1, à direita: 0
+statement_block (45)
+    à esquerda: 2 3, à direita: 1 2
+statement (46)
+    à esquerda: 4 5, à direita: 2
+declaracao (47)
+    à esquerda: 6 7, à direita: 4
+tipo (48)
+    à esquerda: 8 9 10 11, à direita: 6 7 12 16
+funcao (49)
+    à esquerda: 12, à direita: 5
+lista_parametros (50)
+    à esquerda: 13 14 15, à direita: 12 14
+parametro (51)
+    à esquerda: 16, à direita: 13 14
+bloco (52)
+    à esquerda: 17, à direita: 12 52 53 54
+bloco_comandos (53)
+    à esquerda: 18 19, à direita: 17 18
+comando (54)
+    à esquerda: 20 21 22 23 24 25, à direita: 18 19
+atribuicao (55)
+    à esquerda: 26 27, à direita: 20
+expressao (56)
+    à esquerda: 28 29 30 31 32 33 34 35 36 37 38, à direita: 23 24
+    26 27 28 30 39 45 52 53 54
+aritmetica (57)
+    à esquerda: 39, à direita: 38
+operador_aritmetico (58)
+    à esquerda: 40 41 42 43 44, à direita: 39
+logica (59)
+    à esquerda: 45, à direita: 37
+operador_logico (60)
+    à esquerda: 46 47 48 49 50 51, à direita: 45
+fluxo (61)
+    à esquerda: 52 53 54, à direita: 21
+
+
+estado 0
+
+    0 $accept: . programa $end
+
+    KW_INT    deslocar, e ir ao estado 1
+    KW_FLOAT  deslocar, e ir ao estado 2
+    KW_BOOL   deslocar, e ir ao estado 3
+    KW_CHAR   deslocar, e ir ao estado 4
+
+    $padrão  reduzir usando a regra 3 (statement_block)
+
+    programa         ir ao estado 5
+    statement_block  ir ao estado 6
+    statement        ir ao estado 7
+    declaracao       ir ao estado 8
+    tipo             ir ao estado 9
+    funcao           ir ao estado 10
+
+
+estado 1
+
+    8 tipo: KW_INT .
+
+    $padrão  reduzir usando a regra 8 (tipo)
+
+
+estado 2
+
+    9 tipo: KW_FLOAT .
+
+    $padrão  reduzir usando a regra 9 (tipo)
+
+
+estado 3
+
+   11 tipo: KW_BOOL .
+
+    $padrão  reduzir usando a regra 11 (tipo)
+
+
+estado 4
+
+   10 tipo: KW_CHAR .
+
+    $padrão  reduzir usando a regra 10 (tipo)
+
+
+estado 5
+
+    0 $accept: programa . $end
+
+    $end  deslocar, e ir ao estado 11
+
+
+estado 6
+
+    1 programa: statement_block .
+
+    $padrão  reduzir usando a regra 1 (programa)
+
+
+estado 7
+
+    2 statement_block: statement . statement_block
+
+    KW_INT    deslocar, e ir ao estado 1
+    KW_FLOAT  deslocar, e ir ao estado 2
+    KW_BOOL   deslocar, e ir ao estado 3
+    KW_CHAR   deslocar, e ir ao estado 4
+
+    $padrão  reduzir usando a regra 3 (statement_block)
+
+    statement_block  ir ao estado 12
+    statement        ir ao estado 7
+    declaracao       ir ao estado 8
+    tipo             ir ao estado 9
+    funcao           ir ao estado 10
+
+
+estado 8
+
+    4 statement: declaracao .
+
+    $padrão  reduzir usando a regra 4 (statement)
+
+
+estado 9
+
+    6 declaracao: tipo . TK_IDENTIFIER ';'
+    7           | tipo . TK_IDENTIFIER '[' LIT_INTEGER ']' ';'
+   12 funcao: tipo . TK_IDENTIFIER '(' lista_parametros ')' bloco
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 13
+
+
+estado 10
+
+    5 statement: funcao .
+
+    $padrão  reduzir usando a regra 5 (statement)
+
+
+estado 11
+
+    0 $accept: programa $end .
+
+    $padrão  aceitar
+
+
+estado 12
+
+    2 statement_block: statement statement_block .
+
+    $padrão  reduzir usando a regra 2 (statement_block)
+
+
+estado 13
+
+    6 declaracao: tipo TK_IDENTIFIER . ';'
+    7           | tipo TK_IDENTIFIER . '[' LIT_INTEGER ']' ';'
+   12 funcao: tipo TK_IDENTIFIER . '(' lista_parametros ')' bloco
+
+    ';'  deslocar, e ir ao estado 14
+    '['  deslocar, e ir ao estado 15
+    '('  deslocar, e ir ao estado 16
+
+
+estado 14
+
+    6 declaracao: tipo TK_IDENTIFIER ';' .
+
+    $padrão  reduzir usando a regra 6 (declaracao)
+
+
+estado 15
+
+    7 declaracao: tipo TK_IDENTIFIER '[' . LIT_INTEGER ']' ';'
+
+    LIT_INTEGER  deslocar, e ir ao estado 17
+
+
+estado 16
+
+   12 funcao: tipo TK_IDENTIFIER '(' . lista_parametros ')' bloco
+
+    KW_INT    deslocar, e ir ao estado 1
+    KW_FLOAT  deslocar, e ir ao estado 2
+    KW_BOOL   deslocar, e ir ao estado 3
+    KW_CHAR   deslocar, e ir ao estado 4
+
+    $padrão  reduzir usando a regra 15 (lista_parametros)
+
+    tipo              ir ao estado 18
+    lista_parametros  ir ao estado 19
+    parametro         ir ao estado 20
+
+
+estado 17
+
+    7 declaracao: tipo TK_IDENTIFIER '[' LIT_INTEGER . ']' ';'
+
+    ']'  deslocar, e ir ao estado 21
+
+
+estado 18
+
+   16 parametro: tipo . TK_IDENTIFIER
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 22
+
+
+estado 19
+
+   12 funcao: tipo TK_IDENTIFIER '(' lista_parametros . ')' bloco
+
+    ')'  deslocar, e ir ao estado 23
+
+
+estado 20
+
+   13 lista_parametros: parametro .
+   14                 | parametro . ',' lista_parametros
+
+    ','  deslocar, e ir ao estado 24
+
+    $padrão  reduzir usando a regra 13 (lista_parametros)
+
+
+estado 21
+
+    7 declaracao: tipo TK_IDENTIFIER '[' LIT_INTEGER ']' . ';'
+
+    ';'  deslocar, e ir ao estado 25
+
+
+estado 22
+
+   16 parametro: tipo TK_IDENTIFIER .
+
+    $padrão  reduzir usando a regra 16 (parametro)
+
+
+estado 23
+
+   12 funcao: tipo TK_IDENTIFIER '(' lista_parametros ')' . bloco
+
+    '{'  deslocar, e ir ao estado 26
+
+    bloco  ir ao estado 27
+
+
+estado 24
+
+   14 lista_parametros: parametro ',' . lista_parametros
+
+    KW_INT    deslocar, e ir ao estado 1
+    KW_FLOAT  deslocar, e ir ao estado 2
+    KW_BOOL   deslocar, e ir ao estado 3
+    KW_CHAR   deslocar, e ir ao estado 4
+
+    $padrão  reduzir usando a regra 15 (lista_parametros)
+
+    tipo              ir ao estado 18
+    lista_parametros  ir ao estado 28
+    parametro         ir ao estado 20
+
+
+estado 25
+
+    7 declaracao: tipo TK_IDENTIFIER '[' LIT_INTEGER ']' ';' .
+
+    $padrão  reduzir usando a regra 7 (declaracao)
+
+
+estado 26
+
+   17 bloco: '{' . bloco_comandos '}'
+
+    KW_IF          deslocar, e ir ao estado 29
+    KW_WHILE       deslocar, e ir ao estado 30
+    KW_PRINT       deslocar, e ir ao estado 31
+    KW_RETURN      deslocar, e ir ao estado 32
+    KW_READ        deslocar, e ir ao estado 33
+    TK_IDENTIFIER  deslocar, e ir ao estado 34
+
+    $padrão  reduzir usando a regra 25 (comando)
+
+    bloco_comandos  ir ao estado 35
+    comando         ir ao estado 36
+    atribuicao      ir ao estado 37
+    fluxo           ir ao estado 38
+
+
+estado 27
+
+   12 funcao: tipo TK_IDENTIFIER '(' lista_parametros ')' bloco .
+
+    $padrão  reduzir usando a regra 12 (funcao)
+
+
+estado 28
+
+   14 lista_parametros: parametro ',' lista_parametros .
+
+    $padrão  reduzir usando a regra 14 (lista_parametros)
+
+
+estado 29
+
+   52 fluxo: KW_IF . '(' expressao ')' KW_THEN bloco
+   53      | KW_IF . '(' expressao ')' KW_THEN bloco KW_ELSE bloco
+
+    '('  deslocar, e ir ao estado 39
+
+
+estado 30
+
+   54 fluxo: KW_WHILE . '(' expressao ')' bloco
+
+    '('  deslocar, e ir ao estado 40
+
+
+estado 31
+
+   23 comando: KW_PRINT . expressao
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 49
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 32
+
+   24 comando: KW_RETURN . expressao
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 52
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 33
+
+   22 comando: KW_READ . TK_IDENTIFIER
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 53
+
+
+estado 34
+
+   26 atribuicao: TK_IDENTIFIER . '=' expressao
+   27           | TK_IDENTIFIER . '[' expressao ']' '=' expressao
+
+    '['  deslocar, e ir ao estado 54
+    '='  deslocar, e ir ao estado 55
+
+
+estado 35
+
+   17 bloco: '{' bloco_comandos . '}'
+
+    '}'  deslocar, e ir ao estado 56
+
+
+estado 36
+
+   18 bloco_comandos: comando . ';' bloco_comandos
+   19               | comando .
+
+    ';'  deslocar, e ir ao estado 57
+
+    $padrão  reduzir usando a regra 19 (bloco_comandos)
+
+
+estado 37
+
+   20 comando: atribuicao .
+
+    $padrão  reduzir usando a regra 20 (comando)
+
+
+estado 38
+
+   21 comando: fluxo .
+
+    $padrão  reduzir usando a regra 21 (comando)
+
+
+estado 39
+
+   52 fluxo: KW_IF '(' . expressao ')' KW_THEN bloco
+   53      | KW_IF '(' . expressao ')' KW_THEN bloco KW_ELSE bloco
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 58
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 40
+
+   54 fluxo: KW_WHILE '(' . expressao ')' bloco
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 59
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 41
+
+   29 expressao: TK_IDENTIFIER .
+   30          | TK_IDENTIFIER . '[' expressao ']'
+
+    '['  deslocar, e ir ao estado 60
+
+    $padrão  reduzir usando a regra 29 (expressao)
+
+
+estado 42
+
+   33 expressao: LIT_INTEGER .
+
+    $padrão  reduzir usando a regra 33 (expressao)
+
+
+estado 43
+
+   34 expressao: LIT_FLOAT .
+
+    $padrão  reduzir usando a regra 34 (expressao)
+
+
+estado 44
+
+   35 expressao: LIT_FALSE .
+
+    $padrão  reduzir usando a regra 35 (expressao)
+
+
+estado 45
+
+   36 expressao: LIT_TRUE .
+
+    $padrão  reduzir usando a regra 36 (expressao)
+
+
+estado 46
+
+   31 expressao: LIT_CHAR .
+
+    $padrão  reduzir usando a regra 31 (expressao)
+
+
+estado 47
+
+   32 expressao: LIT_STRING .
+
+    $padrão  reduzir usando a regra 32 (expressao)
+
+
+estado 48
+
+   28 expressao: '(' . expressao ')'
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 61
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 49
+
+   23 comando: KW_PRINT expressao .
+   39 aritmetica: expressao . operador_aritmetico expressao
+   45 logica: expressao . operador_logico expressao
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    '%'           deslocar, e ir ao estado 72
+
+    $padrão  reduzir usando a regra 23 (comando)
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 50
+
+   38 expressao: aritmetica .
+
+    $padrão  reduzir usando a regra 38 (expressao)
+
+
+estado 51
+
+   37 expressao: logica .
+
+    $padrão  reduzir usando a regra 37 (expressao)
+
+
+estado 52
+
+   24 comando: KW_RETURN expressao .
+   39 aritmetica: expressao . operador_aritmetico expressao
+   45 logica: expressao . operador_logico expressao
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    '%'           deslocar, e ir ao estado 72
+
+    $padrão  reduzir usando a regra 24 (comando)
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 53
+
+   22 comando: KW_READ TK_IDENTIFIER .
+
+    $padrão  reduzir usando a regra 22 (comando)
+
+
+estado 54
+
+   27 atribuicao: TK_IDENTIFIER '[' . expressao ']' '=' expressao
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 75
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 55
+
+   26 atribuicao: TK_IDENTIFIER '=' . expressao
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 76
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 56
+
+   17 bloco: '{' bloco_comandos '}' .
+
+    $padrão  reduzir usando a regra 17 (bloco)
+
+
+estado 57
+
+   18 bloco_comandos: comando ';' . bloco_comandos
+
+    KW_IF          deslocar, e ir ao estado 29
+    KW_WHILE       deslocar, e ir ao estado 30
+    KW_PRINT       deslocar, e ir ao estado 31
+    KW_RETURN      deslocar, e ir ao estado 32
+    KW_READ        deslocar, e ir ao estado 33
+    TK_IDENTIFIER  deslocar, e ir ao estado 34
+
+    $padrão  reduzir usando a regra 25 (comando)
+
+    bloco_comandos  ir ao estado 77
+    comando         ir ao estado 36
+    atribuicao      ir ao estado 37
+    fluxo           ir ao estado 38
+
+
+estado 58
+
+   39 aritmetica: expressao . operador_aritmetico expressao
+   45 logica: expressao . operador_logico expressao
+   52 fluxo: KW_IF '(' expressao . ')' KW_THEN bloco
+   53      | KW_IF '(' expressao . ')' KW_THEN bloco KW_ELSE bloco
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    ')'           deslocar, e ir ao estado 78
+    '%'           deslocar, e ir ao estado 72
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 59
+
+   39 aritmetica: expressao . operador_aritmetico expressao
+   45 logica: expressao . operador_logico expressao
+   54 fluxo: KW_WHILE '(' expressao . ')' bloco
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    ')'           deslocar, e ir ao estado 79
+    '%'           deslocar, e ir ao estado 72
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 60
+
+   30 expressao: TK_IDENTIFIER '[' . expressao ']'
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 80
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 61
+
+   28 expressao: '(' expressao . ')'
+   39 aritmetica: expressao . operador_aritmetico expressao
+   45 logica: expressao . operador_logico expressao
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    ')'           deslocar, e ir ao estado 81
+    '%'           deslocar, e ir ao estado 72
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 62
+
+   48 operador_logico: OPERATOR_LE .
+
+    $padrão  reduzir usando a regra 48 (operador_logico)
+
+
+estado 63
+
+   49 operador_logico: OPERATOR_GE .
+
+    $padrão  reduzir usando a regra 49 (operador_logico)
+
+
+estado 64
+
+   50 operador_logico: OPERATOR_EQ .
+
+    $padrão  reduzir usando a regra 50 (operador_logico)
+
+
+estado 65
+
+   51 operador_logico: OPERATOR_NE .
+
+    $padrão  reduzir usando a regra 51 (operador_logico)
+
+
+estado 66
+
+   46 operador_logico: OPERATOR_AND .
+
+    $padrão  reduzir usando a regra 46 (operador_logico)
+
+
+estado 67
+
+   47 operador_logico: OPERATOR_OR .
+
+    $padrão  reduzir usando a regra 47 (operador_logico)
+
+
+estado 68
+
+   40 operador_aritmetico: '+' .
+
+    $padrão  reduzir usando a regra 40 (operador_aritmetico)
+
+
+estado 69
+
+   41 operador_aritmetico: '-' .
+
+    $padrão  reduzir usando a regra 41 (operador_aritmetico)
+
+
+estado 70
+
+   42 operador_aritmetico: '*' .
+
+    $padrão  reduzir usando a regra 42 (operador_aritmetico)
+
+
+estado 71
+
+   43 operador_aritmetico: '/' .
+
+    $padrão  reduzir usando a regra 43 (operador_aritmetico)
+
+
+estado 72
+
+   44 operador_aritmetico: '%' .
+
+    $padrão  reduzir usando a regra 44 (operador_aritmetico)
+
+
+estado 73
+
+   39 aritmetica: expressao operador_aritmetico . expressao
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 82
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 74
+
+   45 logica: expressao operador_logico . expressao
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 83
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 75
+
+   27 atribuicao: TK_IDENTIFIER '[' expressao . ']' '=' expressao
+   39 aritmetica: expressao . operador_aritmetico expressao
+   45 logica: expressao . operador_logico expressao
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    ']'           deslocar, e ir ao estado 84
+    '%'           deslocar, e ir ao estado 72
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 76
+
+   26 atribuicao: TK_IDENTIFIER '=' expressao .
+   39 aritmetica: expressao . operador_aritmetico expressao
+   45 logica: expressao . operador_logico expressao
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    '%'           deslocar, e ir ao estado 72
+
+    $padrão  reduzir usando a regra 26 (atribuicao)
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 77
+
+   18 bloco_comandos: comando ';' bloco_comandos .
+
+    $padrão  reduzir usando a regra 18 (bloco_comandos)
+
+
+estado 78
+
+   52 fluxo: KW_IF '(' expressao ')' . KW_THEN bloco
+   53      | KW_IF '(' expressao ')' . KW_THEN bloco KW_ELSE bloco
+
+    KW_THEN  deslocar, e ir ao estado 85
+
+
+estado 79
+
+   54 fluxo: KW_WHILE '(' expressao ')' . bloco
+
+    '{'  deslocar, e ir ao estado 26
+
+    bloco  ir ao estado 86
+
+
+estado 80
+
+   30 expressao: TK_IDENTIFIER '[' expressao . ']'
+   39 aritmetica: expressao . operador_aritmetico expressao
+   45 logica: expressao . operador_logico expressao
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    ']'           deslocar, e ir ao estado 87
+    '%'           deslocar, e ir ao estado 72
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 81
+
+   28 expressao: '(' expressao ')' .
+
+    $padrão  reduzir usando a regra 28 (expressao)
+
+
+estado 82
+
+   39 aritmetica: expressao . operador_aritmetico expressao
+   39           | expressao operador_aritmetico expressao .
+   45 logica: expressao . operador_logico expressao
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    '%'           deslocar, e ir ao estado 72
+
+    OPERATOR_LE   [reduzir usando a regra 39 (aritmetica)]
+    OPERATOR_GE   [reduzir usando a regra 39 (aritmetica)]
+    OPERATOR_EQ   [reduzir usando a regra 39 (aritmetica)]
+    OPERATOR_NE   [reduzir usando a regra 39 (aritmetica)]
+    OPERATOR_AND  [reduzir usando a regra 39 (aritmetica)]
+    OPERATOR_OR   [reduzir usando a regra 39 (aritmetica)]
+    '+'           [reduzir usando a regra 39 (aritmetica)]
+    '-'           [reduzir usando a regra 39 (aritmetica)]
+    '*'           [reduzir usando a regra 39 (aritmetica)]
+    '/'           [reduzir usando a regra 39 (aritmetica)]
+    '%'           [reduzir usando a regra 39 (aritmetica)]
+    $padrão      reduzir usando a regra 39 (aritmetica)
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 83
+
+   39 aritmetica: expressao . operador_aritmetico expressao
+   45 logica: expressao . operador_logico expressao
+   45       | expressao operador_logico expressao .
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    '%'           deslocar, e ir ao estado 72
+
+    OPERATOR_LE   [reduzir usando a regra 45 (logica)]
+    OPERATOR_GE   [reduzir usando a regra 45 (logica)]
+    OPERATOR_EQ   [reduzir usando a regra 45 (logica)]
+    OPERATOR_NE   [reduzir usando a regra 45 (logica)]
+    OPERATOR_AND  [reduzir usando a regra 45 (logica)]
+    OPERATOR_OR   [reduzir usando a regra 45 (logica)]
+    '+'           [reduzir usando a regra 45 (logica)]
+    '-'           [reduzir usando a regra 45 (logica)]
+    '*'           [reduzir usando a regra 45 (logica)]
+    '/'           [reduzir usando a regra 45 (logica)]
+    '%'           [reduzir usando a regra 45 (logica)]
+    $padrão      reduzir usando a regra 45 (logica)
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 84
+
+   27 atribuicao: TK_IDENTIFIER '[' expressao ']' . '=' expressao
+
+    '='  deslocar, e ir ao estado 88
+
+
+estado 85
+
+   52 fluxo: KW_IF '(' expressao ')' KW_THEN . bloco
+   53      | KW_IF '(' expressao ')' KW_THEN . bloco KW_ELSE bloco
+
+    '{'  deslocar, e ir ao estado 26
+
+    bloco  ir ao estado 89
+
+
+estado 86
+
+   54 fluxo: KW_WHILE '(' expressao ')' bloco .
+
+    $padrão  reduzir usando a regra 54 (fluxo)
+
+
+estado 87
+
+   30 expressao: TK_IDENTIFIER '[' expressao ']' .
+
+    $padrão  reduzir usando a regra 30 (expressao)
+
+
+estado 88
+
+   27 atribuicao: TK_IDENTIFIER '[' expressao ']' '=' . expressao
+
+    TK_IDENTIFIER  deslocar, e ir ao estado 41
+    LIT_INTEGER    deslocar, e ir ao estado 42
+    LIT_FLOAT      deslocar, e ir ao estado 43
+    LIT_FALSE      deslocar, e ir ao estado 44
+    LIT_TRUE       deslocar, e ir ao estado 45
+    LIT_CHAR       deslocar, e ir ao estado 46
+    LIT_STRING     deslocar, e ir ao estado 47
+    '('            deslocar, e ir ao estado 48
+
+    expressao   ir ao estado 90
+    aritmetica  ir ao estado 50
+    logica      ir ao estado 51
+
+
+estado 89
+
+   52 fluxo: KW_IF '(' expressao ')' KW_THEN bloco .
+   53      | KW_IF '(' expressao ')' KW_THEN bloco . KW_ELSE bloco
+
+    KW_ELSE  deslocar, e ir ao estado 91
+
+    $padrão  reduzir usando a regra 52 (fluxo)
+
+
+estado 90
+
+   27 atribuicao: TK_IDENTIFIER '[' expressao ']' '=' expressao .
+   39 aritmetica: expressao . operador_aritmetico expressao
+   45 logica: expressao . operador_logico expressao
+
+    OPERATOR_LE   deslocar, e ir ao estado 62
+    OPERATOR_GE   deslocar, e ir ao estado 63
+    OPERATOR_EQ   deslocar, e ir ao estado 64
+    OPERATOR_NE   deslocar, e ir ao estado 65
+    OPERATOR_AND  deslocar, e ir ao estado 66
+    OPERATOR_OR   deslocar, e ir ao estado 67
+    '+'           deslocar, e ir ao estado 68
+    '-'           deslocar, e ir ao estado 69
+    '*'           deslocar, e ir ao estado 70
+    '/'           deslocar, e ir ao estado 71
+    '%'           deslocar, e ir ao estado 72
+
+    $padrão  reduzir usando a regra 27 (atribuicao)
+
+    operador_aritmetico  ir ao estado 73
+    operador_logico      ir ao estado 74
+
+
+estado 91
+
+   53 fluxo: KW_IF '(' expressao ')' KW_THEN bloco KW_ELSE . bloco
+
+    '{'  deslocar, e ir ao estado 26
+
+    bloco  ir ao estado 92
+
+
+estado 92
+
+   53 fluxo: KW_IF '(' expressao ')' KW_THEN bloco KW_ELSE bloco .
+
+    $padrão  reduzir usando a regra 53 (fluxo)

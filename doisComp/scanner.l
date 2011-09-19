@@ -32,7 +32,7 @@ DIGIT       [0-9]
 <CHAR>.			{yylval.hashNode=insertHash(hashTable, yytext, SYMBOL_LIT_CHAR);return LIT_CHAR;}
 
 <STRING>\"		BEGIN(INITIAL);
-<STRING>[^"]* 		{yylval.hashNode=insertHash(hashTable, yytext, LIT_STRING);return SYMBOL_LIT_STRING;}
+<STRING>[^"]* 		{yylval.hashNode=insertHash(hashTable, yytext, SYMBOL_LIT_STRING);return LIT_STRING;}
 
 
 <COMM>"*/"              BEGIN(INITIAL);

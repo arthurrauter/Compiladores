@@ -840,7 +840,7 @@ case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
 #line 35 "scanner.l"
-{yylval.hashNode=insertHash(hashTable, yytext, LIT_STRING);return SYMBOL_LIT_STRING;}
+{yylval.hashNode=insertHash(hashTable, yytext, SYMBOL_LIT_STRING);return LIT_STRING;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP

@@ -1,0 +1,44 @@
+int variavel;
+
+int modifica_variavel() {
+	modifica_variavel = 10;
+	}
+
+char letrinha;
+
+int controle_de_fluxo() {
+	if (modifica_variavel == 10) then
+	{
+		letrinha = 'a';
+	}
+	else
+	{
+		letrinha = 'b';
+	}
+}
+
+bool verdade;
+
+bool mentira() {
+	verdade = true;
+	if (verdade==true) then
+	{
+		verdade = false;
+		str="tinho gostoso";
+	}
+}
+
+float zuadinha;
+
+float zuar () {
+	zuadinha = (666.69+456*675);
+	print ("vou e jeito");
+	while(1){if("vou " && uTmo)then{}};
+	}
+	
+	
+
+
+		
+
+
