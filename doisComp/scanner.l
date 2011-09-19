@@ -62,7 +62,7 @@ read	{return KW_READ;}
 false			{return LIT_FALSE;}
 true 			{return LIT_TRUE;}
 {CHAR}({CHAR}|{DIGIT})*	{yylval.hashNode=insertHash(hashTable, yytext, SYMBOL_IDENTIFIER);return TK_IDENTIFIER;}
-{DIGIT}+ 		{yylval.hashNode=insertHash(hashTable, yytext, SIMBOL_LIT_INTEGER); return LIT_INTEGER;}
+{DIGIT}+ 		{yylval.hashNode=insertHash(hashTable, yytext, SYMBOL_LIT_INTEGER); return LIT_INTEGER;}
 {DIGIT}+"."{DIGIT}+	{return LIT_FLOAT;}
 \"			BEGIN(STRING);
 \'			BEGIN(CHAR);

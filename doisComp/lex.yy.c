@@ -829,7 +829,7 @@ BEGIN(INITIAL);
 case 2:
 YY_RULE_SETUP
 #line 32 "scanner.l"
-{yylval.hashNode=insertHash(hashTable, yytext, LIT_CHAR);return LIT_CHAR;}
+{yylval.hashNode=insertHash(hashTable, yytext, SYMBOL_LIT_CHAR);return LIT_CHAR;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -840,7 +840,7 @@ case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
 #line 35 "scanner.l"
-{yylval.hashNode=insertHash(hashTable, yytext, LIT_STRING);return LIT_STRING;}
+{yylval.hashNode=insertHash(hashTable, yytext, LIT_STRING);return SYMBOL_LIT_STRING;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
@@ -966,12 +966,12 @@ YY_RULE_SETUP
 case 29:
 YY_RULE_SETUP
 #line 64 "scanner.l"
-{yylval.hashNode=insertHash(hashTable, yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
+{yylval.hashNode=insertHash(hashTable, yytext, SYMBOL_IDENTIFIER);return TK_IDENTIFIER;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 65 "scanner.l"
-{yylval.hashNode=insertHash(hashTable, yytext, LIT_INTEGER); return LIT_INTEGER;}
+{yylval.hashNode=insertHash(hashTable, yytext, SYMBOL_LIT_INTEGER); return LIT_INTEGER;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
