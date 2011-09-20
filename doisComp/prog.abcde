@@ -17,9 +17,9 @@ int controle_de_fluxo() {
 	}
 }
 
-bool verdade;
+int verdade;
 
-bool mentira() {
+int mentira() {
 	verdade = true;
 	if (verdade==true) then
 	{
@@ -28,17 +28,26 @@ bool mentira() {
 	}
 }
 
-float zuadinha;
+char zuadinha;
 
-float zuar () {
+char zuar () {
 	zuadinha = (666.69+456*675);
 	print ("vou e jeito");
 	while(1){if("vou " && uTmo)then{}};
 	}
-	
-	
 
-
+char eu_sou_grmo(){
+	as_vezitado = 1;
+	masamo = s2;
+	
+	if (gatnda == true) then
+		gatinda = VERYTRUE;
+	else
+		safadeeeza = 1;
+	}
+	
+int safadenha ()
+	comando = 1;
 		
 
 

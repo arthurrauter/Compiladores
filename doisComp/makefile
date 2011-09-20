@@ -17,11 +17,11 @@ y.tab.o: y.tab.c
 	gcc -c y.tab.c
 
 y.tab.c: parser.y
-	 yacc -v parser.y
+	 yacc -v -d parser.y
 
 y.tab.h: parser.y
 	 yacc -d parser.y
 
 clean:
-	rm *.o lex.yy.c y.tab.c etapa2
+	rm *.o lex.yy.c y.tab.c y.tab.h etapa2
 

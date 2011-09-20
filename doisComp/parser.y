@@ -68,15 +68,15 @@ statement_block: statement statement_block|;
 statement:declaracao |funcao;
 
 declaracao: tipo TK_IDENTIFIER ';'| tipo TK_IDENTIFIER '['LIT_INTEGER']' ';' ;
-tipo: KW_INT | KW_FLOAT | KW_CHAR | KW_BOOL;
+tipo: KW_INT | KW_CHAR ;
 
 
-funcao: tipo TK_IDENTIFIER '(' lista_parametros ')' bloco ;
+funcao: tipo TK_IDENTIFIER '(' lista_parametros ')' bloco  ;
 lista_parametros : parametro | parametro',' lista_parametros | ;
 parametro: tipo TK_IDENTIFIER;
 
 
-bloco: '{'bloco_comandos'}';
+bloco: '{'bloco_comandos'}'| comando ';' ;
 
 bloco_comandos: comando';' bloco_comandos | comando ;
 
