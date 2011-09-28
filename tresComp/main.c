@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "astree.h"
+#include "hash.h"
 #include "lex.yy.c"
 #include "y.tab.c"
+
 
 extern int running;
 extern FILE* yyin;
@@ -34,5 +37,6 @@ int main(int argc, char** argv)
   int yyparse_out;
   yyparse_out = yyparse();
   printf("yyparse return value: %d", yyparse_out);
+  ast_print(root);
   return 0;
 }

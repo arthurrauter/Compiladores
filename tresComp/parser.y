@@ -21,13 +21,13 @@ int yyerror (char *str)
 
 %union
 {
-	AST *ast;
+   AST *ast;
    node *hashNode;
 }
 
 %type<ast> statement_block
 %type<ast> statement
-%type<ast> declaração
+%type<ast> declaracao
 %type<ast> funcao
 %type<ast> tipo
 %type<ast> lista_parametros
@@ -38,7 +38,7 @@ int yyerror (char *str)
 %type<ast> atribuicao
 %type<ast> fluxo
 %type<ast> expressao
-%type<ast> aritmetico
+%type<ast> aritmetica
 %type<ast> logica
 %type<ast> operador_aritmetico
 %type<ast> operador_logico
@@ -84,7 +84,8 @@ int yyerror (char *str)
 %%
 
 
-programa: statement_block; { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); }
+programa: statement_block { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); }
+;
 statement_block: statement statement_block { $$ = ast_insert_node(AST_declr , 0, $1, $2, 0, 0); }
 | { $$ = 0; }
 ; 
@@ -130,7 +131,7 @@ comando: atribuicao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }
 
 
 atribuicao: TK_IDENTIFIER '=' expressao {$$=ast_insert_node(AST_atrib, 0, $1, $3, 0, 0); }
-| TK_IDENTIFIER '['expressao']' '=' expressao {$$=ast_insert_node(AST_vecatrib, 0, $1, $3, $5, 0); }
+| TK_IDENTIFIER '['expressao']' '=' expressao {$$=ast_insert_node(AST_vecatrib, 0, $1, $3, $6, 0); }
 ;
 
 
@@ -140,23 +141,35 @@ atribuicao: TK_IDENTIFIER '=' expressao {$$=ast_insert_node(AST_atrib, 0, $1, $3
 
 expressao: '(' expressao ')'	{ $$ = $2; } 
 | TK_IDENTIFIER	{ $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
-| TK_IDENTIFIER '['expressao']' { $$ = ast_insert_node(AST_logicexpr, 0, $1, $3, 0, 0); }	
-| LIT_CHAR 
-| LIT_STRING 
-| LIT_INTEGER 
-| LIT_FLOAT 
-| LIT_FALSE 
-| LIT_TRUE 
+| TK_IDENTIFIER '['expressao']' { $$ = ast_insert_node(AST_expr, 0, $1, $3, 0, 0); }	
+| LIT_CHAR { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
+| LIT_STRING { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
+| LIT_INTEGER { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
+| LIT_FLOAT { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
+| LIT_FALSE { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
+| LIT_TRUE { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
 | logica { $$ = ast_insert_node(AST_logicexpr, 0, $1, 0, 0, 0); }	
 | aritmetica { $$ = ast_insert_node(AST_aritexpr,  0, $1, 0, 0, 0); }	
 ;
 
-aritmetica: expressao operador_aritmetico expressao;
-operador_aritmetico: '+'|'-'|'*'|'/'|'%';
+aritmetica: expressao operador_aritmetico expressao { $$ = ast_insert_node(AST_aritexpr,  0, $1, $2, $3, 0); }
+;
+operador_aritmetico: '+' { $$ = ast_insert_node(AST_add, 0, 0, 0, 0, 0); }	 
+|'-' { $$ = ast_insert_node(AST_sub, 0, 0, 0, 0, 0); }	
+|'*' { $$ = ast_insert_node(AST_mult, 0, 0, 0, 0, 0); }	
+|'/' { $$ = ast_insert_node(AST_div, 0, 0, 0, 0, 0); }	
+|'%' { $$ = ast_insert_node(AST_resto, 0, 0, 0, 0, 0); }	
+;
 
-logica: expressao operador_logico expressao;
-operador_logico: OPERATOR_AND| OPERATOR_OR|
- OPERATOR_LE| OPERATOR_GE| OPERATOR_EQ| OPERATOR_NE;
+logica: expressao operador_logico expressao { $$ = ast_insert_node(AST_logicexpr,  0, $1, $2, $3, 0); }
+;
+operador_logico: OPERATOR_AND { $$ = ast_insert_node(AST_operand, 0, 0, 0, 0, 0); }	
+| OPERATOR_OR { $$ = ast_insert_node(AST_operor, 0, 0, 0, 0, 0); }	
+| OPERATOR_LE { $$ = ast_insert_node(AST_operle, 0, 0, 0, 0, 0); }	
+| OPERATOR_GE { $$ = ast_insert_node(AST_operge, 0, 0, 0, 0, 0); }	
+| OPERATOR_EQ { $$ = ast_insert_node(AST_opereq, 0, 0, 0, 0, 0); }	
+| OPERATOR_NE { $$ = ast_insert_node(AST_operne, 0, 0, 0, 0, 0); }	
+;
 
 fluxo: KW_IF '('expressao')' KW_THEN bloco { $$ = ast_insert_node(AST_kwif,    0, $3, $6, 0, 0);}
 | KW_IF '('expressao')' KW_THEN bloco KW_ELSE bloco { $$ = ast_insert_node(AST_kwelse,    0, $3, $6, $8, 0);}
