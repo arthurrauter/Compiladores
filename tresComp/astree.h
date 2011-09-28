@@ -1,13 +1,13 @@
 #ifndef HEADER_ASTREE
 #define HEADER_ASTREE
 
-#include "hashTab.h"
+#include "hash.h"
 
 #define AST_declarations    1
 #define AST_var             2
 #define AST_function        3
 #define AST_litint          4
-#define AST_kwbyte          5
+#define AST_kwchar          5
 #define AST_kwint           6
 #define AST_kwif            7
 #define AST_kwthen          8
@@ -22,6 +22,7 @@
 #define AST_div             17
 #define AST_add             18
 #define AST_atrib           19
+
 #define AST_identifier      20
 #define AST_vecident        21 // ?????
 #define AST_listparam       22
@@ -58,7 +59,7 @@
 #define AST_litstring		53
 #define AST_onecmdblock		54
 #define AST_nullcmd			55	
-
+#define AST_vecatrib        56
 
 		
 
@@ -66,15 +67,16 @@
 
 
 typedef struct ast_node{
-	symData *symbol;
-	int type, lineNumber;	
+	node *hashNode;
+	int type;
+	int lineNumber;	
 	struct ast_node *sons[4];
 }AST;
 
 AST *root;
 
-AST* ast_insert_node(int type, symData *symbol, AST *son0, AST *son1, AST *son2, AST *son3);
-AST* ast_do_for_each(AST *node, void* (*fun)(AST*));
+AST* ast_insert_node(int type, node *hashNode, AST *son0, AST *son1, AST *son2, AST *son3);
+//AST* ast_do_for_each(AST *node, void* (*fun)(AST*));
 void* ast_print(AST *node);
 char *print0(AST* node);
 char *print1(AST* node);

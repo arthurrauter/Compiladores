@@ -330,7 +330,7 @@ AST* ast_insert_node(int type, symData *symbol, AST *son0, AST *son1, AST *son2,
 }
 
 
-AST* ast_do_for_each(AST *node, void* (*fun)(AST*))
+/*AST* ast_do_for_each(AST *node, void* (*fun)(AST*))
 {
 	int i;
 
@@ -340,7 +340,7 @@ AST* ast_do_for_each(AST *node, void* (*fun)(AST*))
 	for(i=0; i<4; i++)	
 		if(node->sons[i])
 			ast_do_for_each(node->sons[i],fun);
-}
+}*/
 
 
 void* ast_print(AST *node)

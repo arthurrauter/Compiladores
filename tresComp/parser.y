@@ -5,6 +5,7 @@
 //Arthur C. Rauter -  180575
 #include <stdio.h>
 #include<stdlib.h>
+#include "astree.h"
 #include "hash.h"
 extern int getLineNumber();
 extern int yylex (void);
@@ -20,9 +21,27 @@ int yyerror (char *str)
 
 %union
 {
+	AST *ast;
    node *hashNode;
 }
 
+%type<ast> statement_block
+%type<ast> statement
+%type<ast> declaração
+%type<ast> funcao
+%type<ast> tipo
+%type<ast> lista_parametros
+%type<ast> parametro
+%type<ast> bloco
+%type<ast> bloco_comandos
+%type<ast> comando
+%type<ast> atribuicao
+%type<ast> fluxo
+%type<ast> expressao
+%type<ast> aritmetico
+%type<ast> logica
+%type<ast> operador_aritmetico
+%type<ast> operador_logico
 
 
 
@@ -60,36 +79,77 @@ int yyerror (char *str)
 %left '+' '-'
 %left '*' '/'
 
+%nonassoc '(' ')'
+
 %%
 
 
-programa: statement_block;
-statement_block: statement statement_block|;
-statement:declaracao |funcao;
+programa: statement_block; { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); }
+statement_block: statement statement_block { $$ = ast_insert_node(AST_declr , 0, $1, $2, 0, 0); }
+| { $$ = 0; }
+; 
+statement:declaracao { $$ = ast_insert_node(AST_vardecl , 0, $1, 0, 0, 0);}
+|funcao	{ $$ = ast_insert_node(AST_fundecl , 0, $1, 0, 0, 0);}
+;
 
-declaracao: tipo TK_IDENTIFIER ';'| tipo TK_IDENTIFIER '['LIT_INTEGER']' ';' ;
-tipo: KW_INT | KW_CHAR ;
+declaracao: tipo TK_IDENTIFIER ';' { $$ = ast_insert_node(AST_var , 0, $1, $2, 0, 0);}
+| tipo TK_IDENTIFIER '['LIT_INTEGER']' ';' { $$ = ast_insert_node(AST_vector , 0, $1, $2, $4, 0);}
+;
 
-
-funcao: tipo TK_IDENTIFIER '(' lista_parametros ')' bloco  ;
-lista_parametros : parametro | parametro',' lista_parametros | ;
-parametro: tipo TK_IDENTIFIER;
-
-
-bloco: '{'bloco_comandos'}'| comando ';' ;
-
-bloco_comandos: comando';' bloco_comandos | comando ;
-
-comando: atribuicao | fluxo | KW_READ TK_IDENTIFIER | KW_PRINT expressao | KW_RETURN expressao| ;
+tipo: KW_INT { $$ = ast_insert_node(AST_kwint , 0, 0, 0, 0, 0);}
+ | KW_CHAR  { $$ = ast_insert_node(AST_kwchar ,0, 0, 0, 0, 0);}
+;
 
 
+funcao: tipo TK_IDENTIFIER '(' lista_parametros ')' bloco  { $$ = ast_insert_node(AST_function,  0, $1, $2, $4, $6);}
+;
+lista_parametros : parametro { $$ = ast_insert_node(AST_listparam, 0, $1, 0, 0, 0);}		
+| parametro',' lista_parametros { $$ = ast_insert_node(AST_listparam, 0, $1, $3, 0, 0);}		
+| {$$=0}
+;
+parametro: tipo TK_IDENTIFIER	{ $$ = ast_insert_node(AST_param, 0, $1, $2, 0, 0);}		
+;
 
-atribuicao: TK_IDENTIFIER '=' expressao | TK_IDENTIFIER '['expressao']' '=' expressao;
+
+bloco: '{'bloco_comandos'}' { $$ = ast_insert_node(AST_block, 0, $2, 0, 0, 0)}
+| comando ';' { $$ = ast_insert_node(AST_block, 0, $1, 0, 0, 0);}
+;
+
+bloco_comandos: comando';' bloco_comandos { $$ = ast_insert_node(AST_ocmdblock, 0, $1, $3, 0, 0);	 }
+| comando { $$ = ast_insert_node(AST_cmdblock, 0, $1, 0, 0, 0);	 }
+;
+
+comando: atribuicao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }	
+| fluxo { $$ = ast_insert_node(AST_control, 0, $1, 0, 0, 0); }	
+| KW_READ TK_IDENTIFIER { $$ = ast_insert_node(AST_kwread,   0,  $2, 0, 0, 0); }
+| KW_PRINT expressao { $$ = ast_insert_node(AST_kwprint,  0,  $2, 0, 0, 0); }
+| KW_RETURN expressao { $$ = ast_insert_node(AST_kwreturn, 0, $2, 0, 0, 0); }
+| {$$=0}
+;
 
 
 
-expressao: '(' expressao ')'| TK_IDENTIFIER| TK_IDENTIFIER '['expressao']'| LIT_CHAR | LIT_STRING | LIT_INTEGER | LIT_FLOAT |
-  LIT_FALSE | LIT_TRUE | logica | aritmetica ;
+atribuicao: TK_IDENTIFIER '=' expressao {$$=ast_insert_node(AST_atrib, 0, $1, $3, 0, 0); }
+| TK_IDENTIFIER '['expressao']' '=' expressao {$$=ast_insert_node(AST_vecatrib, 0, $1, $3, $5, 0); }
+;
+
+
+
+//*******incompleto*********
+
+
+expressao: '(' expressao ')'	{ $$ = $2; } 
+| TK_IDENTIFIER	{ $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
+| TK_IDENTIFIER '['expressao']' { $$ = ast_insert_node(AST_logicexpr, 0, $1, $3, 0, 0); }	
+| LIT_CHAR 
+| LIT_STRING 
+| LIT_INTEGER 
+| LIT_FLOAT 
+| LIT_FALSE 
+| LIT_TRUE 
+| logica { $$ = ast_insert_node(AST_logicexpr, 0, $1, 0, 0, 0); }	
+| aritmetica { $$ = ast_insert_node(AST_aritexpr,  0, $1, 0, 0, 0); }	
+;
 
 aritmetica: expressao operador_aritmetico expressao;
 operador_aritmetico: '+'|'-'|'*'|'/'|'%';
@@ -98,9 +158,10 @@ logica: expressao operador_logico expressao;
 operador_logico: OPERATOR_AND| OPERATOR_OR|
  OPERATOR_LE| OPERATOR_GE| OPERATOR_EQ| OPERATOR_NE;
 
-fluxo: KW_IF '('expressao')' KW_THEN bloco | 
-KW_IF '('expressao')' KW_THEN bloco KW_ELSE bloco |
-KW_WHILE '('expressao')' bloco;
+fluxo: KW_IF '('expressao')' KW_THEN bloco { $$ = ast_insert_node(AST_kwif,    0, $3, $6, 0, 0);}
+| KW_IF '('expressao')' KW_THEN bloco KW_ELSE bloco { $$ = ast_insert_node(AST_kwelse,    0, $3, $6, $8, 0);}
+|KW_WHILE '('expressao')' bloco { $$ = ast_insert_node(AST_kwwhile, 0, $3, $5, 0,0); }
+;
 
 
 

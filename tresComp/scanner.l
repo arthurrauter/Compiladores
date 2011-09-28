@@ -5,6 +5,7 @@
 
 
 #include <stdio.h>
+#include "astree.h"
 #include "hash.h"
 #include "y.tab.h"
 

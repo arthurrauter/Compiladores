@@ -1,4 +1,5 @@
 #include "hash.h"
+#include "y.tab.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
