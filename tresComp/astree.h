@@ -40,7 +40,7 @@
 #define AST_expr	        34
 #define AST_block	        35
 #define AST_litchar	        36
-#define AST_BLABLAB	        37
+#define AST_resto	        37
 #define AST_idvar	        38
 #define AST_idvec	        39
 #define AST_logicexpr       40

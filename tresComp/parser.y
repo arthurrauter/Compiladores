@@ -40,8 +40,6 @@ int yyerror (char *str)
 %type<ast> expressao
 %type<ast> aritmetica
 %type<ast> logica
-%type<ast> operador_aritmetico
-%type<ast> operador_logico
 
 
 
@@ -74,8 +72,8 @@ int yyerror (char *str)
 %token<hashNode> LIT_STRING 
 %token<hashNode> TOKEN_ERROR
 
-%left OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_NE   
 %left OPERATOR_AND OPERATOR_OR
+%left OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_NE   
 %left '+' '-'
 %left '*' '/'
 
@@ -152,23 +150,20 @@ expressao: '(' expressao ')'	{ $$ = $2; }
 | aritmetica { $$ = ast_insert_node(AST_aritexpr,  0, $1, 0, 0, 0); }	
 ;
 
-aritmetica: expressao operador_aritmetico expressao { $$ = ast_insert_node(AST_aritexpr,  0, $1, $2, $3, 0); }
-;
-operador_aritmetico: '+' { $$ = ast_insert_node(AST_add, 0, 0, 0, 0, 0); }	 
-|'-' { $$ = ast_insert_node(AST_sub, 0, 0, 0, 0, 0); }	
-|'*' { $$ = ast_insert_node(AST_mult, 0, 0, 0, 0, 0); }	
-|'/' { $$ = ast_insert_node(AST_div, 0, 0, 0, 0, 0); }	
-|'%' { $$ = ast_insert_node(AST_resto, 0, 0, 0, 0, 0); }	
+aritmetica: expressao '+' expressao { $$ = ast_insert_node(AST_add,  0, $1, $3, 0, 0); }
+| expressao '-' expressao { $$ = ast_insert_node(AST_sub,  0, $1, $3, 0, 0); }
+| expressao '*' expressao { $$ = ast_insert_node(AST_mult,  0, $1, $3, 0, 0); }
+| expressao '/' expressao { $$ = ast_insert_node(AST_div,  0, $1, $3, 0, 0); }
+| expressao '%' expressao { $$ = ast_insert_node(AST_resto,  0, $1, $3, 0, 0); }
 ;
 
-logica: expressao operador_logico expressao { $$ = ast_insert_node(AST_logicexpr,  0, $1, $2, $3, 0); }
-;
-operador_logico: OPERATOR_AND { $$ = ast_insert_node(AST_operand, 0, 0, 0, 0, 0); }	
-| OPERATOR_OR { $$ = ast_insert_node(AST_operor, 0, 0, 0, 0, 0); }	
-| OPERATOR_LE { $$ = ast_insert_node(AST_operle, 0, 0, 0, 0, 0); }	
-| OPERATOR_GE { $$ = ast_insert_node(AST_operge, 0, 0, 0, 0, 0); }	
-| OPERATOR_EQ { $$ = ast_insert_node(AST_opereq, 0, 0, 0, 0, 0); }	
-| OPERATOR_NE { $$ = ast_insert_node(AST_operne, 0, 0, 0, 0, 0); }	
+
+logica: expressao OPERATOR_AND expressao { $$ = ast_insert_node(AST_operand,  0, $1, $3, 0, 0); }
+| expressao OPERATOR_OR expressao { $$ = ast_insert_node(AST_operor,  0, $1, $3, 0, 0); }
+| expressao OPERATOR_LE expressao { $$ = ast_insert_node(AST_operle,  0, $1, $3, 0, 0); }
+| expressao OPERATOR_GE expressao { $$ = ast_insert_node(AST_operge,  0, $1, $3, 0, 0); }
+| expressao OPERATOR_EQ expressao { $$ = ast_insert_node(AST_opereq,  0, $1, $3, 0, 0); }
+| expressao OPERATOR_NE expressao { $$ = ast_insert_node(AST_operne,  0, $1, $3, 0, 0); }
 ;
 
 fluxo: KW_IF '('expressao')' KW_THEN bloco { $$ = ast_insert_node(AST_kwif,    0, $3, $6, 0, 0);}
