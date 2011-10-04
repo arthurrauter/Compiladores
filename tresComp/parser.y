@@ -114,7 +114,7 @@ bloco: '{'bloco_comandos'}' { $$ = ast_insert_node(AST_block, 0, $2, 0, 0, 0)}
 | comando ';' { $$ = ast_insert_node(AST_block, 0, $1, 0, 0, 0);}
 ;
 
-bloco_comandos: comando';' bloco_comandos { $$ = ast_insert_node(AST_ocmdblock, 0, $1, $3, 0, 0);	 }
+bloco_comandos: comando';' bloco_comandos { $$ = ast_insert_node(AST_cmdblock, 0, $1, $3, 0, 0);	 }
 | comando { $$ = ast_insert_node(AST_cmdblock, 0, $1, 0, 0, 0);	 }
 ;
 
@@ -131,10 +131,6 @@ comando: atribuicao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }
 atribuicao: TK_IDENTIFIER '=' expressao {$$=ast_insert_node(AST_atrib, 0, $1, $3, 0, 0); }
 | TK_IDENTIFIER '['expressao']' '=' expressao {$$=ast_insert_node(AST_vecatrib, 0, $1, $3, $6, 0); }
 ;
-
-
-
-//*******incompleto*********
 
 
 expressao: '(' expressao ')'	{ $$ = $2; } 

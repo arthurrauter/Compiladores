@@ -23,13 +23,13 @@ node* insertHash(node** hashTable, char* text, int type)
 	else//doesn't exists the node
 	{	
 		hashNode=(node*)malloc(sizeof(node));
-		/*if(type==SYMBOL_LIT_INTEGER)
+		if(type==SYMBOL_LIT_INTEGER)
 			hashNode->value=atoi(text);
 		else
-		{*/
+		{
 	  	hashNode->text = (char*) malloc(strlen(text) +1);
 			strcpy(hashNode->text,text);
-		//}
+		}
 	 	hashNode->type=type;
 		hashNode->next=NULL;
 		hashTable[adress]=hashNode;
@@ -68,7 +68,10 @@ void printList(node* hashNode)
 	if (hashNode == NULL) printf (" ");
 	while (hashNode)
 	{	
-		printf ("(%d, %s)", hashNode->type, hashNode->text);
+		if(hashNode->text)
+			printf ("(%d, %s)", hashNode->type, hashNode->text);
+		else
+			printf ("(%d, %d)", hashNode->type, hashNode->value);
 		hashNode = hashNode->next;
 		if (hashNode != NULL) printf (", ");	
 	} 	

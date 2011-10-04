@@ -26,7 +26,7 @@ void ast_to_program(AST *tree, FILE* outAST)
 		}
 	}
 }
-
+/*
 char *print0(AST* node)
 {
     char *nodeString;
@@ -309,16 +309,17 @@ char *print4(AST* node)
     }
     return nodeString;
 }
-
-AST* ast_insert_node(int type, symData *symbol, AST *son0, AST *son1, AST *son2, AST *son3)
+*/
+//ok
+AST* ast_insert_node(int type, node *hashNode, AST *son0, AST *son1, AST *son2, AST *son3)
 {
 	AST *newNode;
 
 	newNode=(AST *) calloc(1,sizeof(AST));
 	newNode->lineNumber = getLineNumber();
 
-	if(symbol)
-		newNode->symbol=symbol;
+	if(hashNode)
+		newNode->hashNode=hashNode;
 
 	newNode->type=type;
 	newNode->sons[0]=son0;
@@ -394,11 +395,11 @@ void* ast_print(AST *node)
 		default: printf("%d", node->type);
 	} 
 
-	if(node->symbol){
-		if(node->symbol->content.sText!=NULL)
-			printf("\t \t %s", node->symbol->content.sText);
+	if(node->hashNode){
+		if(node->hashNode.text!=NULL)
+			printf("\t \t %s",node->hashNode.text);
 		else
-			printf("\t \t %d", node->symbol->content.iVal);
+			printf("\t \t %d", node->hashNode.value);
 	}
 	//printf("\t\tlinha %d");//, node->lineNumber);	
 }
