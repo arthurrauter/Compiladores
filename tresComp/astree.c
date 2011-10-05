@@ -60,7 +60,23 @@ char* nodeString2(AST* node)
 	{
 		switch(node->type)
 		{
-			case:
+			case AST_vector:
+			//...
+			break;
+			case AST_function:
+			//...
+			break;
+			case AST_vecatrib:
+			//...
+			break;
+			case AST_kwelse:
+			//...
+			break;
+			default:
+				strcpy(tmpSTR, "");
+		}
+	}
+	return tmpSTR;
 }
 
 //ok
@@ -76,6 +92,9 @@ char* nodeString3 (AST* node)
 			case AST_function:
 				strcpy(tmpSTR, ")\n");
 			break;
+			case AST_vector:
+				sprintf(tmpSTR, "];\n");
+				break;
 			default:
 				strcpy(tmpSTR, "");
 		}
