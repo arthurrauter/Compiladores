@@ -39,7 +39,7 @@ node* insertHash(node** hashTable, char* text, int type)
 	
 }
 
-char* getNodeInfo(node** hashTable, node* node)
+char* getNodeInfo( node* node)
 {
 	if(node->type==LIT_STRING)
 	{

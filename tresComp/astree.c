@@ -26,290 +26,62 @@ void ast_to_program(AST *tree, FILE* outAST)
 		}
 	}
 }
-/*
-char *print0(AST* node)
+char* nodeString0(AST* node)
 {
-    char *nodeString;
-	nodeString = (char*)malloc(STRMAX);
-	sprintf(nodeString, "");
-    if(node)
-    {
-        switch(node->type)
-        {
-            case AST_literal:
-                strcpy(nodeString, getNodeInfo(hashTable,node->hashNode);
-                break;
-            case AST_block:
-				sprintf(nodeString, "{");
-                break;
-            case AST_listparam:
-                break;
-            case AST_vecident:
-			case AST_litstring:
-				sprintf(nodeString, "\"");
-				strcat(nodeString, (char*) getNode(hashTable, node->symbol));
-				strcat(nodeString, "\"");
-                break;
-            case AST_identifier:
-				strcpy(nodeString, (char*) getNode(hashTable, node->symbol));
-                break;
-			case AST_operand:
-            case AST_operor:
-            case AST_operne:
-            case AST_opereq:
-            case AST_operge:
-            case AST_operle:
-			case AST_add:
-            case AST_div:
-            case AST_mul:
-            case AST_sub:
-				sprintf(nodeString, "(");
-                break;
-            case AST_idvec:
-                break;
-            case AST_kwread:
-				sprintf(nodeString, "read ");
-                break;
-            case AST_kwreturn:
-				sprintf(nodeString, "return (");
-                break;
-            case AST_kwprint:
-				sprintf(nodeString, "print ");
-                break;
-            case AST_kwwhile:
-				sprintf(nodeString, "while(");
-                break;
-            case AST_kwelse:
-            case AST_kwif:
-				sprintf(nodeString, "if(");
-                break;
-            case AST_kwint:
-				sprintf(nodeString, "int ");
-                break;
-            case AST_kwbyte:
-				sprintf(nodeString, "byte ");
-                break;
-            case AST_litint:
-				strcpy(nodeString, (char*) getNode(hashTable, node->symbol));
-                break;
-			case AST_vector:
-				break;
-            case AST_declarations:
-                break;
-			case AST_identfunc:
-			case AST_identparam:
-				strcpy(nodeString, (char*) getNode(hashTable, node->symbol));
-				break;
-			case AST_funcall:
-				break;
-			case AST_listcall:
-				break;
-            default:
-                sprintf(nodeString, "");
-        }
-    }
-    return nodeString;
-}
-
-
-char *print1(AST* node)
-{
-    char *nodeString;
-	nodeString = (char*)malloc(STRMAX);
-	sprintf(nodeString, "");
-    if(node)
-    {
-        switch(node->type)
-        {
-			case AST_funcall:
-				sprintf(nodeString, "(");
-				break;
-			case AST_listcall:
-				sprintf(nodeString, ",");
-				break;
-			case AST_operand:
-                sprintf(nodeString, " && ");
-                break;
-			case AST_kwreturn:
-				sprintf(nodeString, ")");
-                break;
-            case AST_operor:
-                sprintf(nodeString, " || ");
-                break;
-            case AST_operne:
-                sprintf(nodeString, " != ");
-                break;
-            case AST_opereq:
-                sprintf(nodeString, " == ");
-                break;
-            case AST_operge:
-                sprintf(nodeString, " >= ");
-                break;
-            case AST_operle:
-                sprintf(nodeString, " <= ");
-                break;
-            case AST_aritexpr: 
-                break;
-			case AST_idvec:
-				sprintf(nodeString, "[");
-                break;
-            case AST_listparam:
-                break;
-            case AST_vecident:
-                break;
-            case AST_identifier:
-                break;
-			case AST_cmdblock2:
-				sprintf(nodeString,  "");
-				break;
-            case AST_atrib:
-				sprintf(nodeString, " = ");
-                break;
-            case AST_add:
-				sprintf(nodeString, " + ");
-                break;
-            case AST_div:
-				sprintf(nodeString, "/");
-                break;
-            case AST_mul:
-				sprintf(nodeString, " * ");
-                break;
-            case AST_sub:
-				sprintf(nodeString, " - ");
-                break;
-            case AST_kwread:
-                break;
-            case AST_kwprint:
-                break;
-            case AST_kwwhile:
-				sprintf(nodeString, ")\n");
-                break;
-            case AST_kwelse:
-				sprintf(nodeString, ") then\n");
-                break;
-            case AST_kwif:
-				sprintf(nodeString, ") then\n");
-                break;
-            case AST_kwint:
-                break;
-            case AST_kwbyte:
-                break;
-            case AST_litint:
-                break;
-            case AST_function:
-                break;
-            case AST_var:
-                break;
-            case AST_declarations:
-                break;
-            default:
-                sprintf(nodeString, "");
-        }
-    }
-    return nodeString;
-}
-
-char *print2(AST* node)
-{
-    char *nodeString;
-	nodeString = (char*)malloc(STRMAX);
-	sprintf(nodeString, "");
-    if(node)
-    {
-        switch(node->type)
-        {
-			case AST_kwelse:
-				sprintf(nodeString, "else\n");
-                break;
-			case AST_funcall:
-				sprintf(nodeString, ")");
-				break;
-			case AST_var:
-				sprintf(nodeString, ";\n");
-                break;
-			case AST_vector:
-				sprintf(nodeString, "[");
-				break;
-			case AST_idvec:
-				sprintf(nodeString, "]");
-                break;
-			case AST_function:
-				sprintf(nodeString, "(");
-                break;
-			case AST_listparam:
-				sprintf(nodeString, " ");
-                break;
-			case AST_operand:
-            case AST_operor:
-            case AST_operne:
-            case AST_opereq:
-            case AST_operge:
-            case AST_operle:
-			case AST_add:
-            case AST_div:
-            case AST_mul:
-            case AST_sub:
-				sprintf(nodeString, ")");
-                break;
-            default:
-                sprintf(nodeString, "");
-        }
-    }
-    return nodeString;
-}
-
-char *print3(AST* node)
-{
-    char *nodeString;
-	nodeString = (char*)malloc(STRMAX);
-	sprintf(nodeString, "");
-    if(node)
-    {
-        switch(node->type)
-        {
-			case AST_function:
-				sprintf(nodeString, ")\n");
-                break;
-			case AST_vector:
-				sprintf(nodeString, "];\n");
-				break;
-            default:
-                sprintf(nodeString, "");
-        }
-    }
-    return nodeString;
-}
-
-char *print4(AST* node)
-{
-    char *nodeString;
-	nodeString = (char*)malloc(STRMAX);
-	sprintf(nodeString, "");
-    if(node)
-    {
-        switch(node->type)
-        {
+	char *tmpSTR;
+	tmpSTR = (char*)malloc(STRMAX);
+	sprintf(tmpSTR, "");
+	
+	if(node)
+	{
+		switch(node->type)
+		{
+			case: AST_identifier:
 			case AST_literal:
-                strcpy(nodeString, (char*)getNode(hashTable, node->symbol));
-                break;
-			case AST_block:
-                sprintf(nodeString, "}\n");
-                break;
-			case AST_atrib:				break;
-			case AST_kwreturn:	
-			case AST_kwread:	
-			case AST_kwprint: 
-			case AST_cmd:
-				//if(node->sons[0]||node->sons[1]|| node->sons[2] || node->sons[3])
-					sprintf(nodeString, ";\n");
-				break;
-            default:
-                sprintf(nodeString, "");
-        }
-    }
-    return nodeString;
+				strcpy(tmpSTR, getNodeInfo(node->hashNode));
+			break;
+			case: AST_kwint:
+				strcpy(tmpSTR, "int");
+			break;
+			case AST_kwchar:
+				strcpy(tmpSTR, "char");
+			break;
+				
+			
 }
-*/
+
+char* nodeString2(AST* node)
+{
+	char *tmpSTR;
+	tmpSTR = (char*)malloc(STRMAX);
+	sprintf(tmpSTR, "");
+	
+	if(node)
+	{
+		switch(node->type)
+		{
+			case:
+}
+
+//ok
+char* nodeString3 (AST* node)
+{
+	char *tmpSTR;
+	tmpSTR = (char*)malloc(STRMAX);
+	sprintf(tmpSTR, "");
+	if(node)
+	{
+		switch(node->type)
+		{
+			case AST_function:
+				strcpy(tmpSTR, ")\n");
+			break;
+			default:
+				strcpy(tmpSTR, "");
+		}
+	}
+	return tmpSTR;
+}
 //ok
 AST* ast_insert_node(int type, node *hashNode, AST *son0, AST *son1, AST *son2, AST *son3)
 {
