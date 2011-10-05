@@ -39,6 +39,20 @@ node* insertHash(node** hashTable, char* text, int type)
 	return hashNode;
 	
 }
+
+char* getNodeInfo(node** hashTable, node* node)
+{
+	if(node->type==LIT_STRING)
+	{
+		char buf[6];
+
+	// convert node->value to string [buf]
+		itoa(node->value, buf, 10);
+		return buf;
+	}
+	else
+		return node.text;
+}
 		
 node* getNode (node** hashTable ,char* text)
 {

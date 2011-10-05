@@ -37,7 +37,7 @@ char *print0(AST* node)
         switch(node->type)
         {
             case AST_literal:
-                strcpy(nodeString, (char*) getNode(hashTable, node->symbol));
+                strcpy(nodeString, getNodeInfo(hashTable,node->hashNode);
                 break;
             case AST_block:
 				sprintf(nodeString, "{");
@@ -378,7 +378,6 @@ void* ast_print(AST *node)
 		case AST_litchar:		printf("AST_litchar");		break;
 		case AST_function:		printf("AST_function");		break;
 		case AST_typeint:		printf("AST_typeint");	 	break;
-		case AST_typebyte:		printf("AST_typebyte");	 	break;
 		case AST_listparam:		printf("AST_listparam");	break;
 		case AST_identfunc:		printf("AST_identfunc");	break;
 		case AST_identparam:	printf("AST_identparam");	break;
