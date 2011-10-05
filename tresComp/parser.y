@@ -40,7 +40,9 @@ int yyerror (char *str)
 %type<ast> expressao
 %type<ast> aritmetica
 %type<ast> logica
-
+%type<ast> identifier
+%type<ast> literal
+%type<ast> tamanho_vetor
 
 
 %token KW_INT
@@ -108,17 +110,17 @@ tipo: KW_INT { $$ = ast_insert_node(AST_kwint , 0, 0, 0, 0, 0);}
 ;
 
 
-funcao: tipo identifier '(' lista_parametros ')' bloco  { $$ = ast_insert_node(AST_function, 0, $1, $4, $6, 0);}
+funcao: tipo identifier '(' lista_parametros ')' bloco  { $$ = ast_insert_node(AST_function, 0, $1, $2, $4, $6);}
 ;
 lista_parametros : parametro { $$ = ast_insert_node(AST_listparam, 0, $1, 0, 0, 0);}		
 | parametro',' lista_parametros { $$ = ast_insert_node(AST_listparam, 0, $1, $3, 0, 0);}		
-| {$$=0}
+| {$$=0;}
 ;
 parametro: tipo identifier	{ $$ = ast_insert_node(AST_param, 0, $1, $2, 0, 0);}		
 ;
 
 
-bloco: '{'bloco_comandos'}' { $$ = ast_insert_node(AST_block, 0, $2, 0, 0, 0)}
+bloco: '{'bloco_comandos'}' { $$ = ast_insert_node(AST_block, 0, $2, 0, 0, 0);}
 | comando ';' { $$ = ast_insert_node(AST_block, 0, $1, 0, 0, 0);}
 ;
 
@@ -131,12 +133,22 @@ comando: atribuicao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }
 | KW_READ identifier { $$ = ast_insert_node(AST_kwread,   0, $2, 0, 0, 0); }
 | KW_PRINT expressao { $$ = ast_insert_node(AST_kwprint,  0,  $2, 0, 0, 0); }
 | KW_RETURN expressao { $$ = ast_insert_node(AST_kwreturn, 0, $2, 0, 0, 0); }
-| {$$=0}
+| {$$=0;}
 ;
 
 
 atribuicao: identifier '=' expressao {$$=ast_insert_node(AST_atrib, 0, $1, $3, 0, 0); }
 | identifier '['expressao']' '=' expressao {$$=ast_insert_node(AST_vecatrib, 0, $1, $3, $6, 0); }
+;
+
+
+
+expressao: '(' expressao ')'	{ $$ = $2; } 
+| identifier	{ $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
+| identifier '['expressao']' { $$ = ast_insert_node(AST_expr, 0, $1, $3, 0, 0); }	
+| literal { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
+| logica { $$ = ast_insert_node(AST_logicexpr, 0, $1, 0, 0, 0); }	
+| aritmetica { $$ = ast_insert_node(AST_aritexpr,  0, $1, 0, 0, 0); }	
 ;
 
 literal : LIT_CHAR {$$ = ast_insert_node(AST_literal, $1,0,0,0,0);}
@@ -147,22 +159,12 @@ literal : LIT_CHAR {$$ = ast_insert_node(AST_literal, $1,0,0,0,0);}
 | LIT_INTEGER {$$ = ast_insert_node(AST_literal, $1,0,0,0,0);}
 ;
 
-expressao: '(' expressao ')'	{ $$ = $2; } 
-| identifier	{ $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
-| identifier '['expressao']' { $$ = ast_insert_node(AST_expr, 0, $1, $3, 0, 0); }	
-| literal { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
-| literal { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
-| literal { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
-| literal { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
-| literal { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
-| literal { $$ = ast_insert_node(AST_expr, 0, $1, 0, 0, 0); }	
-| logica { $$ = ast_insert_node(AST_logicexpr, 0, $1, 0, 0, 0); }	
-| aritmetica { $$ = ast_insert_node(AST_aritexpr,  0, $1, 0, 0, 0); }	
-;
+
+
 
 aritmetica: expressao '+' expressao { $$ = ast_insert_node(AST_add,  0, $1, $3, 0, 0); }
 | expressao '-' expressao { $$ = ast_insert_node(AST_sub,  0, $1, $3, 0, 0); }
-| expressao '*' expressao { $$ = ast_insert_node(AST_mult,  0, $1, $3, 0, 0); }
+| expressao '*' expressao { $$ = ast_insert_node(AST_mul,  0, $1, $3, 0, 0); }
 | expressao '/' expressao { $$ = ast_insert_node(AST_div,  0, $1, $3, 0, 0); }
 | expressao '%' expressao { $$ = ast_insert_node(AST_resto,  0, $1, $3, 0, 0); }
 ;
