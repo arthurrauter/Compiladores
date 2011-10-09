@@ -8,6 +8,8 @@ typedef struct _node{
   struct _node *next;
 }node;
 
+char buf[6];
+
 #define HASH_SIZE 997
 
 #define SYMBOL_UNDEFINED 0
@@ -17,9 +19,6 @@ typedef struct _node{
 #define SYMBOL_LIT_CHAR 5
 #define SYMBOL_LIT_STRING 6
 #define SYMBOL_IDENTIFIER 7
-
-
-
 
 void initHash(node** hashTable);
 

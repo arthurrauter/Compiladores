@@ -2,6 +2,7 @@
 #define HEADER_ASTREE
 
 #include "hash.h"
+#include <stdio.h>
 
 //#define AST_declarations    1
 #define AST_var             2
@@ -105,7 +106,7 @@
 */
 
 		
-
+#define STRMAX 36
 //nodo e funções
 
 
@@ -120,15 +121,15 @@ AST *root;
 
 AST* ast_insert_node(int type, node *hashNode, AST *son0, AST *son1, AST *son2, AST *son3);
 //AST* ast_do_for_each(AST *node, void* (*fun)(AST*));
-void* ast_print(AST *node);
-/*
-char *print0(AST* node);
-char *print1(AST* node);
-char *print2(AST* node);
-char *print3(AST* node);
-char *print4(AST* node);
-*/
-void ast_to_program(AST *tree, FILE* outAST);
+void ast_print(AST *node);
+
+char* nodeString0(AST* node);
+char* nodeString1(AST* node);
+char* nodeString2(AST* node);
+char* nodeString3(AST* node);
+char* nodeString4(AST* node);
+
+void ast_to_program(AST* tree, FILE* outAST);
 
 
 #endif

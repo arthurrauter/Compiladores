@@ -1,3 +1,4 @@
+#include "hash.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,23 +6,24 @@
 
 extern int getLineNumber(void);
 
-void ast_to_program(AST *tree, FILE* outAST)
+void ast_to_program(AST* tree, FILE* outAST)
 {
 	int i, writePos=5;
-	if(!outAST) fopen("stdOut.s", "w+");
+	if(!outAST)
+		fopen("stdOut.s", "w+");
 	if(tree)
 	{
-		fputs(print0(tree), outAST);
-		for(i=0; i<4; i++)	
+		fputs(nodeString0(tree), outAST);
+		for(i=1; i<5; i++)	
 		{
 			if(tree->sons[i])
 				ast_to_program(tree->sons[i], outAST);
 			switch(i)
 			{
-				case 0:	fputs(print1(tree), outAST); break;
-				case 1:	fputs(print2(tree), outAST); break;
-				case 2:	fputs(print3(tree), outAST); break;
-				case 3:	fputs(print4(tree), outAST); break;
+				case 1:	fputs(nodeString1(tree), outAST); break;
+				case 2:	fputs(nodeString2(tree), outAST); break;
+				case 3:	fputs(nodeString3(tree), outAST); break;
+				case 4:	fputs(nodeString4(tree), outAST); break;
 			}
 		}
 	}
@@ -30,28 +32,41 @@ char* nodeString0(AST* node)
 {
 	char *tmpSTR;
 	tmpSTR = (char*)malloc(STRMAX);
-	sprintf(tmpSTR, "");
+	sprintf(tmpSTR, ""); //sprintf(tmpSTR, "wolololo"): escreve wolololo\0 em tmpSTR
 	
 	if(node)
 	{
 		switch(node->type)
 		{
-			case: AST_identifier:
-			case AST_literal:
-				strcpy(tmpSTR, getNodeInfo(node->hashNode));
-			break;
-			case: AST_kwint:
-				strcpy(tmpSTR, "int");
-			break;
-			case AST_kwchar:
-				strcpy(tmpSTR, "char");
-			break;
-				
-			
+			case AST_identifier: strcpy(tmpSTR, getNodeInfo(node->hashNode));break;
+			case AST_literal:	strcpy(tmpSTR, getNodeInfo(node->hashNode));break;
+			case AST_kwint: strcpy(tmpSTR, "int");break;
+			case AST_kwchar: strcpy(tmpSTR, "char");break;
+					
 }
+
+char* nodeString1(AST* node)
+{
+	/*	
+	if(node)
+	{
+	
+	char *tmpSTR;
+	tmpSTR = (char*)malloc(STRMAX);
+	sprintf(tmpSTR, ""); //sprintf(tmpSTR, "wolololo"): escreve wolololo\0 em tmpSTR
+	
+		switch(node->type)
+		{
+			case AST_vardecl:
+		}
+	}
+	*/
+}
+
 
 char* nodeString2(AST* node)
 {
+	/*
 	char *tmpSTR;
 	tmpSTR = (char*)malloc(STRMAX);
 	sprintf(tmpSTR, "");
@@ -77,11 +92,13 @@ char* nodeString2(AST* node)
 		}
 	}
 	return tmpSTR;
+	*/
 }
 
 //ok
 char* nodeString3 (AST* node)
 {
+	/*
 	char *tmpSTR;
 	tmpSTR = (char*)malloc(STRMAX);
 	sprintf(tmpSTR, "");
@@ -100,8 +117,34 @@ char* nodeString3 (AST* node)
 		}
 	}
 	return tmpSTR;
+	*/
 }
 //ok
+
+char* nodeString4 (AST* node)
+{
+	/*
+	char *tmpSTR;
+	tmpSTR = (char*)malloc(STRMAX);
+	sprintf(tmpSTR, "");
+	if(node)
+	{
+		switch(node->type)
+		{
+			case AST_function:
+				strcpy(tmpSTR, ")\n");
+				break;
+			case AST_vector:
+				sprintf(tmpSTR, "];\n");
+				break;
+			default:
+				strcpy(tmpSTR, "");
+		}
+	}
+	return tmpSTR;
+	*/
+}
+
 AST* ast_insert_node(int type, node *hashNode, AST *son0, AST *son1, AST *son2, AST *son3)
 {
 	AST *newNode;
@@ -137,6 +180,7 @@ AST* ast_insert_node(int type, node *hashNode, AST *son0, AST *son1, AST *son2, 
 
 void* ast_print(AST *node)
 {
+	/*
 	printf("\nAST:");
 	switch(node->type){
 		case AST_declarations:  printf("AST_declarations"); break;
@@ -179,11 +223,9 @@ void* ast_print(AST *node)
 		case AST_listcall:		printf("AST_listcall");		break;
 		case AST_call:			printf("AST_call");			break;
 		case AST_nullcmd:		printf("AST_nullcmd");		break;
-
-
-
 		default: printf("%d", node->type);
-	} 
+		*/
+} 
 
 	if(node->hashNode){
 		if(node->hashNode.text!=NULL)

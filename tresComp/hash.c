@@ -40,18 +40,18 @@ node* insertHash(node** hashTable, char* text, int type)
 	
 }
 
-char* getNodeInfo( node* node)
+char* getNodeInfo (node* node)
 {
-	if(node->type==LIT_STRING)
+	if(node->type==SYMBOL_LIT_INTEGER)
 	{
-		char buf[6];
+	//char buf[6]; cannot be declared here, for it's local to the function.
 
 	// convert node->value to string [buf]
 		itoa(node->value, buf, 10);
 		return buf;
 	}
 	else
-		return node.text;
+		return node->text;
 }
 		
 node* getNode (node** hashTable ,char* text)
