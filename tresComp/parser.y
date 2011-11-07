@@ -111,7 +111,7 @@ tipo: KW_INT { $$ = ast_insert_node(AST_kwint , 0, 0, 0, 0, 0);}
 
 funcao: tipo identifier '(' lista_parametros ')' bloco  { $$ = ast_insert_node(AST_function, 0, $1, $2, $4, $6);}
 ;
-lista_parametros : parametro { $$ = ast_insert_node(AST_oneparamlist, 0, $1, 0, 0, 0);}		
+lista_parametros : parametro { $$ = ast_insert_node(AST_listparam, 0, $1, 0, 0, 0);}		
 | parametro',' lista_parametros { $$ = ast_insert_node(AST_listparam, 0, $1, $3, 0, 0);}		
 | {$$=0;}
 ;

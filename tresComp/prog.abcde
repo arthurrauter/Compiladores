@@ -1,6 +1,6 @@
 int variavel;
 
-int modifica_variavel() {
+int modifica_variavel(int meinName) {
 	modifica_variavel = 10;
 	}
 

@@ -9,13 +9,12 @@ extern int getLineNumber(void);
 
 void ast_to_program(AST* tree, FILE* fileAST)
 {
-	int i, writePos=5;
+	int i;
 	if(!fileAST)
 		fileAST=fopen("ASTprogram.txt", "w+");
 
 	if(tree)
 	{
-		char* nodeString;
 		
 		fputs(nodeString0(tree), fileAST);
 
@@ -49,7 +48,7 @@ char* nodeString0(AST* node)
 			case AST_literal:	strcpy(tmpSTR, (char*)getNodeInfo(node->hashNode));break;
 			case AST_kwint: strcpy(tmpSTR, "int ");break;
 			case AST_kwchar: strcpy(tmpSTR, "char ");break;
-			case AST_block: strcpy(tmpSTR, "{"); break;
+			case AST_block: strcpy(tmpSTR, "{\n"); break;
 			
 			case AST_kwelse:
 			case AST_kwif: strcpy(tmpSTR, "if("); break;
@@ -67,7 +66,7 @@ char* nodeString0(AST* node)
 			strcat(tmpSTR, "\""); break;
 			case AST_litint: strcpy(tmpSTR, (char*) getNodeInfo(node->hashNode)); break;
 			
-			
+		
 			
 			case AST_sub:
 			case AST_mul:
@@ -80,7 +79,7 @@ char* nodeString0(AST* node)
 			case AST_operne:strcpy(tmpSTR, "("); break;
 			
 			default:	
-			sprintf(tmpSTR, "");
+			strcpy(tmpSTR, "");
 		}
 	}
 	if(tmpSTR[strlen(tmpSTR)-1]!='\0')
@@ -102,13 +101,13 @@ char* nodeString1(AST* node)
 		{
 			case AST_block: strcpy(tmpSTR, "}\n"); break;
 			
-			case AST_listparam: strcpy(tmpSTR, ","); break;
-			
+			case AST_listparam: strcpy(tmpSTR, ", "); break;
+			case AST_atrib: strcpy(tmpSTR, " = "); break;
 			case AST_onecmdblock:
 			case AST_cmdblock: strcpy(tmpSTR, ";"); break;
 			
-			case AST_atrib: strcpy(tmpSTR, "="); break;
 			
+			case AST_function: strcpy(tmpSTR, "(");break;
 			case AST_idvec:
 			case AST_vecatrib: strcpy(tmpSTR, "["); break;
 			
@@ -156,8 +155,10 @@ char* nodeString2(AST* node)
 			strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
 			strcat(tmpSTR, "];\n");
 			break;
+			case AST_function:
+				strcpy(tmpSTR, ")\n");
+			break;
 			
-			case AST_function: strcpy(tmpSTR, "(");break;
 			case AST_vecatrib:strcpy(tmpSTR, "] ="); break;
 			case AST_idvec: strcpy(tmpSTR, "]");break;
 			case AST_kwelse: strcpy(tmpSTR, "else\n"); break;
@@ -193,9 +194,7 @@ char* nodeString3 (AST* node)
 	{
 		switch(node->type)
 		{
-			case AST_function:
-				strcpy(tmpSTR, ")\n");
-			break;
+			
 			
 			default:
 				strcpy(tmpSTR, "");
@@ -218,13 +217,15 @@ char* nodeString4 (AST* node)
 	{
 		switch(node->type)
 		{
+		case AST_literal: strcpy(tmpSTR, (char*)getNodeInfo(node->hashNode));break;
 		
+		case AST_atrib: break;
 		 case AST_kwread:
 		 case AST_kwprint:
 		 case AST_kwreturn: 
-		 case AST_atrib: 
+		 
 		 case AST_vecatrib: strcpy(tmpSTR, ";\n"); break;
-		 	
+		 default: strcpy(tmpSTR, "");	
 		}
 	}
 	if(tmpSTR[strlen(tmpSTR)-1]!='\0')

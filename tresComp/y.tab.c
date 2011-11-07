@@ -1581,7 +1581,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 114 "parser.y"
-    { (yyval.ast) = ast_insert_node(AST_oneparamlist, 0, (yyvsp[(1) - (1)].ast), 0, 0, 0);}
+    { (yyval.ast) = ast_insert_node(AST_listparam, 0, (yyvsp[(1) - (1)].ast), 0, 0, 0);}
     break;
 
   case 14:
