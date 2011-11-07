@@ -36,7 +36,7 @@ char zuar () {
 	while(1){if("vou " && uTmo)then{}};
 	}
 
-char eu_sou_grmo(){
+char eu_sou_grmo(int gatinho, char rawr){
 	as_vezitado = 1;
 	masamo = s2;
 	

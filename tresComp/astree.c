@@ -112,13 +112,11 @@ char* nodeString1(AST* node)
 		switch(node->type)
 		{
 			case AST_block: strcpy(tmpSTR, "}\n"); break;
-			
+			case AST_oneparamlist: break;
 			case AST_listparam: strcpy(tmpSTR, ", "); break;
 			case AST_atrib: strcpy(tmpSTR, " = "); break;
-			case AST_onecmdblock:
-			case AST_cmdblock: strcpy(tmpSTR, ";\n"); break;
 			
-			
+			case AST_cmd: strcpy(tmpSTR, ";\n"); break;
 			
 			case AST_idvec:
 			case AST_vecatrib: strcpy(tmpSTR, "["); break;
@@ -236,7 +234,7 @@ char* nodeString4 (AST* node)
 		 case AST_kwread:
 		 case AST_kwprint:
 		 case AST_kwreturn: 
-		 
+		 case AST_kwwhile:
 		 case AST_vecatrib: strcpy(tmpSTR, ";\n"); break;
 		 default: strcpy(tmpSTR, "");	
 		}
