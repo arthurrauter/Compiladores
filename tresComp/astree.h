@@ -64,6 +64,9 @@
 #define AST_control			51
 #define AST_vecatrib        56
 
+#define AST_operl 	        57
+#define AST_operg 	        58
+
 
 /* DEFINES usados no Parser:
 #define AST_declr	        47

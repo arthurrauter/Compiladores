@@ -90,7 +90,7 @@ programa: statement_block { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); 
 statement_block: statement statement_block { $$ = ast_insert_node(AST_declr , 0, $1, $2, 0, 0); }
 | { $$ = 0; }
 ; 
-statement:declaracao { $$ = ast_insert_node(AST_vardecl , 0, $1, 0, 0, 0);}
+statement: declaracao { $$ = ast_insert_node(AST_vardecl , 0, $1, 0, 0, 0);}
 |funcao	{ $$ = ast_insert_node(AST_fundecl , 0, $1, 0, 0, 0);}
 ;
 
@@ -164,7 +164,7 @@ string: LIT_STRING {$$ = ast_insert_node(AST_litstring, $1,0,0,0,0);}
 
 
 aritmetica: '(' aritmetica ')'	{ $$ = $2; }  
-|expressao '+' expressao { $$ = ast_insert_node(AST_add,  0, $1, $3, 0, 0); }
+| expressao '+' expressao { $$ = ast_insert_node(AST_add,  0, $1, $3, 0, 0); }
 | expressao '-' expressao { $$ = ast_insert_node(AST_sub,  0, $1, $3, 0, 0); }
 | expressao '*' expressao { $$ = ast_insert_node(AST_mul,  0, $1, $3, 0, 0); }
 | expressao '/' expressao { $$ = ast_insert_node(AST_div,  0, $1, $3, 0, 0); }
@@ -178,6 +178,8 @@ logica: '(' logica ')'	{ $$ = $2; }
 | expressao OPERATOR_GE expressao { $$ = ast_insert_node(AST_operge,  0, $1, $3, 0, 0); }
 | expressao OPERATOR_EQ expressao { $$ = ast_insert_node(AST_opereq,  0, $1, $3, 0, 0); }
 | expressao OPERATOR_NE expressao { $$ = ast_insert_node(AST_operne,  0, $1, $3, 0, 0); }
+| expressao '<' expressao { $$ = ast_insert_node(AST_operl,  0, $1, $3, 0, 0); }
+| expressao '>' expressao { $$ = ast_insert_node(AST_operg,  0, $1, $3, 0, 0); }
 ;
 
 fluxo: KW_IF '('expressao')' KW_THEN bloco { $$ = ast_insert_node(AST_kwif,    0, $3, $6, 0, 0);}

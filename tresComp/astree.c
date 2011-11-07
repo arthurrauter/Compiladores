@@ -63,13 +63,13 @@ char* nodeString0(AST* node)
 			case AST_block: strcpy(tmpSTR, "{\n"); break;
 			
 			case AST_kwelse:
-			case AST_kwif: strcpy(tmpSTR, "if"); break;
+			case AST_kwif: strcpy(tmpSTR, "if "); break;
 			case AST_kwwhile : strcpy(tmpSTR, "while("); break;
 			
-			case AST_kwread: strcpy(tmpSTR, "read "); break;
-			case AST_kwprint: strcpy(tmpSTR, "print "); break;
+			case AST_kwread: strcpy(tmpSTR, "read("); break;
+			case AST_kwprint: strcpy(tmpSTR, "print("); break;
 			
-			case AST_kwreturn: strcpy(tmpSTR, "return (");break;
+			case AST_kwreturn: strcpy(tmpSTR, "return(");break;
 			
 			case AST_litchar:strcpy(tmpSTR, "\'");
 			strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
@@ -79,7 +79,7 @@ char* nodeString0(AST* node)
 			case AST_litint: strcpy(tmpSTR, (char*) getNodeInfo(node->hashNode)); break;
 			
 		
-			
+			case AST_add:
 			case AST_sub:
 			case AST_mul:
 			case AST_div:
@@ -87,6 +87,8 @@ char* nodeString0(AST* node)
 			case AST_operor:
 			case AST_operle:
 			case AST_operge:
+			case AST_operl:
+			case AST_operg:
 			case AST_opereq:
 			case AST_operne:strcpy(tmpSTR, "("); break;
 			
@@ -130,11 +132,14 @@ char* nodeString1(AST* node)
 			case AST_operor: strcpy(tmpSTR, "||"); break;
 			case AST_operle: strcpy(tmpSTR, "<="); break;
 			case AST_operge: strcpy(tmpSTR, ">="); break;
+			case AST_operl: strcpy(tmpSTR, "<"); break;
+			case AST_operg: strcpy(tmpSTR, ">"); break;
 			case AST_opereq: strcpy(tmpSTR, "=="); break;
 			case AST_operne: strcpy(tmpSTR, "!="); break;
 			
 			case AST_kwif:
 			case AST_kwelse:strcpy(tmpSTR, " then\n"); break;
+			case AST_kwprint:
 			case AST_kwwhile: strcpy(tmpSTR, ")\n"); break;
 			
 			
@@ -172,6 +177,7 @@ char* nodeString2(AST* node)
 			case AST_idvec: strcpy(tmpSTR, "]");break;
 			case AST_kwelse: strcpy(tmpSTR, "else\n"); break;
 			
+			case AST_add:
 			case AST_sub:
 			case AST_mul:
 			case AST_div:
@@ -179,6 +185,8 @@ char* nodeString2(AST* node)
 			case AST_operor:
 			case AST_operle:
 			case AST_operge:
+			case AST_operl:
+			case AST_operg:
 			case AST_opereq:
 			case AST_operne: strcpy(tmpSTR, ")"); break;
 			
