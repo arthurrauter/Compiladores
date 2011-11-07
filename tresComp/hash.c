@@ -47,7 +47,7 @@ char* getNodeInfo (node* node)
 	//char buf[6]; cannot be declared here, for it's local to the function.
 
 	// convert node->value to string [buf]
-		itoa(node->value, buf, 10);
+		sprintf(buf, "%d", node->value);
 		return buf;
 	}
 	else

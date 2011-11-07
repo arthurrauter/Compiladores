@@ -42,6 +42,7 @@ int yyerror (char *str)
 %type<ast> logica
 %type<ast> identifier
 %type<ast> literal
+%type<ast> string
 
 
 
@@ -130,7 +131,8 @@ comando: atribuicao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }
 | fluxo { $$ = ast_insert_node(AST_control, 0, $1, 0, 0, 0); }	
 | KW_READ identifier { $$ = ast_insert_node(AST_kwread,   0, $2, 0, 0, 0); }
 | KW_PRINT aritmetica { $$ = ast_insert_node(AST_kwprint,  0,  $2, 0, 0, 0); }
-| KW_PRINT LIT_STRING{ $$ = ast_insert_node(AST_kwprintstring,  $2,  0, 0, 0, 0); }
+| KW_PRINT string{ $$ = ast_insert_node(AST_kwprint,  0, $2, 0, 0, 0); }
+| KW_PRINT '('string')'{ $$ = ast_insert_node(AST_kwprint, 0, $3, 0, 0, 0); }
 | KW_RETURN expressao { $$ = ast_insert_node(AST_kwreturn, 0, $2, 0, 0, 0); }
 | {$$=0;}
 ;
@@ -157,7 +159,8 @@ literal : LIT_CHAR {$$ = ast_insert_node(AST_litchar, $1,0,0,0,0);}
 | LIT_INTEGER {$$ = ast_insert_node(AST_litint, $1,0,0,0,0);}
 ;
 
-
+string: LIT_STRING {$$ = ast_insert_node(AST_litstring, $1,0,0,0,0);}
+;
 
 
 aritmetica: '(' aritmetica ')'	{ $$ = $2; }  

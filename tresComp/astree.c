@@ -11,11 +11,15 @@ void ast_to_program(AST* tree, FILE* fileAST)
 {
 	int i, writePos=5;
 	if(!fileAST)
-		fopen("ASTprogram.txt", "w+");
+		fileAST=fopen("ASTprogram.txt", "w+");
+
 	if(tree)
 	{
+		char* nodeString;
+		
 		fputs(nodeString0(tree), fileAST);
-		for(i=1; i<5; i++)	
+
+		for(i=0; i<4; i++)	
 		{
 			if(tree->sons[i])
 				ast_to_program(tree->sons[i], fileAST);
@@ -28,20 +32,21 @@ void ast_to_program(AST* tree, FILE* fileAST)
 			}
 		}
 	}
+	
 }
 char* nodeString0(AST* node)
 {
 	char *tmpSTR;
 	tmpSTR = (char*)malloc(STRMAX);
 	sprintf(tmpSTR, ""); //sprintf(tmpSTR, "wolololo"): escreve wolololo\0 em tmpSTR
-	
+ 
 	if(node)
 	{
 		switch(node->type)
 		{
 			
-			case AST_identifier: strcpy(tmpSTR, getNodeInfo(node->hashNode));break;
-			case AST_literal:	strcpy(tmpSTR, getNodeInfo(node->hashNode));break;
+			case AST_identifier: strcpy(tmpSTR, (char*)getNodeInfo(node->hashNode));break;
+			case AST_literal:	strcpy(tmpSTR, (char*)getNodeInfo(node->hashNode));break;
 			case AST_kwint: strcpy(tmpSTR, "int ");break;
 			case AST_kwchar: strcpy(tmpSTR, "char ");break;
 			case AST_block: strcpy(tmpSTR, "{"); break;
@@ -52,16 +57,14 @@ char* nodeString0(AST* node)
 			
 			case AST_kwread: strcpy(tmpSTR, "read "); break;
 			case AST_kwprint: strcpy(tmpSTR, "print "); break;
-			case AST_kwprintstring: strcpy(tmpSTR, "print \"");
-			strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
-			strcat(tmpSTR, "\";\n"); break;
+			
 			case AST_kwreturn: strcpy(tmpSTR, "return (");break;
 			
-			case AST_litchar: strcpy(tmpSTR, "\'");
+			case AST_litchar:strcpy(tmpSTR, "\'");
 			strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
 			strcat(tmpSTR, "\'"); break;
-			case AST_litstring: strcpy(tmpSTR, "\""); strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
-			strcat(tmpSTR, "\'"); break;
+			case AST_litstring:  strcpy(tmpSTR, "\""); strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
+			strcat(tmpSTR, "\""); break;
 			case AST_litint: strcpy(tmpSTR, (char*) getNodeInfo(node->hashNode)); break;
 			
 			
@@ -74,24 +77,26 @@ char* nodeString0(AST* node)
 			case AST_operle:
 			case AST_operge:
 			case AST_opereq:
-			case AST_operne: strcpy(tmpSTR, "("); break;
+			case AST_operne:strcpy(tmpSTR, "("); break;
 			
-			default:
+			default:	
 			sprintf(tmpSTR, "");
 		}
 	}
+	if(tmpSTR[strlen(tmpSTR)-1]!='\0')
+		tmpSTR[strlen(tmpSTR)]='\0';
 	return tmpSTR;				
 }
 
 char* nodeString1(AST* node)
 {
-		
-	if(node)
-	{
 	
 	char *tmpSTR;
 	tmpSTR = (char*)malloc(STRMAX);
-	sprintf(tmpSTR, ""); //sprintf(tmpSTR, "wolololo"): escreve wolololo\0 em tmpSTR
+	sprintf(tmpSTR, ""); //sprintf(tmpSTR, "wolololo"): escreve wolololo\0 em tmpSTR	
+	if(node)
+	{
+	
 	
 		switch(node->type)
 		{
@@ -129,7 +134,9 @@ char* nodeString1(AST* node)
 			default: strcpy(tmpSTR, "");
 		}
 	}
-	
+	if(tmpSTR[strlen(tmpSTR)-1]!='\0')
+		tmpSTR[strlen(tmpSTR)]='\0';
+	return tmpSTR;
 }
 
 
@@ -169,6 +176,8 @@ char* nodeString2(AST* node)
 				strcpy(tmpSTR, "");
 		}
 	}
+	if(tmpSTR[strlen(tmpSTR)-1]!='\0')
+		tmpSTR[strlen(tmpSTR)]='\0';
 	return tmpSTR;
 	
 }
@@ -192,6 +201,8 @@ char* nodeString3 (AST* node)
 				strcpy(tmpSTR, "");
 		}
 	}
+	if(tmpSTR[strlen(tmpSTR)-1]!='\0')
+		tmpSTR[strlen(tmpSTR)]='\0';
 	return tmpSTR;
 	
 }
@@ -216,6 +227,8 @@ char* nodeString4 (AST* node)
 		 	
 		}
 	}
+	if(tmpSTR[strlen(tmpSTR)-1]!='\0')
+		tmpSTR[strlen(tmpSTR)]='\0';
 	return tmpSTR;
 	
 }
@@ -297,8 +310,7 @@ void ast_print(AST *node)
 		case AST_kwchar:		printf("AST_typechar");	 	break;
 		case AST_listparam:		printf("AST_listparam");	break;
 		case AST_oneparamlist:		printf("AST_oneparamlist");	break;
-		case AST_identfunc:		printf("AST_identfunc");	break;
-		case AST_identparam:	printf("AST_identparam");	break;
+		
 		case AST_vardecl:		printf("AST_vardecl");		break;
 		case AST_fundecl:		printf("AST_fundecl");		break;
 		
@@ -307,10 +319,10 @@ void ast_print(AST *node)
 
 
 	if(node->hashNode){
-		if(node->hashNode.text!=NULL)
-			printf("\t \t %s",node->hashNode.text);
+		if(node->hashNode->text!=NULL)
+			printf("\t \t %s",node->hashNode->text);
 		else
-			printf("\t \t %d", node->hashNode.value);
+			printf("\t \t %d", node->hashNode->value);
 	}
 	//printf("\t\tlinha %d");//, node->lineNumber);	
 }
