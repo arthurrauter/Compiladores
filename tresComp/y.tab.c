@@ -1756,21 +1756,21 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 156 "parser.y"
-    {(yyval.ast) = ast_insert_node(AST_literal, (yyvsp[(1) - (1)].hashNode),0,0,0,0);}
+    {(yyval.ast) = ast_insert_node(AST_litfloat, (yyvsp[(1) - (1)].hashNode),0,0,0,0);}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
 #line 157 "parser.y"
-    {(yyval.ast) = ast_insert_node(AST_literal, (yyvsp[(1) - (1)].hashNode),0,0,0,0);}
+    {(yyval.ast) = ast_insert_node(AST_litfalse, (yyvsp[(1) - (1)].hashNode),0,0,0,0);}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
 #line 158 "parser.y"
-    {(yyval.ast) = ast_insert_node(AST_literal, (yyvsp[(1) - (1)].hashNode),0,0,0,0);}
+    {(yyval.ast) = ast_insert_node(AST_littrue, (yyvsp[(1) - (1)].hashNode),0,0,0,0);}
     break;
 
   case 41:
