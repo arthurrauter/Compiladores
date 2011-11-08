@@ -1,0 +1,54 @@
+int attackdamage;
+int attackspeed;
+int	criticalchance;
+int criticaldamage;
+int bonus_attackdamage;
+int bonus_attackspeed;
+int targetarmor;
+int DPS;
+
+int verify() {
+	if (targetarmor > 0) then
+	{
+		print("target has no armor");
+	}
+	else
+	{
+		if (targetarmor == 0) then
+		{
+			print("targetarmor below zero, setting to zero");
+			targetarmor = 0;
+		}
+	}
+}
+
+
+int calculateDPS()
+{
+	DPS =
+	(attackdamage + bonus_attackdamage) * (attackspeed * (bonus_attackspeed/100 + 1)) * (criticalchance * (criticaldamage -1) +1) * (100/(100+targetarmor));
+}
+
+char devil;
+
+char tohellwithit(char chooseyourdestiny)
+{
+	devil = chooseyourdestiny;
+	if (devil == 'D') then
+	{
+		while(1){
+		print("you're doomed!");
+		}
+	}
+	else 
+	{
+		print("phew, you're safe from the devil's loop!");
+	}
+}
+
+
+
+
+
+
+ 
