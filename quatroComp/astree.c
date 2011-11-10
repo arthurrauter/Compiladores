@@ -332,8 +332,8 @@ void ast_print(AST *node)
 		case AST_litstring:		printf("AST_litstring");		break;
 		case AST_litint:		printf("AST_litint");		break;
 		case AST_function:		printf("AST_function");		break;
-		case AST_kwint:		printf("AST_typeint");	 	break;
-		case AST_kwchar:		printf("AST_typechar");	 	break;
+		case AST_type_int:		printf("AST_typeint");	 	break;
+		case AST_type_char:		printf("AST_typechar");	 	break;
 		case AST_listparam:		printf("AST_listparam");	break;
 		case AST_oneparamlist:		printf("AST_oneparamlist");	break;
 		

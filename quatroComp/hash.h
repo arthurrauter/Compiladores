@@ -1,6 +1,8 @@
 #ifndef HEADER_HASH
 #define HEADER_HASH
 
+#define HASH_SIZE 997
+
 typedef struct _node{
   char* text;
   int type;
@@ -12,7 +14,7 @@ typedef struct _node{
 char buf[6];
 node* hashTable[HASH_SIZE];
 
-#define HASH_SIZE 997
+
 
 #define HASH_VARDEC 11
 #define HASH_DATATYPE_INT 22
