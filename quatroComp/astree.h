@@ -109,7 +109,7 @@
 #define AST_kwwhile         10
 */
 
-		
+#define MAX_SONS 4	
 #define STRMAX 36
 //nodo e funções
 

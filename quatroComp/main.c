@@ -26,9 +26,9 @@ int main(int argc, char** argv)
 	initMe();
   int yyparse_out;
   yyparse_out = yyparse();
-  printf("yyparse return value: %d", yyparse_out);
+  printf("yyparse return value: %d\n", yyparse_out);
   FILE* fileAST=NULL;
-  ast_print_tree(root);
+  //ast_print_tree(root);
   ast_to_program(root, fileAST);
   return 0;
 }

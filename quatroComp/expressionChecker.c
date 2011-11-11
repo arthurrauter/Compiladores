@@ -1,12 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "hash.h"
-#include "astree.h"
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include "hash.h"
+//#include "astree.h"
 // SEMANTIC CHECKS/ACTIONS
 //
 // DONE - anotar declarações na hash e datatype ( a fazer)
 // DONE - verificar duplas declarações
-// - verificar não declaradas
+// DONE - verificar não declaradas
 // - verificar tipos nos nodos de expressão (filhos devem ser corretos)
 //    - operadores aritméticos e relacionais devem ter filhos aritméticos (int)
 //    - igualdade e desigualdade podem ter filhos char
@@ -20,60 +20,69 @@
 // - argumentos versus parametros de função: número e tipos
 // - valor de retorno versus tipo da função
 // - verificar que simbolo dado para read é variável
+void ast_check(AST*);
+void ast_check_declarations(AST*);
+void ast_check_attributions(AST*);
+void ast_check_expressions(AST*);
+
+void ast_check(AST* root)
+{
+	ast_check_attributions(root);
+}
+
 void ast_check_declarations(AST* root)
 {
-	if(root==null || root==0)
+	if(root == NULL || root==0)
 		return;
-	
 	if(root->type==AST_var)
 	{
-		if(root->son[1]->hashNode->type!=SYMBOL_IDENTIFIER)
-			printf("already declared");
-		root->son[1]->hashNode->type=HASH_VARDEC;	
+		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER)
+			printf("already declared\n");
+		root->sons[1]->hashNode->type=HASH_VARDEC;	
 		
 		if(root->sons[0]->type==AST_type_int)
-			root->son[1]->hashNode->datatype=HASH_DATATYPE_INT;
+			root->sons[1]->hashNode->datatype=HASH_DATATYPE_INT;
 		if(root->sons[0]->type==AST_type_char)
-			root->son[1]->hashNode->datatype=HASH_DATATYPE_CHAR;
+			root->sons[1]->hashNode->datatype=HASH_DATATYPE_CHAR;
 	}
 	
 	if(root->type==AST_vector)
 	{
-		if(root->son[1]->hashNode->type!=SYMBOL_IDENTIFIER)
-			printf("already declared");
-		root->son[1]->hashNode->type=HASH_VECTORDEC;
+		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER)
+			printf("already declared\n");
+		root->sons[1]->hashNode->type=HASH_VECTORDEC;
 		
 		if(root->sons[0]->type==AST_type_int)
-			root->son[1]->hashNode->datatype=HASH_DATATYPE_INT;
+			root->sons[1]->hashNode->datatype=HASH_DATATYPE_INT;
 		if(root->sons[0]->type==AST_type_char)
-			root->son[1]->hashNode->datatype=HASH_DATATYPE_CHAR;
+			root->sons[1]->hashNode->datatype=HASH_DATATYPE_CHAR;
 	}
 	if(root->type==AST_function)
 	{
-		if(root->son[1]->hashNode->type!=SYMBOL_IDENTIFIER)
-			printf("already declared");
-		root->son[1]->hashNode->type=HASH_FUNDEC;
+		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER)
+			printf("already declared\n");
+		root->sons[1]->hashNode->type=HASH_FUNDEC;
 		
 		if(root->sons[0]->type==AST_type_int)
-			root->son[1]->hashNode->datatype=HASH_DATATYPE_INT;
+			root->sons[1]->hashNode->datatype=HASH_DATATYPE_INT;
 		if(root->sons[0]->type==AST_type_char)
-			root->son[1]->hashNode->datatype=HASH_DATATYPE_CHAR;
+			root->sons[1]->hashNode->datatype=HASH_DATATYPE_CHAR;
 	}
 	if(root->type==AST_param)
 	{
-		if(root->son[1]->hashNode->type!=SYMBOL_IDENTIFIER)
-			printf("already declared");
-		root->son[1]->hashNode->type=HASH_PARAM;
+		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER)
+			printf("already declared\n");
+		root->sons[1]->hashNode->type=HASH_PARAM;
 		
 		if(root->sons[0]->type==AST_type_int)
-			root->son[1]->hashNode->datatype=HASH_DATATYPE_INT;
+			root->sons[1]->hashNode->datatype=HASH_DATATYPE_INT;
 		if(root->sons[0]->type==AST_type_char)
-			root->son[1]->hashNode->datatype=HASH_DATATYPE_CHAR;
+			root->sons[1]->hashNode->datatype=HASH_DATATYPE_CHAR;
 	}
-
+int i;
 for(i=0; i<MAX_SONS; i++)
 	if(root->sons[i]!=0)
-		ast_check_declarations(root->son[i]);
+		ast_check_declarations(root->sons[i]);
 }
 
 //-----------------------------
@@ -83,14 +92,14 @@ void ast_check_attributions(AST* root)
 
 	if(root->type==AST_atrib)
 	{
-		switch (root->son[0]->hashNode->datatype)		{
+		switch (root->sons[0]->hashNode->datatype)		{
 			case HASH_DATATYPE_INT:
-						switch(root->son[1]->type)				
+						switch(root->sons[1]->type)				
 						{
 							case AST_identifier:
-								if(root->son[1]->hashNode->datatype != HASH_DATATYPE_INT)
+								if(root->sons[1]->hashNode->datatype != HASH_DATATYPE_INT)
 								{
-									printf("variable not declared");
+									printf("%d: variable not declared\n", getLineNumber());
 								}
 								break;
 							
@@ -98,47 +107,48 @@ void ast_check_attributions(AST* root)
 								break;
 							
 							case AST_expr://literal
-								if(root->son[1]->son[0]->type != AST_litint)
+								if(root->sons[1]->sons[0]->type != AST_litint)
 								{
-									printf("incorrect type attribution");
+									printf("%d: incorrect type attribution\n", getLineNumber());
 								}
 								break;
 							
-							default: printf("incorrect type attribution");
+							default: printf("%d: incorrect type attribution\n", getLineNumber());
 						}
 				break;
 			case HASH_DATATYPE_CHAR:
-						 	switch(root->son[1]->type)				
+						 	switch(root->sons[1]->type)				
 									{
 										case AST_identifier:
-											if(root->son[1]->hashNode->datatype != HASH_DATATYPE_CHAR)
+											if(root->sons[1]->hashNode->datatype != HASH_DATATYPE_CHAR)
 											{
-												printf("variable not declared");
+												printf("%d: variable not declared\n", getLineNumber());
 											}
 											break;
 														
 										case AST_expr://literal
-											if(root->son[1]->son[0]->type != AST_litchar)
+											if(root->sons[1]->sons[0]->type != AST_litchar)
 											{
-												printf("incorrect type attribution");
+												printf("%d: incorrect type attribution\n", getLineNumber());
 											}
 											break;
 							
-										default: printf("incorrect type attribution");
+										default: printf("%d: incorrect type attribution\n", getLineNumber());
 									}
 				break;
-			default: printf("variable not declared");
+			default: printf("%d: variable not declared\n", getLineNumber());
 		}
 	}	
 
-
+int i;
 for(i=0; i<MAX_SONS; i++)
 	if(root->sons[i]!=0)
-		ast_check_attributions(root->son[i]);
+		ast_check_attributions(root->sons[i]);
 }
 
 //-----------------------------
-void ast_check_expressions(AST* root)
+/*
+void ast_check_expressions(AST* root) 
 
 if(root=0)
 return;
@@ -160,7 +170,7 @@ root->type==AST_operl||root->type==AST_operg)
 }
 //go on
 
-
+int i;
 for(i=0; i<MAX_SONS; i++)
 	if(root->sons[i]!=0)
 		ast_check_expressions(root->sons[i]);
@@ -197,4 +207,4 @@ root->type==AST_div)
 	return 1;
 else
 	return 0;
-}
+} */

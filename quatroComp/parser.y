@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "astree.h"
 #include "hash.h"
+#include "expressionChecker.c"
 extern int getLineNumber();
 extern int yylex (void);
 
@@ -85,7 +86,7 @@ int yyerror (char *str)
 %%
 
 
-programa: statement_block { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0);}
+programa: statement_block { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); ast_check(root);}
 ;
 statement_block: statement statement_block { $$ = ast_insert_node(AST_declr , 0, $1, $2, 0, 0); }
 | { $$ = 0; }
