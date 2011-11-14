@@ -10,6 +10,7 @@
 #include "expressionChecker.c"
 extern int getLineNumber();
 extern int yylex (void);
+extern node* hashTable[HASH_SIZE];
 
 int yyerror (char *str)
     {
@@ -86,7 +87,7 @@ int yyerror (char *str)
 %%
 
 
-programa: statement_block { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); ast_check(root);}
+programa: statement_block { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); hashCheckUndeclares(hashTable);}
 ;
 statement_block: statement statement_block { $$ = ast_insert_node(AST_declr , 0, $1, $2, 0, 0); }
 | { $$ = 0; }

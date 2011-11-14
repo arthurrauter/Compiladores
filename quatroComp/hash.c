@@ -13,15 +13,7 @@ void initHash(node** hashTable)
 
 }
 
-void hashCheckUndefined(node** hashTable) //called on the first parser.y item
-{
-	int i;
-	for(i=0; i<HASH_SIZE; i++)
-	{
-		if(hashTable[i]!=NULL && hashTable[i]->type==SYMBOL_IDENTIFIER)
-			printf("Undeclared %s", hashTable[i]->text);
-	}
-}
+
 
 node* insertHash(node** hashTable, char* text, int type)
 {	

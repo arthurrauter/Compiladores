@@ -21,15 +21,99 @@
 // - valor de retorno versus tipo da função
 // - verificar que simbolo dado para read é variável
 void ast_check(AST*);
-void ast_check_declarations(AST*);
+void hashCheckUndeclared(node** hashTable);
 void ast_check_attributions(AST*);
 void ast_check_expressions(AST*);
+void checkALLFuncalls(AST*, AST*);
 
 void ast_check(AST* root)
 {
 	ast_check_attributions(root);
+	checkALLFuncals(root, root);
 }
 
+void checkALLFuncalls(AST* root, AST* actual)
+{
+	
+	if(root == NULL || root==0 || actual=0 || actual=NULL)
+		return;
+	if(actual->type==AST_funcall)
+	{
+		checkFuncall(actual, root);
+	}
+	
+	int i;
+	for(i=0; i<MAX_SONS; i++)
+		if(actual->sons[i]!=0)
+			checkALLFuncalls(root,actual->sons[i]);
+
+}
+//------------------
+
+void checkFuncall(AST *funcall, AST* root)
+{
+	if(root->type!=AST_funcall|| root==0)
+		return;	
+	
+	node* funIdent = root->sons[0]->hashNode;
+	if(funIdent->datatype!=HASH_FUNDEC)
+		printf("Not a Function: %s", getNodeInfo(funIdent));
+	else
+	{
+		AST* fundec = getFundecOfFuncall(funcall, root);
+		
+		if(!checkListParameters(fundec, funcall))
+			printf("paramaters wrong");		
+			
+	}
+}
+//-------------------------
+
+int checkListParameters(AST* fundec, AST* funcall)
+{
+	AST* fundecParamList = fundec->sons[2];
+	AST* funcallParamList= funcall->sons[1];
+	
+	do{
+	
+	AST* funcallParam = funcallParamList->sons[0];
+	AST* fundecParam = fundecParamList->sons[0];
+	
+	if(funcallParam->sons[0]->hashNode->datatype != fundecParam->sons[1]->hashNode->datatype)
+	{printf("wrong parameter type on function call: %s", getNodeInfo(fundecParam->sons[0]->hashNode));
+		return 0;//wrong datatype of the params
+		}
+	else{ //right datatype
+		if(fundecParamList->sons[1])//continues the list
+		{
+			if(funcallParamList->sons[1])
+			{
+				fundecParamList=fundecParamList->sons[1];
+				funcallParamList=funcallParamList->sons[1];
+							
+			}
+			else{
+			printf("missing parameters on function call: %s", getNodeInfo(fundecParam->sons[0]->hashNode));
+				return 0;
+				} //one list of diferent size of other
+		}
+		else
+		{
+			if(funcallParamList->sons[1])
+			{	printf("too many parameters on function call: %s", getNodeInfo(fundecParam->sons[0]->hashNode));
+				return 0; //one list of diferent size of other
+				}
+			else
+				return 1;//ok list is over and done
+		}		
+			
+
+	}
+	}while(funcallParamList->sons[0]||fundeclParamList->sons[0]);
+	
+	return 0;
+}
+//--------------------------------
 void ast_check_declarations(AST* root)
 {
 	if(root == NULL || root==0)
@@ -87,69 +171,19 @@ for(i=0; i<MAX_SONS; i++)
 
 //-----------------------------
 
-void ast_check_attributions(AST* root)
+void hashCheckUndeclared(node** hashTable) //called on the first parser.y item
 {
-
-	if(root->type==AST_atrib)
+	int i;
+	for(i=0; i<HASH_SIZE; i++)
 	{
-		switch (root->sons[0]->hashNode->datatype)		{
-			case HASH_DATATYPE_INT:
-						switch(root->sons[1]->type)				
-						{
-							case AST_identifier:
-								if(root->sons[1]->hashNode->datatype != HASH_DATATYPE_INT)
-								{
-									printf("%d: variable not declared\n", getLineNumber());
-								}
-								break;
-							
-							case AST_aritexpr:
-								break;
-							
-							case AST_expr://literal
-								if(root->sons[1]->sons[0]->type != AST_litint)
-								{
-									printf("%d: incorrect type attribution\n", getLineNumber());
-								}
-								break;
-							
-							default: printf("%d: incorrect type attribution\n", getLineNumber());
-						}
-				break;
-			case HASH_DATATYPE_CHAR:
-						 	switch(root->sons[1]->type)				
-									{
-										case AST_identifier:
-											if(root->sons[1]->hashNode->datatype != HASH_DATATYPE_CHAR)
-											{
-												printf("%d: variable not declared\n", getLineNumber());
-											}
-											break;
-														
-										case AST_expr://literal
-											if(root->sons[1]->sons[0]->type != AST_litchar)
-											{
-												printf("%d: incorrect type attribution\n", getLineNumber());
-											}
-											break;
-							
-										default: printf("%d: incorrect type attribution\n", getLineNumber());
-									}
-				break;
-			default: printf("%d: variable not declared\n", getLineNumber());
-		}
-	}	
-
-int i;
-for(i=0; i<MAX_SONS; i++)
-	if(root->sons[i]!=0)
-		ast_check_attributions(root->sons[i]);
+		if(hashTable[i]!=NULL && hashTable[i]->type==SYMBOL_IDENTIFIER)
+			printf("Undeclared %s", hashTable[i]->text);
+	}
 }
-
 //-----------------------------
-/*
-void ast_check_expressions(AST* root) 
 
+void ast_check_expressions(AST* root) 
+{
 if(root=0)
 return;
 
@@ -207,4 +241,4 @@ root->type==AST_div)
 	return 1;
 else
 	return 0;
-} */
+} 

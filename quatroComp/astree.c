@@ -6,6 +6,41 @@
 
 
 extern int getLineNumber(void);
+
+AST* getFatherNodeOfIdentifier(AST* root,  node* hashNode, int sonNumber)//works?
+{
+	
+	if(root)
+	{
+		if(root->sons[sonNumber]->hashNode&&root->sons[sonNumber]->hashNode==hashNode)
+			return root;
+			
+		else
+			for(i=0; i<4; i++)	
+			{
+			
+				if(root->sons[i])
+					return getNode(root->sons[i], hashNode);
+			}
+	}
+}
+
+AST* getFundecOfFuncall(AST* funcall, AST* root)
+{
+	AST* astNode = getFatherNodeOfIdentifier(root, funcall->sons[0]->hashNode, 1);
+	do{
+		if(astNode->type==function)
+			return astNode;
+		else
+			astNode=getFatherNodeOfIdentifier(astNode, funcall->sons[0]->hashNode, 1);
+	}while(astNode->type!=function);
+	
+	if(astNode->type==function)
+		return astNode;
+		
+	
+}
+
 void ast_print_tree(AST* tree)
 {
 	int i;
@@ -279,17 +314,6 @@ AST* ast_insert_node(int type, node *hashNode, AST *son0, AST *son1, AST *son2, 
 }
 
 
-/*AST* ast_do_for_each(AST *node, void* (*fun)(AST*))
-{
-	int i;
-
-	if(node)
-		(*fun)(node);
-
-	for(i=0; i<4; i++)	
-		if(node->sons[i])
-			ast_do_for_each(node->sons[i],fun);
-}*/
 
 
 void ast_print(AST *node)

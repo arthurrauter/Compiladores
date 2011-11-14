@@ -21,7 +21,6 @@ node* hashTable[HASH_SIZE];
 #define HASH_DATATYPE_CHAR 33
 #define HASH_VECTORDEC 44
 #define HASH_FUNDEC 55
-#define HASH_PARAM 66
 
 
 #define SYMBOL_UNDEFINED 0
@@ -33,6 +32,10 @@ node* hashTable[HASH_SIZE];
 #define SYMBOL_IDENTIFIER 7
 
 void hashCheckUndefined(node** hashTable);
+
+
+char* getNodeInfo (node* node);
+
 
 void initHash(node** hashTable);
 
