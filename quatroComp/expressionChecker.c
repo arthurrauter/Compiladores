@@ -1,7 +1,7 @@
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include "hash.h"
-//#include "astree.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "hash.h"
+#include "astree.h"
 // SEMANTIC CHECKS/ACTIONS
 //
 // DONE - anotar declarações na hash e datatype ( a fazer)
@@ -23,19 +23,23 @@
 void ast_check(AST*);
 void hashCheckUndeclared(node** hashTable);
 void ast_check_attributions(AST*);
+void ast_check_declarations(AST*);
 void ast_check_expressions(AST*);
 void checkALLFuncalls(AST*, AST*);
+void checkFuncall(AST*, AST*);
 
 void ast_check(AST* root)
 {
-	ast_check_attributions(root);
-	checkALLFuncals(root, root);
+	ast_check_declarations(root);
+	//ast_check_attributions(root);
+	hashCheckUndeclared(hashTable);
+	checkALLFuncalls(root, root);
 }
 
 void checkALLFuncalls(AST* root, AST* actual)
 {
 	
-	if(root == NULL || root==0 || actual=0 || actual=NULL)
+	if(root == NULL || root==0 || actual==0 || actual==NULL)
 		return;
 	if(actual->type==AST_funcall)
 	{
@@ -57,13 +61,13 @@ void checkFuncall(AST *funcall, AST* root)
 	
 	node* funIdent = root->sons[0]->hashNode;
 	if(funIdent->datatype!=HASH_FUNDEC)
-		printf("Not a Function: %s", getNodeInfo(funIdent));
+		printf("Not a Function: %s\n", getNodeInfo(funIdent));
 	else
 	{
-		AST* fundec = getFundecOfFuncall(funcall, root);
+		AST* fundec = (AST*)getFundecOfFuncall(funcall, root);
 		
 		if(!checkListParameters(fundec, funcall))
-			printf("paramaters wrong");		
+			printf("paramaters wrong\n");		
 			
 	}
 }
@@ -80,7 +84,7 @@ int checkListParameters(AST* fundec, AST* funcall)
 	AST* fundecParam = fundecParamList->sons[0];
 	
 	if(funcallParam->sons[0]->hashNode->datatype != fundecParam->sons[1]->hashNode->datatype)
-	{printf("wrong parameter type on function call: %s", getNodeInfo(fundecParam->sons[0]->hashNode));
+	{printf("wrong parameter type on function call: %s\n", getNodeInfo(fundecParam->sons[0]->hashNode));
 		return 0;//wrong datatype of the params
 		}
 	else{ //right datatype
@@ -93,14 +97,14 @@ int checkListParameters(AST* fundec, AST* funcall)
 							
 			}
 			else{
-			printf("missing parameters on function call: %s", getNodeInfo(fundecParam->sons[0]->hashNode));
+			printf("missing parameters on function call: %s\n", getNodeInfo(fundecParam->sons[0]->hashNode));
 				return 0;
 				} //one list of diferent size of other
 		}
 		else
 		{
 			if(funcallParamList->sons[1])
-			{	printf("too many parameters on function call: %s", getNodeInfo(fundecParam->sons[0]->hashNode));
+			{	printf("too many parameters on function call: %s\n", getNodeInfo(fundecParam->sons[0]->hashNode));
 				return 0; //one list of diferent size of other
 				}
 			else
@@ -109,7 +113,7 @@ int checkListParameters(AST* fundec, AST* funcall)
 			
 
 	}
-	}while(funcallParamList->sons[0]||fundeclParamList->sons[0]);
+	}while(funcallParamList->sons[0]||fundecParamList->sons[0]);
 	
 	return 0;
 }
@@ -177,7 +181,7 @@ void hashCheckUndeclared(node** hashTable) //called on the first parser.y item
 	for(i=0; i<HASH_SIZE; i++)
 	{
 		if(hashTable[i]!=NULL && hashTable[i]->type==SYMBOL_IDENTIFIER)
-			printf("Undeclared %s", hashTable[i]->text);
+			printf("Undeclared %s\n", hashTable[i]->text);
 	}
 }
 //-----------------------------
@@ -190,8 +194,8 @@ return;
 if(root->type==AST_add||root->type==AST_sub|| root->type== AST_div|| 
 root->type==AST_mul)
 {
-	if(!(isArithmetic(root->sons[0]))||!(isAritmethic(root->sons[1]))) //&& ou ||??
-		printf("requires arith operands");
+	if(!(isArithmetic(root->sons[0]))||!(isArithmetic(root->sons[1]))) //&& ou ||??
+		printf("requires arith operands\n");
 }
 
 if(root->type==AST_operand|| root->type==AST_operor||root->type==AST_operle||
@@ -199,7 +203,7 @@ root->type==AST_operge||root->type==AST_opereq||root->type==AST_operne||
 root->type==AST_operl||root->type==AST_operg)
 {
 	if(!(isLogic(root->sons[0]))&& !(isLogic(root->sons[1])))
-		printf("requires logic operands");
+		printf("requires logic operands\n");
 
 }
 //go on
@@ -211,7 +215,7 @@ for(i=0; i<MAX_SONS; i++)
 }
 
 
-int isLogic(AST* root)//don't know how to do
+int isLogic(AST* root)
 {
 if(root==0)
 	return 0;

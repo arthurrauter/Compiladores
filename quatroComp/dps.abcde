@@ -38,11 +38,13 @@ char tohellwithit(char chooseyourdestiny)
 	if (devil == 'D') then
 	{
 		while(1){
+		verify();
 		print("you're doomed!");
 		}
 	}
 	else 
 	{
+		verify(devil);
 		print("phew, you're safe from the devil's loop!");
 	}
 }

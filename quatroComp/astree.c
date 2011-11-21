@@ -15,13 +15,15 @@ AST* getFatherNodeOfIdentifier(AST* root,  node* hashNode, int sonNumber)//works
 		if(root->sons[sonNumber]->hashNode&&root->sons[sonNumber]->hashNode==hashNode)
 			return root;
 			
-		else
+		else{
+			int i;
 			for(i=0; i<4; i++)	
 			{
 			
 				if(root->sons[i])
-					return getNode(root->sons[i], hashNode);
+					return getFatherNodeOfIdentifier(root->sons[i], hashNode,sonNumber);
 			}
+		}
 	}
 }
 
@@ -29,13 +31,13 @@ AST* getFundecOfFuncall(AST* funcall, AST* root)
 {
 	AST* astNode = getFatherNodeOfIdentifier(root, funcall->sons[0]->hashNode, 1);
 	do{
-		if(astNode->type==function)
+		if(astNode->type==AST_function)
 			return astNode;
 		else
 			astNode=getFatherNodeOfIdentifier(astNode, funcall->sons[0]->hashNode, 1);
-	}while(astNode->type!=function);
+	}while(astNode->type!=AST_function);
 	
-	if(astNode->type==function)
+	if(astNode->type==AST_function)
 		return astNode;
 		
 	

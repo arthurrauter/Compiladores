@@ -7,11 +7,19 @@ int bonus_attackspeed;
 int targetarmor;
 int DPS;
 
+int teste ()
+{
+	if(hello) then
+		{print a+5}
+	else
+		return 5+5;
+}
+
 int verify() {
 	if (targetarmor > 0) then
-	{
-		print("target has no armor");
-	}
+	
+		print 5+b;
+	
 	else
 	{
 		if (targetarmor == 0) then
