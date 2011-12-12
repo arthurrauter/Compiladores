@@ -6,21 +6,26 @@ int bonus_attackdamage;
 int bonus_attackspeed;
 int targetarmor;
 int DPS;
+char hello;
 
 
-int verify() {
+int verify(int hithere) {
 	if (targetarmor > 0) then
 	{
+		hithere=5;
 		print("target has no armor");
 	}
 	else
 	{
+		criticaldamage=DPS||5;
+		DPS=criticaldamage;
 		if (targetarmor == 0) then
 		{
 			print("targetarmor below zero, setting to zero");
 			targetarmor = 0;
 		}
-	}
+	};
+	return 7;
 }
 
 
@@ -28,23 +33,27 @@ int calculateDPS()
 {
 	DPS =
 	(attackdamage + bonus_attackdamage) * (attackspeed * (bonus_attackspeed/100 + 1)) * (criticalchance * (criticaldamage -1) +1) * (100/(100+targetarmor));
+	return DPS;
 }
 
 char devil;
 
 char tohellwithit(char chooseyourdestiny)
 {
-	devil = chooseyourdestiny;
+	read DPS;
+	
+	devil = 'D';
 	if (devil == 'D') then
 	{
 		while(1){
-		verify();
+		verify(DPS);
 		print("you're doomed!");
 		}
 	}
 	else 
 	{
-		verify(devil);
+		verify(DPS);
 		print("phew, you're safe from the devil's loop!");
-	}
+	};
+	return 'h';
 }

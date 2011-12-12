@@ -7,38 +7,57 @@
 
 extern int getLineNumber(void);
 
+
+
 AST* getFatherNodeOfIdentifier(AST* root,  node* hashNode, int sonNumber)//works?
-{
+{	int i;
+	AST* node= NULL;
 	
-	if(root)
-	{
-		if(root->sons[sonNumber]->hashNode&&root->sons[sonNumber]->hashNode==hashNode)
-			return root;
+	if(root!=NULL)
+	
+	{				
+		if(root->sons[sonNumber]&&root->sons[sonNumber]->hashNode&&(root->sons[sonNumber]->hashNode==hashNode)){
+				
+			node=root;
+			}
 			
 		else{
-			int i;
-			for(i=0; i<4; i++)	
-			{
 			
-				if(root->sons[i])
-					return getFatherNodeOfIdentifier(root->sons[i], hashNode,sonNumber);
+			
+			for(i=0; i<MAX_SONS; i++)	
+			{
+							
+				if(!node&&root->sons[i]){
+				
+					node= getFatherNodeOfIdentifier(root->sons[i], hashNode,sonNumber);
+					
+					}
 			}
 		}
+		
 	}
+	return node;
+	
+
 }
 
 AST* getFundecOfFuncall(AST* funcall, AST* root)
 {
-	AST* astNode = getFatherNodeOfIdentifier(root, funcall->sons[0]->hashNode, 1);
-	do{
-		if(astNode->type==AST_function)
-			return astNode;
-		else
-			astNode=getFatherNodeOfIdentifier(astNode, funcall->sons[0]->hashNode, 1);
-	}while(astNode->type!=AST_function);
 	
+	AST* astNode = getFatherNodeOfIdentifier(root, funcall->sons[0]->hashNode, 1);
+
+	do{
+		
+		if(astNode->type==AST_function){
+			return astNode;}
+		else{
+		
+			astNode=getFatherNodeOfIdentifier(astNode, funcall->sons[0]->hashNode, 1);}
+	}while(astNode!=0||astNode->type!=AST_function);
 	if(astNode->type==AST_function)
 		return astNode;
+	else
+		return NULL;
 		
 	
 }

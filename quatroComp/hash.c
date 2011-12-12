@@ -86,9 +86,9 @@ void printList(node* hashNode)
 	while (hashNode)
 	{	
 		if(hashNode->text)
-			printf ("(%d, %s)", hashNode->type, hashNode->text);
+			printf ("(%d, %s)", hashNode->datatype, hashNode->text);
 		else
-			printf ("(%d, %d)", hashNode->type, hashNode->value);
+			printf ("(%d, %d)", hashNode->datatype, hashNode->value);
 		hashNode = hashNode->next;
 		if (hashNode != NULL) printf (", ");	
 	} 	
