@@ -48,7 +48,7 @@
 #define AST_idvec	        39
 #define AST_logicexpr       40
 
-//#define AST_identfunc       43
+#define AST_funcatrib       43
 //#define AST_identparam      44
 
 #define AST_vardecl 	    45
@@ -92,6 +92,7 @@
 #define AST_atrib           19
 #define AST_expr	        34
 #define AST_logicexpr       40
+#define AST_funcatrib		43
 #define AST_aritexpr        26
 #define AST_sub             15
 #define AST_mul             16

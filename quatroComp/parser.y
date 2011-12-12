@@ -150,6 +150,7 @@ lista_param_chamada: identifier { $$ = ast_insert_node(AST_onecall, 0, $1, 0, 0,
 
 atribuicao: identifier '=' expressao {$$=ast_insert_node(AST_atrib, 0, $1, $3, 0, 0); }
 | identifier '['expressao']' '=' expressao {$$=ast_insert_node(AST_vecatrib, 0, $1, $3, $6, 0); }
+|identifier '=' chamada_funcao {$$=ast_insert_node(AST_funcatrib, 0, $1,$3, 0, 0);}
 ;
 
 

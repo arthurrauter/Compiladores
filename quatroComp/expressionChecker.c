@@ -16,13 +16,17 @@
 // - vetores somente usados como vetores
 // - funções somente usadas como funções
 // DONE - nas atribuições, datatypes devem ser iguais (compatíveis)
-// - indice de vetor deve ser expressao inteira
+// DONE- indice de vetor deve ser expressao inteira
 // DONE- argumentos versus parametros de função: número e tipos
 // DONE- valor de retorno versus tipo da função
 // DONE- verificar que simbolo dado para read é variável
 void ast_check(AST*);
 void hashCheckUndeclared(node** hashTable);
-void ast_check_attributions(AST*);
+
+void checkALLAttributions(AST* root);
+int check_funcatrib(AST* fatribNode);
+int check_vecatrib(AST* vecatribNode);
+int check_atrib(AST* atribNode);
 void ast_check_declarations(AST*);
 void ast_check_expressions(AST*);
 void checkALLFuncalls(AST*, AST*);
@@ -31,7 +35,9 @@ void  checkALLFunctionReturns(AST* root);
 int check_function_return_type(AST* function);
 void checkALLReads(AST* root);
 int check_read_symbol(AST* readNode);
-
+void checkALLVectorIndexes(AST* root);
+int check_vector_index(AST* vectorNode);
+int getExpressionDatatype(AST* expr);
 
 void ast_check(AST* root)
 {
@@ -39,15 +45,53 @@ void ast_check(AST* root)
 	ast_check_declarations(root);
 	printHash(hashTable);
 	printf("\n\n");
-	ast_check_attributions(root);
+	
+	checkALLAttributions(root);
 	hashCheckUndeclared(hashTable);
+	
+	checkALLVectorIndexes(root);
 	checkALLFunctionReturns(root);
 	checkALLFuncalls(root, root);
 	checkALLReads(root);
 	
-	printf("check  ");
+	
+	printf("\n\ncheck  ");
 }
 
+void checkALLVectorIndexes(AST* root)
+{
+	
+	if(root == NULL || root==0 )
+		return;
+	if(root->type==AST_idvec ||root->type==AST_vecatrib)
+	{
+	
+		 check_vector_index(root);
+	}
+	
+	int i;
+	for(i=0; i<MAX_SONS; i++)
+		if(root->sons[i]!=0)
+			checkALLVectorIndexes(root->sons[i]);	
+}
+
+int check_vector_index(AST* vectorNode)
+{
+	if(vectorNode->sons[0]->hashNode->type!=HASH_VECTORDEC)
+	{
+		printf("%s is not a vector\n", getNodeInfo(vectorNode->sons[0]->hashNode));
+		return 0;
+	}
+	
+	AST* indexExpr = vectorNode->sons[1];
+	if(getExpressionDatatype(indexExpr)!=HASH_DATATYPE_INT)
+	{
+		printf("Index of vector %s must be and INT expression\n", getNodeInfo(vectorNode->sons[0]->hashNode));
+		return 0;
+	}
+	return 1;
+}
+//---------------------------
 void checkALLReads(AST* root)
 {
 	if(root == NULL || root==0 )
@@ -80,7 +124,7 @@ int check_read_symbol(AST* readNode)
 	} 
 	return 1;
 }
-
+//--------------------------------------------
 void  checkALLFunctionReturns(AST* root)
 {
 	if(root == NULL || root==0 )
@@ -128,7 +172,7 @@ int check_function_return_type(AST* function)
 	return 0;//no return
 
 }
-
+//--------------------------------
 int getExpressionDatatype(AST* expr)
 {
 	if(expr->type==AST_logicexpr || expr->type==AST_aritexpr)
@@ -141,62 +185,99 @@ int getExpressionDatatype(AST* expr)
 		return 0;
 }
 //-----------------------
-void ast_check_attributions(AST* root)
+void checkALLAttributions(AST* root)
 {
 
 if(root->type==AST_atrib)
 {
-	switch (root->sons[0]->hashNode->datatype) {
-		case HASH_DATATYPE_INT:
-			switch(root->sons[1]->type)
-			{
-				case AST_identifier:
-				if(root->sons[1]->hashNode->datatype != HASH_DATATYPE_INT)
-					{
-					printf("%s: variable not declared\n", getNodeInfo(root->sons[0]->hashNode));
-					}
-				break;
+	check_atrib(root);
+}
+if(root->type==AST_vecatrib)
+{
+	check_vecatrib(root);
+}
 
-				case AST_aritexpr:
-				break;
-
-				case AST_expr://literal
-				if(root->sons[1]->sons[0]->type != AST_litint)
-					{
-					printf("%s: incorrect type attribution\n", getNodeInfo(root->sons[0]->hashNode));
-					}
-				break;
-
-				default: printf("%s: incorrect type attribution\n", getNodeInfo(root->sons[0]->hashNode) );
-				}
-				break;
-			case HASH_DATATYPE_CHAR:
-			switch(root->sons[1]->type)
-				{
-				case AST_identifier:
-				if(root->sons[1]->hashNode->datatype != HASH_DATATYPE_CHAR)
-					{
-					printf("%s: variable not declared\n", getNodeInfo(root->sons[0]->hashNode));
-					}
-				break;
-
-				case AST_expr://literal
-				if(root->sons[1]->sons[0]->type != AST_litchar)
-					{
-					printf("%s: incorrect type attribution\n",  getNodeInfo(root->sons[0]->hashNode));
-					}
-				break;
-
-				default: printf("%s: incorrect type attribution\n",  getNodeInfo(root->sons[0]->hashNode));
-			}
-				break;
-	}
+if(root->type==AST_funcatrib)
+{
+	check_funcatrib(root);
 }
 
 int i;
 for(i=0; i<MAX_SONS; i++)
 	if(root->sons[i]!=0)
-		ast_check_attributions(root->sons[i]);
+		checkALLAttributions(root->sons[i]);
+}
+
+int check_funcatrib(AST* fatribNode)
+{
+	if(fatribNode->sons[0]->hashNode->type!=HASH_VARDEC&&fatribNode->sons[0]->hashNode->type!=HASH_PARAM)
+	{
+		printf("%s is not a variable\n", getNodeInfo(fatribNode->sons[0]->hashNode));
+		return 0;
+	}
+	
+	if(fatribNode->sons[1]->type!=AST_funcall)
+	{
+		printf("%s is not a function call\n", getNodeInfo(fatribNode->sons[1]->sons[0]->hashNode));
+		return 0;
+	}
+	
+	if(fatribNode->sons[1]->sons[0]->hashNode->type!=HASH_FUNDEC)
+	{
+		printf("%s is not a function\n", getNodeInfo(fatribNode->sons[1]->sons[0]->hashNode));
+		return 0;
+	}
+	
+	int atribDatatype=fatribNode->sons[0]->hashNode->datatype;
+	int functionDatatype=fatribNode->sons[1]->sons[0]->hashNode->datatype; 
+	if(functionDatatype!=atribDatatype)
+	{
+		printf("atribution of %s with function %s with wrong datatype\n", getNodeInfo(fatribNode->sons[0]->hashNode), getNodeInfo(fatribNode->sons[1]->sons[0]->hashNode));
+		return 0;
+	}
+	else if(functionDatatype==atribDatatype)
+		return 1;//ok
+}
+
+int check_vecatrib(AST* vecatribNode)
+{
+	if(vecatribNode->sons[0]->hashNode->type!=HASH_VECTORDEC)
+	{
+		printf("%s is not a vector\n", getNodeInfo(vecatribNode->sons[0]->hashNode));
+		return 0;
+	}
+	
+	AST* atribExpr= vecatribNode->sons[2];
+	int vecatribDatatype=vecatribNode->sons[0]->hashNode->datatype;
+	
+	if(getExpressionDatatype(atribExpr)!=vecatribDatatype)
+	{
+		printf("atribution of %s with wrong datatype\n", getNodeInfo(vecatribNode->sons[0]->hashNode));
+		return 0;
+	}
+	else if(getExpressionDatatype(atribExpr)==vecatribDatatype)
+		return 1;//ok
+
+}
+
+int check_atrib(AST* atribNode)
+{
+	if(atribNode->sons[0]->hashNode->type!=HASH_VARDEC&&atribNode->sons[0]->hashNode->type!=HASH_PARAM)
+	{
+		printf("%s is not a variable\n", getNodeInfo(atribNode->sons[0]->hashNode));
+		return 0;
+	}
+	
+	AST* atribExpr= atribNode->sons[1];
+	int atribDatatype=atribNode->sons[0]->hashNode->datatype;
+	if(getExpressionDatatype(atribExpr)!=atribDatatype)
+	{
+		printf("atribution of %s with wrong datatype\n", getNodeInfo(atribNode->sons[0]->hashNode));
+		return 0;
+	}
+	else if(getExpressionDatatype(atribExpr)==atribDatatype)
+		return 1;//ok
+
 }
 //---------------------------
 
@@ -217,14 +298,21 @@ void checkALLFuncalls(AST* root, AST* actual)
 			checkALLFuncalls(root,actual->sons[i]);
 
 }
-//------------------
+
 
 void checkFuncall(AST *funcall, AST* root)
 {
 	if(funcall->type!=AST_funcall|| root==0||funcall==0)
 		return;	
 	
+	
 	node* funIdent = funcall->sons[0]->hashNode;
+	if(funIdent->type!=HASH_FUNDEC)
+	{
+		printf("%s is not a function\n", getNodeInfo(funIdent));
+		return;
+	} 
+	
 	AST* fundec = (AST*)getFundecOfFuncall(funcall, root);
 	
 		
@@ -240,7 +328,7 @@ void checkFuncall(AST *funcall, AST* root)
 			
 	
 }
-//-------------------------
+
 
 int checkListParameters(AST* fundec, AST* funcall)
 {
@@ -432,11 +520,12 @@ int isArithmetic(AST* root)
 if(root==0)
 	return 0;
 if(root->type==AST_identifier){
-	if(root->hashNode->datatype==HASH_DATATYPE_INT)
+	if(root->hashNode->datatype==HASH_DATATYPE_INT&&root->hashNode->type!=HASH_FUNDEC)
 		return 1;
 	else
 		return 0;
 		}
+
 if(root->type==AST_litint||
 root->type==AST_add||
 root->type==AST_sub||

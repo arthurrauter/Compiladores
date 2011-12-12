@@ -177,6 +177,8 @@ char* nodeString1(AST* node)
 			case AST_block: strcpy(tmpSTR, "}\n"); break;
 			case AST_oneparamlist: break;
 			case AST_listparam: strcpy(tmpSTR, ", "); break;
+
+			case AST_funcatrib:
 			case AST_atrib: strcpy(tmpSTR, " = "); break;
 			
 			case AST_cmd: strcpy(tmpSTR, ";\n"); break;

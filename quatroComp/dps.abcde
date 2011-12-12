@@ -17,7 +17,7 @@ int verify(int hithere) {
 	}
 	else
 	{
-		criticaldamage=DPS||5;
+		criticaldamage=(DPS||5);
 		DPS=criticaldamage;
 		if (targetarmor == 0) then
 		{
@@ -36,13 +36,15 @@ int calculateDPS()
 	return DPS;
 }
 
-char devil;
+char devil[7];
 
 char tohellwithit(char chooseyourdestiny)
 {
-	read DPS;
+	DPS=calculateDPS();
 	
-	devil = 'D';
+	
+	devil[3]=chooseyourdestiny;
+	
 	if (devil == 'D') then
 	{
 		while(1){

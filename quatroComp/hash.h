@@ -22,7 +22,7 @@ node* hashTable[HASH_SIZE];
 #define HASH_VECTORDEC 44
 #define HASH_FUNDEC 55
 #define HASH_PARAM 66
-#define HASH_FUNCALL 77
+
 
 
 #define SYMBOL_UNDEFINED 0
