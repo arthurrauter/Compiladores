@@ -1,11 +1,17 @@
-etapa5:	y.tab.o lex.yy.o main.o hash.o astree.o expressionChecker.o
-	gcc -o etapa4 main.o hash.o astree.o 
+etapa5:	y.tab.o lex.yy.o main.o hash.o astree.o expressionChecker.o tac.o generateTac.o
+	gcc -o etapa4 main.o hash.o astree.o tac.o
 
 main.o: main.c 
 	gcc -c main.c
 
 hash.o: hash.c
 	gcc -c hash.c
+
+tac.o: tac.c
+	gcc -c tac.c
+	
+generateTac.o: generateTac.c
+	gcc -c generateTac.c
 
 expressionChecker.o: expressionChecker.c
 	gcc -c expressionChecker.c
