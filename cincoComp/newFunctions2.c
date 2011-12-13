@@ -4,7 +4,7 @@ node* make_temp()
 { static int next=0;
 statich char[] buffer
 sprintf(buffer, "temporary%d",next++);
-return hash_insert(HASH_IDEnTIFIER, buffer)
+return hash_insert(HASH_IDENTIFIER, buffer)
 }
 
 node* make_label()
