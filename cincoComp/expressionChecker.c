@@ -30,7 +30,7 @@ int check_atrib(AST* atribNode);
 void ast_check_declarations(AST*);
 void ast_check_expressions(AST*);
 void checkALLFuncalls(AST*, AST*);
-void checkFuncall(AST*, AST*);
+int checkFuncall(AST*, AST*);
 void  checkALLFunctionReturns(AST* root);
 int check_function_return_type(AST* function);
 void checkALLReads(AST* root);
@@ -39,6 +39,8 @@ void checkALLVectorIndexes(AST* root);
 int check_vector_index(AST* vectorNode);
 int getExpressionDatatype(AST* expr);
 
+static int skyrim = 0;
+
 void ast_check(AST* root)
 {
 	
@@ -46,6 +48,7 @@ void ast_check(AST* root)
 	printHash(hashTable);
 	printf("\n\n");
 	
+		
 	checkALLAttributions(root);
 	hashCheckUndeclared(hashTable);
 	
@@ -54,6 +57,10 @@ void ast_check(AST* root)
 	checkALLFuncalls(root, root);
 	checkALLReads(root);
 	
+	if (skyrim>0){
+		printf("\nSemantic Errors, exit value:3\n"); 
+		exit(3);
+		}
 	
 	printf("\n\ncheck  ");
 }
@@ -66,7 +73,8 @@ void checkALLVectorIndexes(AST* root)
 	if(root->type==AST_idvec ||root->type==AST_vecatrib)
 	{
 	
-		 check_vector_index(root);
+		  if(check_vector_index(root) == 0)
+		  	skyrim++;
 	}
 	
 	int i;
@@ -98,7 +106,8 @@ void checkALLReads(AST* root)
 		return;
 	if(root->type==AST_kwread)
 	{
-		 check_read_symbol(root);
+		 if(check_read_symbol(root) == 0)
+		 	skyrim++;
 	}
 	
 	int i;
@@ -131,7 +140,8 @@ void  checkALLFunctionReturns(AST* root)
 		return;
 	if(root->type==AST_function)
 	{
-		 check_function_return_type(root);
+		 if(check_function_return_type(root)==0)
+		 	skyrim++;
 	}
 	
 	int i;
@@ -190,16 +200,19 @@ void checkALLAttributions(AST* root)
 
 if(root->type==AST_atrib)
 {
-	check_atrib(root);
+	if(check_atrib(root)==0)
+		skyrim++;
 }
 if(root->type==AST_vecatrib)
 {
-	check_vecatrib(root);
+	if(check_vecatrib(root)==0)
+		skyrim++;
 }
 
 if(root->type==AST_funcatrib)
 {
-	check_funcatrib(root);
+	if(check_funcatrib(root)==0)
+		skyrim++;
 }
 
 int i;
@@ -289,7 +302,8 @@ void checkALLFuncalls(AST* root, AST* actual)
 		return;
 	if(actual->type==AST_funcall)
 	{
-		checkFuncall(actual, root);
+		if(checkFuncall(actual, root)==0)
+			skyrim++;
 	}
 	
 	int i;
@@ -300,17 +314,17 @@ void checkALLFuncalls(AST* root, AST* actual)
 }
 
 
-void checkFuncall(AST *funcall, AST* root)
+int checkFuncall(AST *funcall, AST* root)
 {
 	if(funcall->type!=AST_funcall|| root==0||funcall==0)
-		return;	
+		return 0;	
 	
 	
 	node* funIdent = funcall->sons[0]->hashNode;
 	if(funIdent->type!=HASH_FUNDEC)
 	{
 		printf("%s is not a function\n", getNodeInfo(funIdent));
-		return;
+		return 0;
 	} 
 	
 	AST* fundec = (AST*)getFundecOfFuncall(funcall, root);
@@ -320,11 +334,15 @@ void checkFuncall(AST *funcall, AST* root)
 	{
 		printf("Not a function: %s", getNodeInfo(funIdent));
 		
-		return;
+		return 0;
 	}
 	
-	if(checkListParameters(fundec, funcall)!=1)
+	if(checkListParameters(fundec, funcall)!=1){
 		printf("paramaters wrong: %s\n", getNodeInfo(funIdent));		
+		return 0;
+		}
+		
+		return 1;
 			
 	
 }
@@ -407,8 +425,10 @@ void ast_check_declarations(AST* root)
 		return;
 	if(root->type==AST_var)
 	{
-		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER)
-			printf("already declared\n");
+		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER){
+			printf("%s already declared\n", getNodeInfo(root->sons[1]->hashNode));
+			skyrim++;
+			}
 		root->sons[1]->hashNode->type=HASH_VARDEC;	
 		
 		if(root->sons[0]->type==AST_type_int)
@@ -424,8 +444,10 @@ void ast_check_declarations(AST* root)
 	
 	if(root->type==AST_vector)
 	{
-		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER)
-			printf("already declared\n");
+		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER){
+			printf("%s already declared\n", getNodeInfo(root->sons[1]->hashNode));
+			skyrim++;
+			}
 		root->sons[1]->hashNode->type=HASH_VECTORDEC;
 		
 		if(root->sons[0]->type==AST_type_int)
@@ -435,8 +457,10 @@ void ast_check_declarations(AST* root)
 	}
 	if(root->type==AST_function)
 	{
-		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER)
-			printf("already declared\n");
+		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER){
+			printf("%s already declared\n", getNodeInfo(root->sons[1]->hashNode));
+			skyrim++;
+			}
 		root->sons[1]->hashNode->type=HASH_FUNDEC;
 		
 		if(root->sons[0]->type==AST_type_int)
@@ -446,8 +470,10 @@ void ast_check_declarations(AST* root)
 	}
 	if(root->type==AST_param)
 	{
-		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER)
-			printf("already declared\n");
+		if(root->sons[1]->hashNode->type!=SYMBOL_IDENTIFIER){
+			printf("%s already declared\n", getNodeInfo(root->sons[1]->hashNode));
+			skyrim++;
+			}
 		root->sons[1]->hashNode->type=HASH_PARAM;
 		
 		if(root->sons[0]->type==AST_type_int)
@@ -468,8 +494,10 @@ void hashCheckUndeclared(node** hashTable) //called on the first parser.y item
 	int i;
 	for(i=0; i<HASH_SIZE; i++)
 	{
-		if(hashTable[i]!=NULL && hashTable[i]->type==SYMBOL_IDENTIFIER)
+		if(hashTable[i]!=NULL && hashTable[i]->type==SYMBOL_IDENTIFIER){
 			printf("Undeclared %s\n", hashTable[i]->text);
+			skyrim++;
+			}
 	}
 }
 //-----------------------------
@@ -482,19 +510,23 @@ return;
 if(root->type==AST_add||root->type==AST_sub|| root->type== AST_div|| 
 root->type==AST_mul)
 {
-	if(!(isArithmetic(root->sons[0]))||!(isArithmetic(root->sons[1]))) //&& ou ||??
+	if(!(isArithmetic(root->sons[0]))||!(isArithmetic(root->sons[1]))){ //&& ou ||??
 		printf("requires arith operands\n");
+		skyrim++;
+		}
 }
 
 if(root->type==AST_operand|| root->type==AST_operor||root->type==AST_operle||
 root->type==AST_operge||root->type==AST_opereq||root->type==AST_operne||
 root->type==AST_operl||root->type==AST_operg)
 {
-	if(!(isLogic(root->sons[0]))&& !(isLogic(root->sons[1])))
+	if(!(isLogic(root->sons[0]))&& !(isLogic(root->sons[1]))){
 		printf("requires logic operands\n");
+		skyrim++;
+		}
 
 }
-//go on
+
 
 int i;
 for(i=0; i<MAX_SONS; i++)

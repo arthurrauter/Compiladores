@@ -121,15 +121,14 @@ int argumentinhos (int arg1, int arg2, char arg3)
 	return arg1;
 }
 
-int x1;
-int x2;
+
 char c3;
 
 int exame ()
 {
 	x1=1;
 	c3='c';
-	x2=argumentinhos(x1, x1, c3);
+	x2=argumentinhos();
 	return 0;
 }
 
