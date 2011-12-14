@@ -3,10 +3,13 @@
 //UFRGS, Compiladores 2011/1. Prof. Marcelo Johann
 //Alessandra Leonnhardt - 181895
 //Arthur C. Rauter -  180575
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "astree.h"
 #include "hash.h"
+#include "tac.h"
+#include "generateTac.c"
 #include "expressionChecker.c"
 extern int getLineNumber();
 extern int yylex (void);
@@ -87,7 +90,7 @@ int yyerror (char *str)
 %%
 
 
-programa: statement_block { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); ast_check(root);tac_printALL(tac_invert(generateTacCode(root)))}
+programa: statement_block { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); ast_check(root);tac_printALL(tac_invert(generateTacCode(root)));}
 ;
 statement_block: statement statement_block { $$ = ast_insert_node(AST_declr , 0, $1, $2, 0, 0); }
 | { $$ = 0; }

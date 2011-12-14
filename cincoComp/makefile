@@ -1,5 +1,5 @@
 etapa5:	y.tab.o lex.yy.o main.o hash.o astree.o expressionChecker.o tac.o generateTac.o
-	gcc -o etapa4 main.o hash.o astree.o tac.o
+	gcc -o etapa5 main.o hash.o astree.o tac.o
 
 main.o: main.c 
 	gcc -c main.c

@@ -2,7 +2,7 @@
 
 TAC *tac_create (int type, node* hashRes, node* hashOp2, node* hashOp3){
 	TAC* new =NULL;
-	new=(TAC*)malloc(1, sizeof(TAC));
+	new=(TAC*)malloc(sizeof(TAC));
 	new->type=type;
 	new->res=hashRes;
 	new->op2=hashOp2;
@@ -15,7 +15,7 @@ TAC *tac_create (int type, node* hashRes, node* hashOp2, node* hashOp3){
 
 void tac_printALL (TAC* list){
 	TAC* aux=NULL;
-	for(aux=first; aux!=NULL; aux=aux->next)
+	for(aux=list; aux!=NULL; aux=aux->prox)
 		tac_print_one(aux);
 }
 
@@ -37,6 +37,12 @@ void tac_print_one (TAC* element){
 			printf("MUL ");
 		case TAC_DIV:
 			printf("DIV ");
+			break;
+		case TAC_G:
+			printf("G ");
+			break;
+		case TAC_L:
+			printf("L ");
 			break;
 		case TAC_EQ:
 			printf("EQ ");
@@ -101,22 +107,29 @@ void tac_print_one (TAC* element){
 		case TAC_READ:
 			printf("READ ");
 			break;
+		case TAC_LITERAL:
+			printf("LITERAL ");
+			break;
+		case TAC_CALLPARAM:
+			printf("CALLPARAM ");
+			break;
 }
 
 if (element->res) 
-	printf("res: %s ", getNodeInfo(element->res));
+	printf("*res: %s ", getNodeInfo(element->res));
 	
   if (element->op2) 
-  	printf("op2: %s ", getNodeInfo(element->op2));
+  	printf("*op2: %s ", getNodeInfo(element->op2));
 	
   if (element->op3) 
-  	printf("op3: %s ", getNodeInfo(tac->op3));
+  	printf("*op3: %s ", getNodeInfo(element->op3));
 	
 
   printf("\n");
-  }
+  
 
 }
+
 
 TAC * tac_join( TAC* first, TAC* second){
 	TAC* new=NULL;
@@ -140,5 +153,6 @@ TAC *tac_invert(TAC* list){
 		for(aux=list; aux->ant!=0; aux=aux->ant)
 			aux->ant->prox = aux;
 		
+	
 	return aux;
 }
