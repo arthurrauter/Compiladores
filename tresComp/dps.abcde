@@ -55,7 +55,7 @@ char tohellwithit(char chooseyourdestiny)
 		print("phew, you're safe from the devil's loop!");
 	}
 }
-
+int dick;
 char atribuir_conceitos(int p1, int p2, int t)
 {
 	if (p1+p2 < 6) then
@@ -80,6 +80,8 @@ char atribuir_conceitos(int p1, int p2, int t)
 	{
 	gatinha=beijinhos;
 	}
+	
+	dick = calculateDPS();
 	
 	print("a");
 	print("a");

@@ -48,6 +48,8 @@ int yyerror (char *str)
 %type<ast> chamada_funcao
 %type<ast> lista_param_chamada
 
+
+
 %token KW_INT
 %token KW_FLOAT 
 %token KW_BOOL  
@@ -87,7 +89,7 @@ int yyerror (char *str)
 %%
 
 
-programa: statement_block { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); ast_check(root);}
+programa: statement_block { root = ast_insert_node(AST_declr , 0, $1, 0, 0, 0); printf("\nSTARTING AST_CHECK\n"); ast_check(root);printf("\nAST_CHECK DONE.\n");}
 ;
 statement_block: statement statement_block { $$ = ast_insert_node(AST_declr , 0, $1, $2, 0, 0); }
 | { $$ = 0; }
@@ -111,8 +113,8 @@ tipo: KW_INT { $$ = ast_insert_node(AST_type_int , 0, 0, 0, 0, 0);}
 ;
 
 
-funcao: tipo identifier '(' lista_parametros ')' bloco  { $$ = ast_insert_node(AST_function, 0, $1, $2, $4, $6);}
-;
+funcao: tipo identifier '(' lista_parametros ')' bloco  { $$ = ast_insert_node(AST_function, 0, $1, $2, $4, $6);};
+
 lista_parametros : parametro { $$ = ast_insert_node(AST_oneparamlist, 0, $1, 0, 0, 0);}		
 | parametro',' lista_parametros { $$ = ast_insert_node(AST_listparam, 0, $1, $3, 0, 0);}		
 | {$$=0;}
@@ -122,15 +124,17 @@ parametro: tipo identifier	{ $$ = ast_insert_node(AST_param, 0, $1, $2, 0, 0);}
 
 
 bloco: '{'bloco_comandos'}' { $$ = ast_insert_node(AST_block, 0, $2, 0, 0, 0);}
-| comando ';' { $$ = ast_insert_node(AST_onecmdblock, 0, $1, 0, 0, 0);}
+| comando';' { $$ = ast_insert_node(AST_onecmdblock, 0, $1, 0, 0, 0);}
+| fluxo { $$ = ast_insert_node(AST_control, 0, $1, 0, 0, 0); }	
 ;
 
 bloco_comandos: comando';' bloco_comandos { $$ = ast_insert_node(AST_cmdblock, 0, $1, $3, 0, 0);	 }
-| comando { $$ = ast_insert_node(AST_cmdblock, 0, $1, 0, 0, 0);	 }
+| comando';' { $$ = ast_insert_node(AST_cmdblock, 0, $1, 0, 0, 0);	 }
+| fluxo bloco_comandos { $$ = ast_insert_node(AST_control, 0, $1, $2, 0, 0); }	
+| fluxo { $$ = ast_insert_node(AST_control, 0, $1, 0, 0, 0); }	
 ;
 
 comando: atribuicao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }	
-| fluxo { $$ = ast_insert_node(AST_control, 0, $1, 0, 0, 0); }	
 | chamada_funcao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }	
 | KW_READ identifier { $$ = ast_insert_node(AST_kwread,   0, $2, 0, 0, 0); }
 | KW_PRINT aritmetica { $$ = ast_insert_node(AST_kwprint,  0,  $2, 0, 0, 0); }

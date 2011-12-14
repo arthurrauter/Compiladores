@@ -48,17 +48,17 @@
 #define AST_idvec	        39
 #define AST_logicexpr       40
 
-//#define AST_identfunc       43
+#define AST_funcatrib       43
 //#define AST_identparam      44
 
 #define AST_vardecl 	    45
 #define AST_fundecl	        46
 #define AST_declr	        47
 
-//#define AST_funcall         48
-//#define AST_listcall        49
+#define AST_funcall         48
+#define AST_listcall        49
 //#define AST_call       		50
-//#define AST_onecall			52
+#define AST_onecall			52
 #define AST_litstring		53
 
 #define AST_control			51

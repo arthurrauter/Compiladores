@@ -4,7 +4,7 @@
 //Alessandra Leonnhardt - 181895
 //Arthur C. Rauter -  180575
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
 #include "astree.h"
 #include "hash.h"
 extern int getLineNumber();
@@ -43,6 +43,8 @@ int yyerror (char *str)
 %type<ast> identifier
 %type<ast> literal
 %type<ast> string
+%type<ast> chamada_funcao
+%type<ast> lista_param_chamada
 
 
 
@@ -126,11 +128,12 @@ bloco: '{'bloco_comandos'}' { $$ = ast_insert_node(AST_block, 0, $2, 0, 0, 0);}
 
 bloco_comandos: comando';' bloco_comandos { $$ = ast_insert_node(AST_cmdblock, 0, $1, $3, 0, 0);	 }
 | comando';' { $$ = ast_insert_node(AST_cmdblock, 0, $1, 0, 0, 0);	 }
-| fluxo bloco_comandos { $$ = ast_insert_node(AST_control, 0, $1, 0, 0, 0); }	
+| fluxo bloco_comandos { $$ = ast_insert_node(AST_control, 0, $1, $2, 0, 0); }	
 | fluxo { $$ = ast_insert_node(AST_control, 0, $1, 0, 0, 0); }	
 ;
 
 comando: atribuicao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }	
+| chamada_funcao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }	
 | KW_READ identifier { $$ = ast_insert_node(AST_kwread,   0, $2, 0, 0, 0); }
 | KW_PRINT aritmetica { $$ = ast_insert_node(AST_kwprint,  0,  $2, 0, 0, 0); }
 | KW_PRINT string{ $$ = ast_insert_node(AST_kwprint,  0, $2, 0, 0, 0); }
@@ -139,9 +142,17 @@ comando: atribuicao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }
 | {$$=0;}
 ;
 
+chamada_funcao: identifier '(' lista_param_chamada ')' {$$=ast_insert_node(AST_funcall, 0, $1, $3, 0, 0); }
+;
+
+lista_param_chamada: identifier { $$ = ast_insert_node(AST_onecall, 0, $1, 0, 0, 0);}		
+|identifier ',' lista_param_chamada{ $$ = ast_insert_node(AST_listcall, 0, $1, $3, 0, 0);}		
+| {$$=0;}
+;
 
 atribuicao: identifier '=' expressao {$$=ast_insert_node(AST_atrib, 0, $1, $3, 0, 0); }
 | identifier '['expressao']' '=' expressao {$$=ast_insert_node(AST_vecatrib, 0, $1, $3, $6, 0); }
+|identifier '=' chamada_funcao {$$=ast_insert_node(AST_funcatrib, 0, $1,$3, 0, 0);}
 ;
 
 

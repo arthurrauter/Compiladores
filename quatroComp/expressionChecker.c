@@ -4,9 +4,9 @@
 #include "astree.h"
 // SEMANTIC CHECKS/ACTIONS
 //
-// DONE - anotar declarações na hash e datatype ( a fazer)
-// DONE - verificar duplas declarações
-// DONE - verificar não declaradas
+// OK - DONE - anotar declarações na hash e datatype 
+// OK - DONE - verificar duplas declarações
+// OK - DONE - verificar não declaradas
 // - verificar tipos nos nodos de expressão (filhos devem ser corretos)
 //    - operadores aritméticos e relacionais devem ter filhos aritméticos (int)
 //    - igualdade e desigualdade podem ter filhos char
@@ -15,11 +15,11 @@
 // - variáveis somente usadas como variáveis
 // - vetores somente usados como vetores
 // - funções somente usadas como funções
-// DONE - nas atribuições, datatypes devem ser iguais (compatíveis)
-// DONE- indice de vetor deve ser expressao inteira
+// OK - DONE - nas atribuições, datatypes devem ser iguais (compatíveis)
+// OK - DONE- indice de vetor deve ser expressao inteira
 // DONE- argumentos versus parametros de função: número e tipos
-// DONE- valor de retorno versus tipo da função
-// DONE- verificar que simbolo dado para read é variável
+// OK - DONE- valor de retorno versus tipo da função
+// OK - DONE- verificar que simbolo dado para read é variável
 void ast_check(AST*);
 void hashCheckUndeclared(node** hashTable);
 
@@ -43,7 +43,7 @@ void ast_check(AST* root)
 {
 	
 	ast_check_declarations(root);
-	printHash(hashTable);
+	//printHash(hashTable);
 	printf("\n\n");
 	
 	checkALLAttributions(root);
