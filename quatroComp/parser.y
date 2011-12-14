@@ -124,14 +124,16 @@ parametro: tipo identifier	{ $$ = ast_insert_node(AST_param, 0, $1, $2, 0, 0);}
 
 
 bloco: '{'bloco_comandos'}' { $$ = ast_insert_node(AST_block, 0, $2, 0, 0, 0);}
-| comando';' { $$ = ast_insert_node(AST_onecmdblock, 0, $1, 0, 0, 0);}
+| comando { $$ = ast_insert_node(AST_onecmdblock, 0, $1, 0, 0, 0);}
+| comando ';'{ $$ = ast_insert_node(AST_onecmdblock, 0, $1, 0, 0, 0);}
 | fluxo { $$ = ast_insert_node(AST_control, 0, $1, 0, 0, 0); }	
 ;
 
 bloco_comandos: comando';' bloco_comandos { $$ = ast_insert_node(AST_cmdblock, 0, $1, $3, 0, 0);	 }
-| comando';' { $$ = ast_insert_node(AST_cmdblock, 0, $1, 0, 0, 0);	 }
+| comando { $$ = ast_insert_node(AST_cmdblock, 0, $1, 0, 0, 0);	 }
 | fluxo bloco_comandos { $$ = ast_insert_node(AST_control, 0, $1, $2, 0, 0); }	
 | fluxo { $$ = ast_insert_node(AST_control, 0, $1, 0, 0, 0); }	
+| {$$=0;}
 ;
 
 comando: atribuicao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }	
@@ -140,6 +142,8 @@ comando: atribuicao { $$ = ast_insert_node(AST_cmd, 0, $1, 0, 0, 0); }
 | KW_PRINT aritmetica { $$ = ast_insert_node(AST_kwprint,  0,  $2, 0, 0, 0); }
 | KW_PRINT string{ $$ = ast_insert_node(AST_kwprint,  0, $2, 0, 0, 0); }
 | KW_PRINT '('string')'{ $$ = ast_insert_node(AST_kwprint, 0, $3, 0, 0, 0); }
+| KW_PRINT expressao{ $$ = ast_insert_node(AST_kwprint,  0, $2, 0, 0, 0); }
+| KW_PRINT '('expressao')'{ $$ = ast_insert_node(AST_kwprint, 0, $3, 0, 0, 0); }
 | KW_RETURN expressao { $$ = ast_insert_node(AST_kwreturn, 0, $2, 0, 0, 0); }
 | {$$=0;}
 ;

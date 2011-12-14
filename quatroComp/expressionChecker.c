@@ -17,7 +17,7 @@
 // - funções somente usadas como funções
 // OK - DONE - nas atribuições, datatypes devem ser iguais (compatíveis)
 // OK - DONE- indice de vetor deve ser expressao inteira
-// DONE- argumentos versus parametros de função: número e tipos
+// OK - DONE- argumentos versus parametros de função: número e tipos
 // OK - DONE- valor de retorno versus tipo da função
 // OK - DONE- verificar que simbolo dado para read é variável
 void ast_check(AST*);
@@ -82,6 +82,7 @@ int check_vector_index(AST* vectorNode)
 		printf("%s is not a vector\n", getNodeInfo(vectorNode->sons[0]->hashNode));
 		return 0;
 	}
+	
 	
 	AST* indexExpr = vectorNode->sons[1];
 	if(getExpressionDatatype(indexExpr)!=HASH_DATATYPE_INT)
@@ -268,7 +269,14 @@ int check_atrib(AST* atribNode)
 		return 0;
 	}
 	
+	
+	
 	AST* atribExpr= atribNode->sons[1];
+	if(atribExpr->sons[0] && atribExpr->sons[0]->hashNode && (atribExpr->sons[0]->hashNode->type==HASH_VECTORDEC || atribExpr->sons[0]->hashNode->type==HASH_FUNDEC))
+	{
+		printf("%s is not a variable in the %s atribuition\n", getNodeInfo(atribExpr->sons[0]->hashNode ),  getNodeInfo(atribNode->sons[0]->hashNode));
+		return 0;
+	}
 	int atribDatatype=atribNode->sons[0]->hashNode->datatype;
 	if(getExpressionDatatype(atribExpr)!=atribDatatype)
 	{

@@ -33,7 +33,7 @@ int verify() {
 }
 
 
-int calculateDPS()
+int calculateDPS(int fooker)
 {
 	DPS =
 	(attackdamage + bonus_attackdamage) * (attackspeed * (bonus_attackspeed/100 + 1)) * (criticalchance * (criticaldamage -1) +1) * (100/(100+targetarmor));
@@ -81,7 +81,7 @@ char atribuir_conceitos(int p1, int p2, int t)
 	gatinha=beijinhos;
 	}
 	
-	dick = calculateDPS();
+	dick = calculateDPS(dick);
 	
 	print("a");
 	print("a");

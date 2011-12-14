@@ -1,3 +1,4 @@
+/*
 int attackdamage;
 int attackspeed;
 int	criticalchance;
@@ -58,8 +59,8 @@ char tohellwithit(char chooseyourdestiny)
 	}
 	return 'h';
 }
+*/
 /*
-
 int a;
 int a;
 
@@ -69,7 +70,8 @@ int meu_teste(int teste)
 	funcao_que_nao_existe();
 	
 }
-
+*/
+/*
 int var;
 int var2;
 char letter;
@@ -81,7 +83,9 @@ int maisumteste()
 	return letter;
 
 }
+
 */
+/*
 int vetorzinho[10];
 int izinho;
 
@@ -91,12 +95,16 @@ int brincando_com_vetorzinho()
 	vetorzinho[3] = 3;
 	vetorzinho[6+2] = 3;
 	vetorzinho[2+izinho] = 2;
-	//vetorzinho = 'a';
-	//vetorzinho = 5;
-	izinho = vetorzinho;
+	vetorzinho = 'a';
+	vetorzinho = 5;
+	izinho = vetorzinho; //HERE THIS SHIT STILL WORRRRRNNNNNNGGGGGGGG
 	return vetorzinho[0];
 } 
+*/
 /*
+int vetorzinho[10];
+int izinho;
+
 int leitura()
 {
 	read izinho;
@@ -113,6 +121,17 @@ int argumentinhos (int arg1, int arg2, char arg3)
 	return arg1;
 }
 
+int x1;
+int x2;
+char c3;
+
+int exame ()
+{
+	x1=1;
+	c3='c';
+	x2=argumentinhos(x1, x1, c3);
+	return 0;
+}
 
 
 
