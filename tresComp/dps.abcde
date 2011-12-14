@@ -10,7 +10,9 @@ int DPS;
 int teste ()
 {
 	if(hello) then
-		{print a+5}
+	
+		{print a+5;}
+	
 	else
 		return 5+5;
 }
@@ -53,7 +55,40 @@ char tohellwithit(char chooseyourdestiny)
 		print("phew, you're safe from the devil's loop!");
 	}
 }
-
+int dick;
+char atribuir_conceitos(int p1, int p2, int t)
+{
+	if (p1+p2 < 6) then
+		print("exame, manolo");
+	if (p1+p2 < 6) then
+		if (exame <6) then
+			if(trolololo<1) then
+			print("see you next semester");
+			else
+			print("hahaha");
+			
+	if ( oi ) then
+		print("RAAAAAAAAAAAAWR");
+	else
+		print("Oh hai there");
+		
+	if (oi) then{
+	print("hello gatinho");
+	print("te adoro");
+	}
+	else
+	{
+	gatinha=beijinhos;
+	}
+	
+	dick = calculateDPS();
+	
+	print("a");
+	print("a");
+	
+	print("e agora vai?");
+		
+}
 
 
 

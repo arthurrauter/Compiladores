@@ -15,7 +15,7 @@ int main(int argc, char** argv)
   
   if (argc < 2)
     {
-    printf("call: ./etapa3 input.txt\n");
+    printf("call: ./etapa4 input.txt\n");
     exit(1);
     }
   if (0==(yyin = fopen(argv[1],"r")))

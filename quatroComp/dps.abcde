@@ -24,10 +24,9 @@ int verify(int hithere) {
 			print("targetarmor below zero, setting to zero");
 			targetarmor = 0;
 		}
-	};
+	}
 	return 7;
 }
-
 
 int calculateDPS()
 {
@@ -56,6 +55,66 @@ char tohellwithit(char chooseyourdestiny)
 	{
 		verify(DPS);
 		print("phew, you're safe from the devil's loop!");
-	};
+	}
 	return 'h';
 }
+/*
+
+int a;
+int a;
+
+int meu_teste(int teste)
+{
+	variavel_loca = 0;
+	funcao_que_nao_existe();
+	
+}
+
+int var;
+int var2;
+char letter;
+
+int maisumteste()
+{
+	var = var2;
+	var2 = letter;
+	return letter;
+
+}
+*/
+int vetorzinho[10];
+int izinho;
+
+int brincando_com_vetorzinho()
+{
+	izinho = 0;
+	vetorzinho[3] = 3;
+	vetorzinho[6+2] = 3;
+	vetorzinho[2+izinho] = 2;
+	//vetorzinho = 'a';
+	//vetorzinho = 5;
+	izinho = vetorzinho;
+	return vetorzinho[0];
+} 
+/*
+int leitura()
+{
+	read izinho;
+	read vetorzinho;
+	return 1;
+}
+*/
+
+int argumentinhos (int arg1, int arg2, char arg3)
+{
+	arg1 = arg1 + arg2;
+	if (arg1 == 99) then
+		arg3 = 'f';
+	return arg1;
+}
+
+
+
+
+
+
