@@ -9,10 +9,10 @@ int DPS;
 char hello;
 
 
-int verify(int hithere) {
+int verify(int hithere, int hola) {
 	if (targetarmor > 0) then
 	{
-		hithere=5;
+		
 		print("target has no armor");
 	}
 	else
@@ -38,23 +38,23 @@ int calculateDPS()
 
 char devil[7];
 
-char tohellwithit(char chooseyourdestiny)
+char tohellwithit()
 {
 	DPS=calculateDPS();
 	
 	
-	devil[3]=chooseyourdestiny;
+	devil[3]=hello;
 	
 	if (devil == 'D') then
 	{
 		while(1){
-		verify(DPS);
+		
 		print("you're doomed!");
 		}
 	}
 	else 
 	{
-		verify(DPS);
+		verify(DPS, targetarmor);
 		print("phew, you're safe from the devil's loop!");
 	};
 	return 'h';

@@ -1,25 +1,25 @@
-#include "hashTab.h"
-#include "y.tab.h"
-#include <stdio.h>
-#include <stdlib.h>
+
+#include "tac.h"
+#include "astree.h"
+
 
 node* make_temp()
 { 
 static int nextTemp=0;
-static char buffer[256]="";
-sprintf(buffer, "_temporary%d",nextTemp);
+static char bufferTemp[256]="";
+sprintf(bufferTemp, "_temporary%d",nextTemp);
 nextTemp++;
-return hash_insert(HASH_VARDEC, buffer)
+return insertHash(hashTable, bufferTemp, HASH_VARDEC);
 }
 
 node* make_label()
 {
 
 static int nextLabel=0;
-statich char bufferLabel[256]="";
-sprintf(buffer, "_label%d",nextLabel)
-nextLabel++;;
-return hash_insert(HASH_LABEL, bufferLabel) 
+static char bufferLabel[256]="";
+sprintf(bufferLabel, "_label%d",nextLabel);
+nextLabel++;
+return insertHash(hashTable, bufferLabel, HASH_LABEL) ;
 }
 
 //---------------------------
@@ -36,25 +36,27 @@ TAC* do_binOpTac(int type, TAC* first, TAC* second) {
     return final;
 }
 //---------------------
-TAC* do_funTac(node* funName, TAC* function, TAC* params)
+TAC* do_funTac(node* funName, TAC* params, TAC* function)
 {
+	
 	TAC* beginFun=tac_create(TAC_BEGINFUN, funName, 0, 0);
 	TAC* endFun=tac_create(TAC_ENDFUN, funName, 0, 0);
-	TAC* final=tac_join(function, endFun);
-	final=tac_join(beginFun, final);
+	
+	TAC* final=tac_join(beginFun, function);
+	final=tac_join(final, endFun);
 	final=tac_join(params, final);
 	return final;
 }
 //------------------
-AC *do_returnTac(TAC *expr) {
-    TAC *new;
+TAC *do_returnTac(TAC *expr) {
+    TAC *new=NULL;
     
 	if (expr->type == TAC_VECTOR_ASS) {
-        new= = tac_create(TAC_RETURN, expr->res, expr->op2, NULL);
+        new= tac_create(TAC_RETURN, expr->res, expr->op2, NULL);
        new= tac_join(expr->ant, new);
     } else {
 		new=  tac_create(TAC_RETURN, expr->res, NULL, NULL);
-		 new=tac_join(expr,nova);
+		 new=tac_join(expr,new);
 	}
 	
   return new;
@@ -62,17 +64,17 @@ AC *do_returnTac(TAC *expr) {
 //----------------------
 
 
-TAC* do_ifTac(TAC* first, TAC * second)
+TAC* do_ifTac(TAC* expr, TAC * code)
 {	
 	TAC* iftac;
 	node* label = make_label();
-	TAC* final;
-	if(first)
-		iftac = tac_create(TAC_IFZ, label,first, 0,0);
+	TAC* final=NULL;
+	if(expr)
+		iftac = tac_create(TAC_IFZ, label,expr->res,0);
 	TAC* labelTac=tac_create(TAC_LABEL, label, 0, 0);
 	
-	final=tac_join(first, iftac);
-	final=tac_join(final, second);
+	final=tac_join(expr, iftac);
+	final=tac_join(final, code);
 	final=tac_join(final, labelTac);
 	return final;
 	
@@ -91,7 +93,7 @@ TAC *do_assignTac(TAC* ident, TAC* expr) {
     
     if (ident->type == TAC_VECTOR_ASS) {
         nova = tac_create(TAC_COPY, dest, expr->res, ident->op2);
-        nova = tac_join(ident->prev, nova);
+        nova = tac_join(ident->ant, nova);
     } else {
         nova = tac_create(TAC_COPY, dest, expr->res, NULL);
     }
@@ -100,7 +102,7 @@ TAC *do_assignTac(TAC* ident, TAC* expr) {
 }
 //---------------
 TAC *do_vectorAssignTac(TAC* ident, TAC* index) {
-    TAC* final;
+    TAC* final=NULL;
     final = tac_create(TAC_VECTOR_ASS, ident->res, index->res, NULL);
     
    final= tac_join(index, final);
@@ -117,7 +119,7 @@ TAC *do_ifElseTac(TAC* exp, TAC* ifCode, TAC* elseCode) {
     TAC* tacLabelElse;
     TAC* tacLabelFim;
     TAC* tacGoto;
-    TAC* final;
+    TAC* final=NULL;
 
     labelElse = make_label();
     labelFim = make_label();
@@ -147,7 +149,7 @@ TAC *do_whileTac(TAC* exp, TAC* whileCode) {
     TAC* tacLabelFim;
     TAC* tacGoto;
     TAC* tacJz;
-    TAC* temp;
+    TAC* temp=NULL;
 
         
     tacLabelIni = tac_create(TAC_LABEL, labelIni, NULL, NULL);
@@ -169,9 +171,9 @@ TAC *do_whileTac(TAC* exp, TAC* whileCode) {
 //---------------------------
 
 TAC *do_funCallTac(TAC* funcall, TAC* params) {
-    TAC* new;
+    TAC* new=NULL;
     node* result = NULL;
-       node* ident;
+    node* ident;
         
     if (funcall == NULL) {
         printf("Invalid funcall\n");
@@ -188,40 +190,30 @@ TAC *do_funCallTac(TAC* funcall, TAC* params) {
 }
 //-------------------
 
-TAC* do_paramsTac(TAC* exp, TAC* param)
+TAC* do_callParamsTac(TAC* exp, TAC* param)
 {
-	TAC* new;
-	if(param==NULL)
+	if(!exp)
 	{
-		printf("invalid params\n");
-		exit(0);
-	}
+	printf("y u no exist?");
+	getc(stdin);}
+	TAC* new=NULL;
 	
-	new= tac_create(TAC_PARAM, exp->res, NULL, NULL);
-	
-	new= tac_join(param, new);
+	new= tac_create(TAC_CALLPARAM, exp->res, NULL, NULL);
+	new=tac_join(param, new);
 	return new;
 }
 
-TAC* do_listParamTac(TAC* param, TAC* listParam)
+TAC* do_oneCallParamsTac(node* param)
 {
-	TAC* new;
-	if(listParam==NULL)
-	{
-		printf("invalid list of params\n");
-		exit(0);
-	}
-	
-	new = tac_create(TAC_PARAM, param->res, NULL, NULL);
-	new = tac_join(new, listParam);
-	
+	TAC* new=NULL;
+	new=tac_create(TAC_CALLPARAM, param, NULL, NULL);
 	return new;
 }
 //-------------------	
 
 TAC* do_printTac(TAC *expr) 
 {
-    TAC* new;
+    TAC* new=NULL;
 
 	
    new = tac_create(TAC_PRINT, expr->res, NULL, NULL);
@@ -233,19 +225,31 @@ TAC* do_printTac(TAC *expr)
 //------------------------------
 
 TAC* do_readTac(TAC* expr) {
-    TAC* new;
+    TAC* new=NULL;
     new = tac_create(TAC_READ, expr->res, NULL, NULL);
     
     return tac_join(expr,new);
 }
-//-----------------------------
-//-----------------------------
-//-----------------------------
 
-tac* generateTacCode(AST* root)//geração de código
+//-----------------------
+
+TAC* do_funParamTac(node* param_id)
 {
-TAC* result[MAX_SONS];
 
+    TAC* param = tac_create(TAC_PARAM, param_id, 0, 0);
+    
+    return param;
+}
+
+
+//-----------------------------
+//-----------------------------
+//-----------------------------
+
+TAC* generateTacCode(AST* root)//geração de código
+{
+TAC* results[MAX_SONS];
+int i;
 for(i=0; i<MAX_SONS; ++i)
 	results[i]=0;
 	
@@ -256,84 +260,99 @@ for(i=0; i<MAX_SONS; i++)
 {
 if(root->sons[i]!=0)
 	results[i]=generateTacCode(root->sons[i]);
+	
 }
-
+int a;
 switch(root->type)
 {
-	case AST_identifier: 
+	 
 	case AST_litchar:
 	case AST_litstring:
 	case AST_literal:
 	case AST_litint:
+		return tac_create(TAC_LITERAL, root->hashNode, 0,0); 
+		break;
+	case AST_identifier:
 		return tac_create(TAC_SYMBOL, root->hashNode, 0,0); 
 		break;
 		//--------------
 	case AST_add: 
-		return do_bin(TAC_ADD, results[0], results[1]); 
+		return  do_binOpTac(TAC_ADD, results[0], results[1]); 
 		break;
 	case AST_mul:
-		return do_bin(TAC_MUL, results[0], results[1]);
+		return do_binOpTac(TAC_MUL, results[0], results[1]);
 		break;
 	case AST_sub: 
-		return do_bin(TAC_SUB, results[0], results[1]); 
+		return do_binOpTac(TAC_SUB, results[0], results[1]); 
 		break;
 	case AST_div: 
-		return do_bin(TAC_DIV, results[0], results[1]); 
+		return do_binOpTac(TAC_DIV, results[0], results[1]); 
 		break;
 	case AST_operand: 
-		return do_bin(TAC_AND, results[0], results[1]); 
+		return do_binOpTac(TAC_AND, results[0], results[1]); 
 		break;
 	case AST_operor: 
-		return do_bin(TAC_OR, results[0], results[1]); 
+		return do_binOpTac(TAC_OR, results[0], results[1]); 
 		break;
 	case AST_operle: 
-		return do_bin(TAC_LE, results[0], results[1]); 
+		return do_binOpTac(TAC_LE, results[0], results[1]); 
 		break;
 	case AST_operge: 
-		return do_bin(TAC_GE, results[0], results[1]); 
+		return do_binOpTac(TAC_GE, results[0], results[1]); 
 		break;
 	case AST_opereq: 
-		return do_bin(TAC_EQ, results[0], results[1]); 
+		return do_binOpTac(TAC_EQ, results[0], results[1]); 
 		break;
 	case AST_operne: 
-		return do_bin(TAC_NE, results[0], results[1]); 
+		return do_binOpTac(TAC_NE, results[0], results[1]); 
 		break;
 	case AST_operl: 
-		return do_bin(TAC_L, results[0], results[1]); 
+		return do_binOpTac(TAC_L, results[0], results[1]); 
 		break;
 	case AST_operg: 
-		return do_bin(TAC_G, results[0], results[1]); 
+		return do_binOpTac(TAC_G, results[0], results[1]); 
 		break;
 	//----------------------------
 	case AST_vecatrib:
 	case AST_funcatrib:
 	case AST_atrib: 
-		return do_assignTac(result[0], results[1]); 
+		return do_assignTac(results[0], results[1]); 
 		break;
 	
 	case AST_idvec:
-		return do_vectorAssignTac(result[0], result[1]);
+		return do_vectorAssignTac(results[0], results[1]);
+		break;
+	//-----------------
+	case AST_function: 
+	
+		return do_funTac(results[1]->res, results[2], results[3]); 
+		break; 
+	
+	case AST_param:
+		return do_funParamTac(results[1]->res);
+		break;
+	case AST_listparam:
+	
+		return tac_join(results[0], results[1]);
 		break;
 	
-	case AST_function: 
-		return do_funTac(result[1], results[2], result[3]); 
-		break; 
-	case AST_oneparamlist:
-	case AST_listparam:
-		return do_listParamTac(result[1], result[2]);
+		return results[0];
+		//--------------------
+		
 	case AST_cmdblock:
 	case AST_declr: 
+		
 		return tac_join(results[0], results[1]); 
 		break;
 	//-------------------
 	case AST_kwreturn:
-		return do_returnTac(result[0]);
+		return do_returnTac(results[0]);
 		break;
 	case AST_kwread:
-		return do_readTac(result[0]);
+		return do_readTac(results[0]);
 		break;
 	case AST_kwprint:
-		return do_printTac(result[0]);
+		return do_printTac(results[0]);
 		break;
 		//------------
 	case AST_kwif: 
@@ -348,14 +367,17 @@ switch(root->type)
 		//-------------
 		
 	case AST_funcall:
-		return do_funCall(result[0], result[1]);
+		return do_funCallTac(results[0], results[1]);
 		break;
 	case AST_onecall:
+		return do_oneCallParamsTac(root->sons[0]->hashNode);
+		break;
 	case AST_listcall:
-		return do_paramTac(result[0], result[1]);
+		return do_callParamsTac(results[0], results[1]);
 		break;
 	
 	
 }
-return result[0];
+
+return results[0];
 }

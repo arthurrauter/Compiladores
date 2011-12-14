@@ -4,6 +4,7 @@
 #include "hash.h"
 #include "lex.yy.c"
 #include "y.tab.c"
+#include "tac.h"
 
 
 extern int running;
