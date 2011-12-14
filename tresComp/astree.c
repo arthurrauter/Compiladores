@@ -65,7 +65,7 @@ char* nodeString0(AST* node)
 			case AST_block: strcpy(tmpSTR, "{\n"); break;
 			
 			case AST_kwelse:
-			case AST_kwif: strcpy(tmpSTR, "if "); break;
+			case AST_kwif: strcpy(tmpSTR, "if ("); break;
 			case AST_kwwhile : strcpy(tmpSTR, "while("); break;
 			
 			case AST_kwread: strcpy(tmpSTR, "read("); break;
@@ -117,10 +117,13 @@ char* nodeString1(AST* node)
 		switch(node->type)
 		{
 			case AST_block: strcpy(tmpSTR, "}\n"); break;
+			case AST_onecall:
 			case AST_oneparamlist: break;
+			case AST_listcall:
 			case AST_listparam: strcpy(tmpSTR, ", "); break;
+			case AST_funcatrib:
 			case AST_atrib: strcpy(tmpSTR, " = "); break;
-			
+			case AST_funcall: strcpy(tmpSTR, "(");break;
 			case AST_cmd: strcpy(tmpSTR, ";\n"); break;
 			
 			case AST_idvec:
@@ -141,7 +144,7 @@ char* nodeString1(AST* node)
 			case AST_operne: strcpy(tmpSTR, "!="); break;
 			
 			case AST_kwif:
-			case AST_kwelse:strcpy(tmpSTR, " then\n"); break;
+			case AST_kwelse:strcpy(tmpSTR, ") then\n"); break;
 			case AST_kwprint:
 			case AST_kwwhile: strcpy(tmpSTR, ")\n"); break;
 			
@@ -214,7 +217,7 @@ char* nodeString3 (AST* node)
 	{
 		switch(node->type)
 		{
-			
+			case AST_funcall: strcpy(tmpSTR, ")");break;
 			case AST_function:
 				strcpy(tmpSTR, ")\n");
 			break;
