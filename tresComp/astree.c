@@ -26,19 +26,20 @@ void ast_to_program(AST* tree, FILE* fileAST)
 
 	if(tree)
 	{
-		
+		//printf("\nfdjkasljfadkl");
+		//getc(stdin);
 		fputs(nodeString0(tree), fileAST);
-
+		//printf("\nrieoqprieqopr");
 		for(i=0; i<4; i++)	
 		{
 			if(tree->sons[i])
 				ast_to_program(tree->sons[i], fileAST);
 			switch(i)
 			{
-				case 0:	fputs(nodeString1(tree), fileAST); break;
+				case 0:fputs(nodeString1(tree), fileAST); break;
 				case 1:	fputs(nodeString2(tree), fileAST); break;
-				case 2:	fputs(nodeString3(tree), fileAST); break;
-				case 3:	fputs(nodeString4(tree), fileAST); break;
+				case 2:fputs(nodeString3(tree), fileAST); break;
+				case 3:fputs(nodeString4(tree), fileAST); break;
 			}
 		}
 	}
@@ -52,6 +53,7 @@ char* nodeString0(AST* node)
  
 	if(node)
 	{
+		
 		switch(node->type)
 		{
 			
@@ -74,7 +76,8 @@ char* nodeString0(AST* node)
 			case AST_litchar:strcpy(tmpSTR, "\'");
 			strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
 			strcat(tmpSTR, "\'"); break;
-			case AST_litstring:  strcpy(tmpSTR, "\""); strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
+			case AST_litstring: 
+			 strcpy(tmpSTR, "\""); strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
 			strcat(tmpSTR, "\""); break;
 			case AST_litint: strcpy(tmpSTR, (char*) getNodeInfo(node->hashNode)); break;
 			

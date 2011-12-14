@@ -20,7 +20,7 @@ int teste ()
 int verify() {
 	if (targetarmor > 0) then
 	
-		print 5+b;
+		print "5+b"
 	
 	else
 	{
@@ -65,7 +65,7 @@ char atribuir_conceitos(int p1, int p2, int t)
 			if(trolololo<1) then
 			print("see you next semester");
 			else
-			print("hahaha");
+			print("hahaha")
 			
 	if ( oi ) then
 		print("RAAAAAAAAAAAAWR");
@@ -85,8 +85,9 @@ char atribuir_conceitos(int p1, int p2, int t)
 	
 	print("a");
 	print("a");
-	
-	print("e agora vai?");
+	print("agora vai");
+	print("hello fookers");
+
 		
 }
 
