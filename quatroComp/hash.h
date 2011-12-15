@@ -47,5 +47,7 @@ node* getNode (node** hashTable ,char* text);
 
 void printHash(node** hashTable);
 
+char* getNodeInfo (node* node);
+
 void printList(node* hashNode);
 #endif
