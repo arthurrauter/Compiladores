@@ -272,10 +272,21 @@ int check_atrib(AST* atribNode)
 	
 	
 	AST* atribExpr= atribNode->sons[1];
-	if(atribExpr->sons[0] && atribExpr->sons[0]->hashNode && (atribExpr->sons[0]->hashNode->type==HASH_VECTORDEC || atribExpr->sons[0]->hashNode->type==HASH_FUNDEC))
+	if(atribExpr->sons[0] && atribExpr->sons[0]->hashNode )
 	{
-		printf("%s is not a variable in the %s atribuition\n", getNodeInfo(atribExpr->sons[0]->hashNode ),  getNodeInfo(atribNode->sons[0]->hashNode));
-		return 0;
+		if(atribExpr->sons[0]->hashNode->type==HASH_FUNDEC){
+			printf("%s is not a variable in the %s atribuition\n", getNodeInfo(atribExpr->sons[0]->hashNode ),  getNodeInfo(atribNode->sons[0]->hashNode));
+			return 0;
+		}
+		if(atribExpr->sons[0]->hashNode->type==HASH_VECTORDEC)
+		{
+			if(!atribExpr->sons[1]){ //if the vector has no index
+				printf("%s is not a variable in the %s atribuition\n", getNodeInfo(atribExpr->sons[0]->hashNode ),  getNodeInfo(atribNode->sons[0]->hashNode));
+				return 0;
+			}
+				
+			
+		}
 	}
 	int atribDatatype=atribNode->sons[0]->hashNode->datatype;
 	if(getExpressionDatatype(atribExpr)!=atribDatatype)
