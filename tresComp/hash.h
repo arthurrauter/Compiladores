@@ -27,6 +27,6 @@ node* insertHash(node** hashTable, char* text, int type);
 node* getNode (node** hashTable ,char* text);
 
 void printHash(node** hashTable);
-
+char* getNodeInfo (node* node);
 void printList(node* hashNode);
 #endif
