@@ -50,4 +50,6 @@ node* getNode (node** hashTable ,char* text);
 void printHash(node** hashTable);
 
 void printList(node* hashNode);
+
+char* getNodeInfo (node* node);
 #endif
