@@ -97,7 +97,7 @@ int brincando_com_vetorzinho()
 	vetorzinho[2+izinho] = 2;
 	vetorzinho = 'a';
 	vetorzinho = 5;
-	izinho = vetorzinho; //HERE THIS SHIT STILL WORRRRRNNNNNNGGGGGGGG
+	izinho = vetorzinho; 
 	return vetorzinho[0];
 } 
 */
@@ -121,14 +121,15 @@ int argumentinhos (int arg1, int arg2, char arg3)
 	return arg1;
 }
 
-
+int x1;
+int x2;
 char c3;
-
+int vetor[4];
 int exame ()
 {
-	x1=1;
+	x1=vetor[3];
 	c3='c';
-	x2=argumentinhos();
+	x2=argumentinhos(x1, x2, c3);
 	return 0;
 }
 

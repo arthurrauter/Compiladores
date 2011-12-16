@@ -43,7 +43,7 @@ void ast_check(AST* root)
 {
 	
 	ast_check_declarations(root);
-	//printHash(hashTable);
+	printHash(hashTable);
 	printf("\n\n");
 	
 	checkALLAttributions(root);
@@ -291,7 +291,7 @@ int check_atrib(AST* atribNode)
 	int atribDatatype=atribNode->sons[0]->hashNode->datatype;
 	if(getExpressionDatatype(atribExpr)!=atribDatatype)
 	{
-		printf("atribution of %s with wrong datatype\n", getNodeInfo(atribNode->sons[0]->hashNode));
+		printf("atribution of %s with wrong datatype: %d, %d\n", getNodeInfo(atribNode->sons[0]->hashNode), atribDatatype, getExpressionDatatype(atribExpr));
 		return 0;
 	}
 	else if(getExpressionDatatype(atribExpr)==atribDatatype)

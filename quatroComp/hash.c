@@ -22,7 +22,41 @@ node* insertHash(node** hashTable, char* text, int type)
 	for(i=0;i<strlen(text);i++)
 		adress = (adress*text[i])%HASH_SIZE + 1;
 	if(hashTable[adress]!=NULL)//exists the node
-		return hashTable[adress];
+	{
+		if(hashTable[adress]->type==type) //same type of node
+			return hashTable[adress];
+		
+		else//same node name, but other type
+		{	
+				
+			node* aux1;
+			node* aux2;
+			aux2=hashTable[adress];
+			aux1=aux2->next;
+			while(aux1!=NULL)
+			{
+				if(aux1->type==type)//if the node is in the list
+					return aux1;	
+				aux2=aux1;
+				aux1=aux1->next;
+						
+			}
+			
+			
+			hashNode=(node*)malloc(sizeof(node));
+			if(type==SYMBOL_LIT_INTEGER)
+				hashNode->value=atoi(text);
+			else
+			{
+		  		hashNode->text = (char*) malloc(strlen(text) +1);
+				strcpy(hashNode->text,text);
+			}
+		 	hashNode->type=type;
+			hashNode->next=NULL;
+			aux2->next=hashNode;
+			return hashNode;
+		}
+	}
 	else//doesn't exists the node
 	{	
 		hashNode=(node*)malloc(sizeof(node));
@@ -90,7 +124,9 @@ void printList(node* hashNode)
 		else
 			printf ("(%d, %d)", hashNode->datatype, hashNode->value);
 		hashNode = hashNode->next;
-		if (hashNode != NULL) printf (", ");	
+		if (hashNode != NULL) 
+			printf (", ");
+		
 	} 	
 	printf ("}");
 }
