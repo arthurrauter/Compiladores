@@ -40,9 +40,10 @@ int calculateDPS(int fooker)
 }
 
 char devil;
-
+char vetor[5];
 char tohellwithit(char chooseyourdestiny)
 {
+	devil=vetor[3];
 	devil = chooseyourdestiny;
 	if (devil == 'D') then
 	{
@@ -86,7 +87,7 @@ char atribuir_conceitos(int p1, int p2, int t)
 	print("a");
 	print("a");
 	print("agora vai");
-	print("hello fookers");
+
 
 		
 }

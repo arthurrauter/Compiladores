@@ -11,7 +11,7 @@ int x(int k)
 
   if (b == 'a') then
     b = 'b';
-    
+    b='d';
     print 2;
     read a;
   }
