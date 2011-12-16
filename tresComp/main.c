@@ -31,7 +31,6 @@ int main(int argc, char** argv)
   //ast_print_tree(root);
   if(root == NULL)
   	printf("root null");
-  getc(stdin);
   ast_to_program(root, fileAST);
   return 0;
 }

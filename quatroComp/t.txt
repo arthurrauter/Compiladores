@@ -1,0 +1,22 @@
+int Y;
+char b;
+int a;
+int v[5];
+int x(int k) 
+  {
+  if ((a >=2))
+  then { a = 0 ; b= 'a';
+	a = 1;
+    a = v[2] };
+
+  if (b == 'a') then
+    b = 'b';
+    
+    print 2;
+    read a;
+  }
+int f()
+  { b = 'a';
+v[5] = 1
+   }
+

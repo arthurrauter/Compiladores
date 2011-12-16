@@ -107,7 +107,7 @@ declaracao: tipo identifier ';' { $$ = ast_insert_node(AST_var , 0, $1, $2, 0, 0
 
 
 tipo: KW_INT { $$ = ast_insert_node(AST_kwint , 0, 0, 0, 0, 0);}
- | KW_CHAR  { $$ = ast_insert_node(AST_kwchar ,0, 0, 0, 0, 0);}
+| KW_CHAR  { $$ = ast_insert_node(AST_kwchar ,0, 0, 0, 0, 0);}
 ;
 
 
