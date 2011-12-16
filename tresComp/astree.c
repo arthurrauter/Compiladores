@@ -79,8 +79,8 @@ char* nodeString0(AST* node)
 			break;
 			
 			case AST_litstring: 
-			if(node->hashNode) strcpy(tmpSTR, "\""); 
-			strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
+			strcpy(tmpSTR, "\""); 
+			if(node->hashNode) strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
 			strcat(tmpSTR, "\""); 
 			break;
 			
@@ -154,7 +154,7 @@ char* nodeString1(AST* node)
 			case AST_kwelse:strcpy(tmpSTR, ") then\n"); break;
 			case AST_kwprint:
 			case AST_kwwhile: strcpy(tmpSTR, ")\n"); break;
-			
+			case AST_kwread: strcpy(tmpSTR, ")"); break;
 			
 			case AST_kwreturn: strcpy(tmpSTR, ")"); break;
 			
@@ -181,7 +181,7 @@ char* nodeString2(AST* node)
 			case AST_function: strcpy(tmpSTR, "(");break;
 			case AST_var: strcpy(tmpSTR, ";\n");break;
 			case AST_vector:strcpy(tmpSTR, "[");
-			strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
+			if(node->hashNode) strcat(tmpSTR, (char*)getNodeInfo(node->hashNode));
 			strcat(tmpSTR, "];\n");
 			break;
 			
@@ -249,13 +249,12 @@ char* nodeString4 (AST* node)
 	{
 		switch(node->type)
 		{
-		case AST_literal: strcpy(tmpSTR, (char*)getNodeInfo(node->hashNode));break;
+		case AST_literal: if(node->hashNode) strcpy(tmpSTR, (char*)getNodeInfo(node->hashNode));break;
 		
 		case AST_atrib: break;
 		 case AST_kwread:
 		 case AST_kwprint:
 		 case AST_kwreturn: 
-		 case AST_kwwhile:
 		 case AST_vecatrib: strcpy(tmpSTR, ";\n"); break;
 		 default: strcpy(tmpSTR, "");	
 		}
