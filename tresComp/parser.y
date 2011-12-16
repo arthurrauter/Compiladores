@@ -201,7 +201,7 @@ logica: '(' logica ')'	{ $$ = $2; }
 
 fluxo: KW_IF '('expressao')' KW_THEN bloco { $$ = ast_insert_node(AST_kwif,    0, $3, $6, 0, 0);}
 | KW_IF '('expressao')' KW_THEN bloco KW_ELSE bloco { $$ = ast_insert_node(AST_kwelse,    0, $3, $6, $8, 0);}
-|KW_WHILE '('expressao')' bloco { $$ = ast_insert_node(AST_kwwhile, 0, $3, $5, 0,0); }
+| KW_WHILE '('expressao')' bloco { $$ = ast_insert_node(AST_kwwhile, 0, $3, $5, 0,0); }
 ;
 
 

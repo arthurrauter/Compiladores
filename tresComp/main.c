@@ -12,7 +12,7 @@ void initMe(void);
 
 int main(int argc, char** argv)
 {
-  
+
   if (argc < 2)
     {
     printf("call: ./etapa3 input.txt\n");
@@ -28,9 +28,8 @@ int main(int argc, char** argv)
   yyparse_out = yyparse();
   printf("\nyyparse return value: %d\n", yyparse_out);
   FILE* fileAST=NULL;
-  //ast_print_tree(root);
   if(root == NULL)
-  	printf("root null");
+  	printf("\n\n\n\n\nroot null\n\n\n\n\n\n");
   ast_to_program(root, fileAST);
   return 0;
 }

@@ -45,8 +45,7 @@ char* getNodeInfo (node* node)
 	if(node->type==SYMBOL_LIT_INTEGER)
 	{
 	//char buf[6]; cannot be declared here, for it's local to the function.
-
-	// convert node->value to string [buf]
+	//convert node->value to string [buf]
 		sprintf(buf, "%d", node->value);
 		return buf;
 	}
